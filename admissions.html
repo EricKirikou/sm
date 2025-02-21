@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏫 School Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
+            <!-- Sidebar Header -->
+            <h4 class="text-2xl font-bold mb-4">📚 SM-Edu</h4>
+
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center">
+                <img src="profile.png" class="rounded-full w-16 h-16 border-2 border-gray-700" alt="Admin">
+                <div class="ml-4">
+                    <p class="text-lg font-semibold">Mr. Admin</p>
+                    <p class="text-gray-400 text-sm">Admin</p>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <ul class="space-y-2">
+                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Dashboard</a></li>
+                <li><a href="teacher.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Teacher</a></li>
+
+                <!-- Students Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Students</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Admissions</a></li>
+                        <li><a href="students.html" class="block py-2 hover:bg-gray-700"> All Students</a></li>
+                        <li class="text-gray-400 flex items-center py-2">
+                            <a href="#">
+                                <span> Manage Families</span>
+                                <i class="fas fa-lock ml-auto text-red-300"></i>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2">
+                            <a href="#"><span>⚖ Active / Inactive</span>
+                                <i class="fas fa-lock ml-auto text-red-300"></i>
+                            </a>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Admission Letter</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Print Basic List</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Login</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Promote Students</a></li>
+                    </ul>
+                </li>
+
+
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Parent</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Accountant</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Librarian</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Receptionist</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Exam</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mark</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Message</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Media</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mail / SMS</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Online Exam</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Payroll</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Asset Management</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Inventory</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Leave Application</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Gmeet Live Class</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Transport</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Hostel</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Announcement</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Report</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Online Admission</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Visitor Info</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="flex-grow">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+                <div class="container-fluid">
+                    <span class="navbar-brand">🎫 Admissions</span>
+                    <div>
+                        <span class="me-3">🔔</span>
+                        <span class="me-3">⚙️</span>
+                        <span>🌍</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-center text-2xl font-bold mb-4">Admission Form</h2>
+                <hr>
+
+                <form id="admissionForm" enctype="multipart/form-data">
+                    <!-- Student Information -->
+                    <h3 class="text-lg font-semibold mt-4">1️⃣ Student Information</h3>
+                    <div class="grid grid-cols-2 gap-4 mt-3">
+                        <div>
+                            <label class="font-medium">Student Name *</label>
+                            <input type="text" class="form-control" placeholder="Name of Student">
+                        </div>
+                        <div>
+                            <label class="font-medium">Registration Id</label>
+                            <input type="text" class="form-control" id="registrationId" value="SID001" disabled>
+                        </div>
+                        <input type="file" name="picture" accept="image/*">
+                        <div>
+                            <label class="font-medium">Date of Admission *</label>
+                            <input type="date" class="form-control" value="2025-02-19">
+                        </div>
+                        <div>
+                            <label class="font-medium">Select Class *</label>
+                            <select class="form-control">
+                                <option>Class 6B</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-medium">Discount in Fee *</label>
+                            <input type="text" class="form-control" placeholder="In %">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="font-medium">Mobile No. for SMS/WhatsApp</label>
+                            <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
+                        </div>
+                    </div>
+
+                    <!-- Other Information -->
+                    <h3 class="text-lg font-semibold mt-6">2️⃣ Other Information</h3>
+                    <div class="grid grid-cols-2 gap-4 mt-3">
+                        <div>
+                            <label class="font-medium">Date of Birth</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div>
+                            <label class="font-medium">Gender</label>
+                            <select class="form-control">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-medium">Student Birth Form ID / NIC</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label class="font-medium">Previous School</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label class="font-medium">Religion</label>
+                            <select class="form-control">
+                                <option>Christian</option>
+                                <option>Muslim</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-medium">Address</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label class="font-medium">Guardian's Name <span class="text-gray-500">(If
+                                    Required)</span></label>
+                            <input type="text" class="form-control" placeholder="Guardian's Name">
+                        </div>
+                        <div>
+                            <label class="font-medium">Guardian's Contact No. <span class="text-gray-500">(If
+                                    Required)</span></label>
+                            <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
+                        </div>
+
+                        <div>
+                            <label class="font-medium">Orphan Student</label>
+                            <select class="form-control" id="orphanStatus">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Parents & Guardian Information -->
+                    <div id="parentsSection" class="mt-6 bg-gray-100 p-4 rounded-lg hidden">
+                        <h3 class="text-lg font-semibold">3️⃣ Parents & Guardian Information</h3>
+                        <div class="grid grid-cols-2 gap-4 mt-3">
+                            <div>
+                                <label class="font-medium">Father's Name *</label>
+                                <input type="text" class="form-control" placeholder="Father's Name">
+                            </div>
+                            <div>
+                                <label class="font-medium">Father's Contact No. *</label>
+                                <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
+                            </div>
+                            <div>
+                                <label class="font-medium">Father's Occupation</label>
+                                <input type="text" class="form-control" placeholder="Occupation">
+                            </div>
+                            <div>
+                                <label class="font-medium">Mother's Name *</label>
+                                <input type="text" class="form-control" placeholder="Mother's Name">
+                            </div>
+                            <div>
+                                <label class="font-medium">Mother's Contact No.</label>
+                                <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
+                            </div>
+                            <div>
+                                <label class="font-medium">Mother's Occupation</label>
+                                <input type="text" class="form-control" placeholder="Occupation">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <script>
+                document.getElementById('admissionForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                
+                    let formData = new FormData(this);
+                
+                    fetch('save_admission.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            alert("Admission record saved successfully!");
+                            this.reset();
+                            document.getElementById('registrationId').value = 'SID' + Math.floor(1000 + Math.random() * 9000);
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+                </script>
+                
+            <script>
+                document.getElementById('orphanStatus').addEventListener('change', function () {
+                    const parentsSection = document.getElementById('parentsSection');
+                    if (this.value === 'Yes') {
+                        parentsSection.style.display = 'none';
+                    } else {
+                        parentsSection.style.display = 'block';
+                    }
+                });
+
+                document.getElementById('admissionForm').addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    // Auto-generate Registration ID
+                    document.getElementById('registrationId').value = 'SID' + Math.floor(1000 + Math.random() * 9000);
+
+                    alert('Form Submitted Successfully!');
+                });
+            </script>
+             <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
+
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
+
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+    <section class="w-full max-w-md p-8 bg-white bg-opacity-20 backdrop-blur-lg rounded-lg shadow-xl border border-gray-300">
+        <h3 class="text-3xl font-bold text-center text-white">Welcome Back!</h3>
+        <p class="text-center text-gray-200">Please login to your account</p>
+
+        <form class="mt-6" id="loginForm">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-200">User Name</label>
+                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white bg-opacity-30 text-white placeholder-gray-300" placeholder="Username" name="username" type="text" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-200">Password</label>
+                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white bg-opacity-30 text-white placeholder-gray-300" placeholder="Password" name="password" type="password" required>
+            </div>
+            <div class="flex items-center justify-between mb-4">
+                <label class="flex items-center text-sm text-gray-200">
+                    <input type="checkbox" class="mr-2"> Remember Me
+                </label>
+                <a href="#" class="text-sm text-purple-300 hover:underline">Forgot Password?</a>
+            </div>
+            <button type="submit" class="w-full py-3 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition duration-300">Sign In</button>
+        </form>
+
+        <nav class="mt-6 flex flex-wrap gap-2 justify-center">
+            <button type="button" id="admin" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Admin</button>
+            <button type="button" id="teacher" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Teacher</button>
+            <button type="button" id="student" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Student</button>
+            <button type="button" id="parent" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Parent</button>
+            <button type="button" id="accountant" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Accountant</button>
+            <button type="button" id="librarian" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Librarian</button>
+            <button type="button" id="recep" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Receptionist</button>
+        </nav>
+    </section>
+
+    <script>
+        // Auto-fill username and password on role button click
+        document.querySelectorAll("nav button").forEach(button => {
+            button.addEventListener("click", () => {
+                document.querySelector("input[name=username]").value = button.id;
+                document.querySelector("input[name=password]").value = "123456";
+            });
+        });
+
+        // Handle form submission
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+            window.location.href = "dashboard.html"; // Redirect to dashboard
+        });
+    </script>
+</body>
+
+</html>
