@@ -37,8 +37,49 @@
             <!-- Sidebar Navigation -->
             <ul class="space-y-2">
                 <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Dashboard</a></li>
-                <li><a href="teacher.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Teacher</a></li>
+              
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
 
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Teacher</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="new-teacher.html" class="block py-2 hover:bg-gray-700"> Add New Teacher</a></li>
+                        <li><a href="teacher.html" class="block py-2 hover:bg-gray-700"> All Teachers</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Teachers</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+                        
+                            <!-- Tooltip -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br> 
+                                premium Version only.
+                                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45"></div>
+                            </div>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Appointment Letter</a><i class="fas fa-lock ml-auto text-red-300"></i></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Staff ID Card</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+                        
+                            <!-- Tooltip -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br> 
+                                premium Version only.
+                                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45"></div>
+                            </div>
+                        </li>                        
+                    </ul>
+                </li>
                 <!-- Students Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
@@ -49,31 +90,77 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Admissions</a></li>
+                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Add Student</a></li>
                         <li><a href="students.html" class="block py-2 hover:bg-gray-700"> All Students</a></li>
-                        <li class="text-gray-400 flex items-center py-2">
-                            <a href="#">
-                                <span> Manage Families</span>
-                                <i class="fas fa-lock ml-auto text-red-300"></i>
+                        <li><a href="families.html" class="block py-2 hover:bg-gray-700"> Manage Families</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
                             </a>
+                        
+                            <!-- Tooltip -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br> 
+                                premium Version only.
+                                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45"></div>
+                            </div>
                         </li>
-                        <li class="text-gray-400 flex items-center py-2">
-                            <a href="#"><span>⚖ Active / Inactive</span>
-                                <i class="fas fa-lock ml-auto text-red-300"></i>
+                        <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> Admission Letter</a></li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Students ID Cards</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
                             </a>
+                        
+                            <!-- Tooltip -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br> 
+                                premium Version only.
+                                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45"></div>
+                            </div>
                         </li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Admission Letter</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Print Basic List</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Login</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Promote Students</a></li>
+                        <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> Promote Students</a></li>
                     </ul>
                 </li>
 
 
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Parent</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Accountant</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Librarian</a></li>
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Parent</a></li>
+                <!-- Accounts Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Accounts</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="account.html" class="block py-2 hover:bg-gray-700"> Account Details</a></li>
+                        <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> Pay Fees</a></li>
+                        <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> Invoices</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Global Payment</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+                        
+                            <!-- Tooltip -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br> 
+                                premium Version only.
+                                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45"></div>
+                            </div>
+                        </li>  
+                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> Expense</a></li>
+                        <li><a href="income.html" class="block py-2 hover:bg-gray-700">Income</a></li>
+                        <li><a href="statement.html" class="block py-2 hover:bg-gray-700">Account Statement</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Library</a></li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Receptionist</a></li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Exam</a></li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mark</a></li>
