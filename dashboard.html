@@ -358,9 +358,40 @@
                         </li>
                     </ul>
                 </li>
+
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Asset Management</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Inventory</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Leave Application</a></li>
+                <!-- Inventory Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Inventory</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Caategory</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Product</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Supplier</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Purchase</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Sale</a></li>
+                    </ul>
+                </li>
+
+                <!----Inventory Section with Standalone Style------->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Leave Application</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="leave.html" class="block py-2 hover:bg-gray-700">Apply for Leave</a></li>
+                        <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> Applications</a></li>
+                    </ul>
+                </li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Gmeet Live Class</a></li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Transport</a></li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Hostel</a></li>
