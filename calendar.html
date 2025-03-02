@@ -186,12 +186,13 @@
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
             </ul>
         </nav>
+
         <!-- Main Content -->
         <div class="flex-grow">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📊 Dashboard</span>
+                    <span class="navbar-brand">📅 Academic Calendar</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -199,48 +200,125 @@
                     </div>
                 </div>
             </nav>
-            <div>
-                <div class="container mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4><i class="bi bi-people"></i> Parents</h4>
-                        <a href="#" class="btn btn-primary">+ Add a Parent</a>
-                    </div>
-                    <table id="parentsTable" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Ward</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Sample data -->
-                            <tr>
-                                <td>1</td>
-                                <td><img src="avatar.png" class="rounded-circle" width="40"></td>
-                                <td>Lewis Rowley</td>
-                                <td>parent1@example.com</td>
-                                <td>+233203087562</td>
-                                <td>Eric</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">✔</button>
-                                    <button class="btn btn-warning btn-sm">✏</button>
-                                    <button class="btn btn-danger btn-sm">🗑</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-4 mt-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800"></h2>
+                    
+                    <!-- Year Selector -->
+                    <select id="yearSelector" class="p-2 border rounded-md">
+                        <script>
+                            const yearSelector = document.getElementById("yearSelector");
+                            const currentYear = new Date().getFullYear();
+                            for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+                                document.write(`<option value="${i}" ${i === currentYear ? 'selected' : ''}>${i}</option>`);
+                            }
+                        </script>
+                    </select>
                 </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#parentsTable').DataTable();
-                    });
-                </script>
+        
+                <!-- View Mode Buttons -->
+                <div class="flex space-x-4 border-b pb-2 mb-4">
+                    <button onclick="showView('day')" class="tab-btn text-blue-500 border-b-2 border-blue-500 px-4 py-2 font-semibold">Day</button>
+                    <button onclick="showView('week')" class="tab-btn text-gray-500 hover:text-blue-500 px-4 py-2">Week</button>
+                    <button onclick="showView('month')" class="tab-btn text-gray-500 hover:text-blue-500 px-4 py-2">Month</button>
+                </div>
+        
+                <!-- Day View -->
+                <div id="dayView" class="view hidden">
+                    <h3 class="text-lg font-bold text-gray-700 mb-3">Today's Schedule</h3>
+                    <div class="p-4 bg-blue-100 rounded-md text-center">
+                        <p class="text-gray-700 font-semibold">No Events</p>
+                    </div>
+                </div>
+        
+                <!-- Week View -->
+                <div id="weekView" class="view hidden">
+                    <h3 class="text-lg font-bold text-gray-700 mb-3">This Week's Events</h3>
+                    <div class="grid grid-cols-7 gap-4">
+                        <script>
+                            const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                            weekDays.forEach(day => {
+                                document.write(`
+                                    <div class="bg-blue-100 p-4 rounded-md text-center cursor-pointer hover:bg-blue-200 transition" onclick="editEvent('${day}')">
+                                        <p class="font-bold text-gray-700">${day}</p>
+                                        <p id="event-${day}" class="text-sm text-gray-600 mt-1">No Event</p>
+                                    </div>
+                                `);
+                            });
+                        </script>
+                    </div>
+                </div>
+        
+                <!-- Month View -->
+                <div id="monthView" class="view">
+                    <h3 class="text-lg font-bold text-gray-700 mb-3">Monthly Calendar</h3>
+                    <div class="grid grid-cols-7 gap-2 text-center font-semibold text-gray-700 mb-2">
+                        <div>Mon</div> <div>Tue</div> <div>Wed</div> <div>Thu</div> <div>Fri</div> <div>Sat</div> <div>Sun</div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-4">
+                        <script>
+                            for (let i = 1; i <= 30; i++) {
+                                document.write(`
+                                    <div class="bg-blue-100 p-4 rounded-md text-center cursor-pointer hover:bg-blue-200 transition" onclick="editEvent(${i})">
+                                        <p class="font-bold text-gray-700">${i}</p>
+                                        <p id="event-${i}" class="text-sm text-gray-600 mt-1">No Event</p>
+                                        <button class="absolute top-2 right-2 text-blue-500">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                `);
+                            }
+                        </script>
+                    </div>
+                </div>
             </div>
+        
+            <!-- Edit Modal -->
+            <div id="modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white p-6 rounded-lg shadow-md w-96">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Edit Event</h3>
+                    <input type="text" id="eventInput" class="w-full p-2 border rounded-md focus:ring focus:ring-blue-300" placeholder="Enter event details...">
+                    <div class="flex justify-end space-x-2 mt-4">
+                        <button onclick="closeModal()" class="bg-gray-400 text-white px-4 py-2 rounded-md">Cancel</button>
+                        <button onclick="saveEvent()" class="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- JavaScript -->
+            <script>
+                let selectedDay = null;
+        
+                function editEvent(day) {
+                    selectedDay = day;
+                    document.getElementById("modal").classList.remove("hidden");
+                    document.getElementById("eventInput").value = document.getElementById(`event-${day}`)?.innerText || "";
+                }
+        
+                function saveEvent() {
+                    const eventText = document.getElementById("eventInput").value;
+                    if (selectedDay) {
+                        document.getElementById(`event-${selectedDay}`).innerText = eventText || "No Event";
+                    }
+                    closeModal();
+                }
+        
+                function closeModal() {
+                    document.getElementById("modal").classList.add("hidden");
+                }
+        
+                function showView(view) {
+                    document.querySelectorAll('.view').forEach(el => el.classList.add('hidden'));
+                    document.getElementById(view + 'View').classList.remove('hidden');
+                    
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('text-blue-500', 'border-b-2', 'border-blue-500');
+                        btn.classList.add('text-gray-500');
+                    });
+        
+                    document.querySelector(`button[onclick="showView('${view}')"]`).classList.add('text-blue-500', 'border-b-2', 'border-blue-500');
+                }
+            </script>
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();

@@ -186,12 +186,13 @@
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
             </ul>
         </nav>
+
         <!-- Main Content -->
         <div class="flex-grow">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📊 Dashboard</span>
+                    <span class="navbar-brand">📅 Notice</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -199,48 +200,84 @@
                     </div>
                 </div>
             </nav>
-            <div>
-                <div class="container mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4><i class="bi bi-people"></i> Parents</h4>
-                        <a href="#" class="btn btn-primary">+ Add a Parent</a>
-                    </div>
-                    <table id="parentsTable" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Ward</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Sample data -->
-                            <tr>
-                                <td>1</td>
-                                <td><img src="avatar.png" class="rounded-circle" width="40"></td>
-                                <td>Lewis Rowley</td>
-                                <td>parent1@example.com</td>
-                                <td>+233203087562</td>
-                                <td>Eric</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">✔</button>
-                                    <button class="btn btn-warning btn-sm">✏</button>
-                                    <button class="btn btn-danger btn-sm">🗑</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#parentsTable').DataTable();
-                    });
-                </script>
+
+    <div class="container mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b pb-3">
+            <h4 class="text-xl font-semibold text-gray-700 flex items-center">
+                
+            </h4>
+            <a href="#" class="text-blue-500 hover:underline flex items-center">
+                ➕ Add a notice
+            </a>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4 flex space-x-2">
+            <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Copy</button>
+            <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Excel</button>
+            <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">CSV</button>
+            <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">PDF</button>
+        </div>
+
+        <!-- Notice List -->
+        <div class="mt-4">
+            <div class="grid grid-cols-5 font-semibold text-gray-600 border-b pb-2">
+                <span>#</span>
+                <span>Title</span>
+                <span>Date</span>
+                <span>Notice</span>
+                <span>Action</span>
             </div>
+
+            <!-- Notice Row -->
+            <div class="grid grid-cols-5 items-center py-2 border-b">
+                <span>1</span>
+                <span>Farewell Ceremony</span>
+                <span>03 Jun 2025</span>
+                <span class="truncate">The most of the words adopted...</span>
+                <span class="space-x-1">
+                    <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"><i class="bi bi-eye-fill"></i></button>
+                    <button class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"><i class="bi bi-pencil"></i></button>
+                    <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"><i class="bi bi-trash3"></i></button>
+                </span>
+            </div>
+
+            <div class="grid grid-cols-5 items-center py-2 border-b">
+                <span>2</span>
+                <span>Second Semester Exam</span>
+                <span>13 Aug 2025</span>
+                <span class="truncate">Dedicated athlete, an amateur...</span>
+                <span class="space-x-1">
+                    <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"><i class="bi bi-eye-fill"></i></button>
+                    <button class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"><i class="bi bi-pencil"></i></button>
+                    <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"><i class="bi bi-trash3"></i></button>
+                </span>
+            </div>
+
+            <div class="grid grid-cols-5 items-center py-2 border-b">
+                <span>3</span>
+                <span>Annual Sports Day</span>
+                <span>18 Mar 2025</span>
+                <span class="truncate">You surely are familiar with...</span>
+                <span class="space-x-1">
+                    <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"><i class="bi bi-eye-fill"></i></button>
+                    <button class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"><i class="bi bi-pencil"></i></button>
+                    <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"><i class="bi bi-trash3"></i></button>
+                </span>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-4 text-gray-600">
+            <span>Showing 1 to 3 of 3 entries</span>
+            <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-gray-300 text-gray-600 rounded hover:bg-gray-400">Previous</button>
+                <button class="px-3 py-1 bg-blue-500 text-white rounded">1</button>
+                <button class="px-3 py-1 bg-gray-300 text-gray-600 rounded hover:bg-gray-400">Next</button>
+            </div>
+        </div>
+    </div>
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();

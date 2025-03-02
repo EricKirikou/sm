@@ -186,12 +186,13 @@
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
             </ul>
         </nav>
+
         <!-- Main Content -->
         <div class="flex-grow">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📊 Dashboard</span>
+                    <span class="navbar-brand"><i class="bi bi-calendar-week"></i> Timetable</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -199,48 +200,132 @@
                     </div>
                 </div>
             </nav>
-            <div>
-                <div class="container mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4><i class="bi bi-people"></i> Parents</h4>
-                        <a href="#" class="btn btn-primary">+ Add a Parent</a>
+              <!-- Header -->
+    <div class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
+        <h2 class="text-lg font-semibold"></h2>
+        <div>
+            <a href="#" class="text-blue-400 hover:text-blue-300 text-sm"><i class="bi bi-house-door"></i> Dashboard</a> / 
+            <span class="text-gray-400">Timetable</span>
+        </div>
+    </div>
+
+    <!-- Add Routine Button -->
+    <div class="p-6">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">
+            <i class="bi bi-plus-circle"></i> Add a Timetable
+        </button>
+    </div>
+
+    <!-- Section Tabs -->
+      <!-- Class Tabs -->
+      <div class="bg-white shadow-md rounded-md mx-6 p-4">
+        <div class="flex space-x-4 border-b pb-2">
+            <button class="class-tab active text-blue-500 border-b-2 border-blue-500 px-4 py-2 font-semibold" data-class="1">Class 1</button>
+            <button class="class-tab text-gray-500 hover:text-blue-500 px-4 py-2" data-class="2">Class 2</button>
+            <button class="class-tab text-gray-500 hover:text-blue-500 px-4 py-2" data-class="3">Class 3</button>
+            <button class="class-tab text-gray-500 hover:text-blue-500 px-4 py-2" data-class="4">Class 4</button>
+            <button class="class-tab text-gray-500 hover:text-blue-500 px-4 py-2" data-class="5">Class 5</button>
+            <button class="class-tab text-gray-500 hover:text-blue-500 px-4 py-2" data-class="6">Class 6</button>
+        </div>
+    </div>
+
+    <!-- Routine Days -->
+    <div class="overflow-x-auto p-6">
+        <div class="grid grid-cols-7 bg-gray-200 p-4 font-semibold text-gray-700">
+            <button class="day-tab text-blue-500" data-day="monday">MONDAY</button>
+            <button class="day-tab text-gray-700" data-day="tuesday">TUESDAY</button>
+            <button class="day-tab text-gray-700" data-day="wednesday">WEDNESDAY</button>
+            <button class="day-tab text-gray-700" data-day="thursday">THURSDAY</button>
+            <button class="day-tab text-gray-700" data-day="friday">FRIDAY</button>
+            <button class="day-tab text-gray-700" data-day="saturday">SATURDAY</button>
+            <button class="day-tab text-gray-700" data-day="sunday">SUNDAY</button>
+        </div>
+
+        <!-- Routine Display -->
+        <div id="routine-container" class="grid grid-cols-7 gap-4 p-4">
+            <!-- Routine will be dynamically updated here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample Routine Data for different classes & days
+        const routineData = {
+            "1": { // Class 1
+                "monday": [
+                    { time: "9:00 AM - 10:00 AM", subject: "Math", room: "101", instructor: "Mr. Smith" },
+                    { time: "10:15 AM - 11:15 AM", subject: "English", room: "102", instructor: "Ms. Johnson" }
+                ],
+                "tuesday": [
+                    { time: "9:00 AM - 10:00 AM", subject: "Science", room: "103", instructor: "Dr. Brown" },
+                    { time: "10:15 AM - 11:15 AM", subject: "History", room: "104", instructor: "Ms. Clarke" }
+                ]
+            },
+            "2": { // Class 2
+                "monday": [
+                    { time: "9:00 AM - 10:00 AM", subject: "Physics", room: "105", instructor: "Dr. Adams" },
+                    { time: "10:15 AM - 11:15 AM", subject: "Chemistry", room: "106", instructor: "Ms. Carter" }
+                ],
+                "tuesday": [
+                    { time: "9:00 AM - 10:00 AM", subject: "Math", room: "107", instructor: "Mr. James" },
+                    { time: "10:15 AM - 11:15 AM", subject: "Computer Science", room: "108", instructor: "Ms. White" }
+                ]
+            }
+        };
+
+        let currentClass = "1";
+        let currentDay = "monday";
+
+        // Function to update the displayed routine
+        function updateRoutine() {
+            const container = document.getElementById("routine-container");
+            container.innerHTML = "";
+
+            const routines = routineData[currentClass][currentDay] || [];
+            if (routines.length === 0) {
+                container.innerHTML = `<div class="bg-gray-300 p-4 rounded-md flex items-center justify-center text-gray-600 col-span-7">No classes scheduled</div>`;
+                return;
+            }
+
+            routines.forEach(item => {
+                const div = document.createElement("div");
+                div.classList = "bg-white p-4 rounded-md shadow-md";
+                div.innerHTML = `
+                    <p class="text-gray-700 font-semibold">${item.time}</p>
+                    <p class="text-sm text-gray-500">${item.subject} - Room ${item.room}</p>
+                    <p class="text-sm text-gray-600">Instructor: ${item.instructor}</p>
+                    <div class="flex space-x-2 mt-2">
+                        <button class="bg-yellow-400 text-white px-2 py-1 rounded-md"><i class="bi bi-pencil-square"></i></button>
+                        <button class="bg-red-500 text-white px-2 py-1 rounded-md"><i class="bi bi-trash"></i></button>
                     </div>
-                    <table id="parentsTable" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Ward</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Sample data -->
-                            <tr>
-                                <td>1</td>
-                                <td><img src="avatar.png" class="rounded-circle" width="40"></td>
-                                <td>Lewis Rowley</td>
-                                <td>parent1@example.com</td>
-                                <td>+233203087562</td>
-                                <td>Eric</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">✔</button>
-                                    <button class="btn btn-warning btn-sm">✏</button>
-                                    <button class="btn btn-danger btn-sm">🗑</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#parentsTable').DataTable();
-                    });
-                </script>
-            </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Event Listeners for Class Tabs
+        document.querySelectorAll(".class-tab").forEach(button => {
+            button.addEventListener("click", function () {
+                document.querySelector(".class-tab.active")?.classList.remove("active", "text-blue-500", "border-b-2", "border-blue-500");
+                this.classList.add("active", "text-blue-500", "border-b-2", "border-blue-500");
+                currentClass = this.getAttribute("data-class");
+                updateRoutine();
+            });
+        });
+
+        // Event Listeners for Day Tabs
+        document.querySelectorAll(".day-tab").forEach(button => {
+            button.addEventListener("click", function () {
+                document.querySelector(".day-tab.text-blue-500")?.classList.remove("text-blue-500");
+                this.classList.add("text-blue-500");
+                currentDay = this.getAttribute("data-day");
+                updateRoutine();
+            });
+        });
+
+        // Initial Routine Load
+        updateRoutine();
+    </script>
+
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();

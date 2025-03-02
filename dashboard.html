@@ -100,7 +100,7 @@
 
             <!-- Sidebar Navigation -->
             <ul class="space-y-2">
-                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Dashboard</a>
+                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> <i class="bi bi-speedometer2"></i>     Dashboard</a>
                 </li>
 
                 <!-- Teacher Section with Standalone Style -->
@@ -108,7 +108,7 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold">Teacher</span>
+                        <span class="font-semibold"><i class="bi bi-person-workspace"></i>     Teacher</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -157,7 +157,7 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold">Students</span>
+                        <span class="font-semibold"><i class="bi bi-people-fill"></i>     Students</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -207,14 +207,14 @@
                 </li>
 
 
-                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Parent</a></li>
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-person-hearts"></i>      Parent</a></li>
 
                 <!-- Accounts Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold">Accounts</span>
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i>      Accounts</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -238,7 +238,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> Expense</a></li>
+                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> Expenditure</a></li>
+                        <li><a href="petty-cash.html" class="block py-2 hover:bg-gray-700"> Petty Cash</a></li>
                         <li><a href="income.html" class="block py-2 hover:bg-gray-700">Income</a></li>
                         <li><a href="statement.html" class="block py-2 hover:bg-gray-700">Account Statement</a></li>
                     </ul>
@@ -249,7 +250,7 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold">Library</span>
+                        <span class="font-semibold"><i class="bi bi-journal-text"></i>      Library</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -276,13 +277,13 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Receptionist</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-pc-display"></i>      Receptionist</a></li>
                 <!-- Exams Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold">Exams</span>
+                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i>      Exams</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -309,8 +310,8 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Message</a></li>
-                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Media</a></li>
+                <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-chat-dots-fill"></i>     Message</a></li>
+                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-collection-play-fill"></i>      Media</a></li>
                 <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mail / SMS</a>
                 </li>
                 <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
@@ -392,14 +393,96 @@
                         <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> Applications</a></li>
                     </ul>
                 </li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Gmeet Live Class</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Transport</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Hostel</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Announcement</a></li>
+                <li><a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Gmeet Live Class</a>
+                </li>
+                <li><a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Transport</a>
+                </li>
+                <li><a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Hostel</a></li>
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Announcement</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="notice.html" class="block py-2 hover:bg-gray-700"> Notice</a></li>
+                        <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"> Timetable</a></li>
+                        <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> Academic Calendar</a></li>
+                    </ul>
+                </li>
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Report</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Online Admission</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Visitor Info</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="mr-2">Online Admission</span>
+                        <i class="bi bi-lock ml-auto text-red-300"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Visitor Info</a>
+                </li>
+                <!-- Settings Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Settings</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Institution Profile</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Fees Particulars</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Fees Structure</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Discount Type</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="" class="block py-2 hover:bg-gray-700"> Accounts For Fees Invoice</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Rules and Regulations</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Marks Grading</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Theme and Language</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Account Settings</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Audit Trail</a></li>
+                        <li><a href="index.html" class="block py-2 hover:bg-gray-700"> Log Out</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
 

@@ -186,12 +186,13 @@
                 <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
             </ul>
         </nav>
+
         <!-- Main Content -->
         <div class="flex-grow">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📊 Dashboard</span>
+                    <span class="navbar-brand">🎥 GMeet Live Class</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -199,48 +200,83 @@
                     </div>
                 </div>
             </nav>
-            <div>
-                <div class="container mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4><i class="bi bi-people"></i> Parents</h4>
-                        <a href="#" class="btn btn-primary">+ Add a Parent</a>
+            <div class="flex flex-col items-center bg-gray-100 p-6 min-h-screen">
+                <!-- Host Meeting Button -->
+                <button class="bg-gray-800 text-white px-6 py-2 rounded-lg flex items-center gap-2">
+                    <span><i class="bi bi-camera-video"></i></span> Host Meeting
+                </button>
+            
+                <!-- Meeting Form -->
+               <div class="flex ">
+                <div class="bg-white shadow-lg rounded-lg p-6 mt-4 w-full max-w-lg mr-6 pr-8">
+                    <label class="block font-semibold text-gray-700">Meeting Title*</label>
+                    <input type="text" placeholder="Meeting title"
+                        class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-gray-300">
+            
+                    <label class="block font-semibold text-gray-700 mt-4">Meeting ID*</label>
+                    <input type="text" value="ESK72335gI9z7V"
+                        class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-gray-300">
+            
+                    <label class="block font-semibold text-gray-700 mt-4">Meeting With*</label>
+                    <select class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-gray-300">
+                        <option>All Students</option>
+                    </select>
+            
+                    <div class="flex items-center mt-4">
+                        <input type="checkbox" id="schedule" class="mr-2">
+                        <label for="schedule" class="font-semibold">I want to schedule this meeting.</label>
                     </div>
-                    <table id="parentsTable" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Ward</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Sample data -->
-                            <tr>
-                                <td>1</td>
-                                <td><img src="avatar.png" class="rounded-circle" width="40"></td>
-                                <td>Lewis Rowley</td>
-                                <td>parent1@example.com</td>
-                                <td>+233203087562</td>
-                                <td>Eric</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">✔</button>
-                                    <button class="btn btn-warning btn-sm">✏</button>
-                                    <button class="btn btn-danger btn-sm">🗑</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            
+                    <textarea placeholder="Write your message here, if any..."
+                        class="w-full border rounded-lg p-2 mt-4 focus:ring focus:ring-blue-300"></textarea>
+            
+                    <button class="bg-gray-500 text-white px-6 py-2 rounded-lg mt-4 w-full">
+                        + Create & Join
+                    </button>
                 </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#parentsTable').DataTable();
-                    });
-                </script>
+            
+                <!-- Meeting List Section -->
+                <div class="mt-6 w-full max-w-lg">
+                    <div class="bg-gray-600 text-white rounded-lg p-4 text-center">
+                        <h1 id="current-time" class="text-xl font-bold"></h1>
+                        <p id="current-date"></p>
+                        <button class="bg-gray-400 text-white px-4 py-1 rounded mt-2">Go Unlimited with SM-Edu Premuim</button>
+                    </div>
+            
+                    <script>
+                        function updateDateTime() {
+                            const now = new Date();
+                            const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                            const date = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+                            document.getElementById('current-time').textContent = time;
+                            document.getElementById('current-date').textContent = date;
+                        }
+            
+                        // Update time every second
+                        setInterval(updateDateTime, 1000);
+                        updateDateTime(); // Initialize immediately
+                    </script>
+            
+                    <!-- Meeting Filters -->
+                    <div class="flex flex-wrap justify-center gap-2 mt-4">
+                        <button class="bg-gray-600 text-white px-4 py-1 rounded">All Meetings</button>
+                        <button class="bg-gray-200 px-4 py-1 rounded">Today</button>
+                        <button class="bg-gray-200 px-4 py-1 rounded">Tomorrow</button>
+                        <button class="bg-gray-200 px-4 py-1 rounded">Self Hosted</button>
+                        <button class="bg-gray-200 px-4 py-1 rounded">Invitations</button>
+                    </div>
+            
+                    <!-- No Meetings Placeholder -->
+                    <div class="flex flex-col items-center mt-6 text-gray-500">
+                        <img src="meeting-placeholder.png" alt="No Meetings" class="w-40">
+                        <p>No meeting found.</p>
+                    </div>
+                </div>
+               </div>
             </div>
+            
+            
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();
