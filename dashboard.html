@@ -100,7 +100,8 @@
 
             <!-- Sidebar Navigation -->
             <ul class="space-y-2">
-                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> <i class="bi bi-speedometer2"></i>     Dashboard</a>
+                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> <i
+                            class="bi bi-speedometer2"></i> Dashboard</a>
                 </li>
 
                 <!-- Teacher Section with Standalone Style -->
@@ -108,7 +109,7 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold"><i class="bi bi-person-workspace"></i>     Employees</span>
+                        <span class="font-semibold"><i class="bi bi-person-workspace"></i> Employees</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -132,8 +133,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"> Appointment Letter</a><i
-                                class="fas fa-lock ml-auto text-red-300"></i></li>
+                        <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"> Appointment
+                                Letter</a><i class="fas fa-lock ml-auto text-red-300"></i></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
                                 <span class="mr-2">Staff ID Card</span>
@@ -157,7 +158,7 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold"><i class="bi bi-people-fill"></i>     Students</span>
+                        <span class="font-semibold"><i class="bi bi-people-fill"></i> Students</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -206,14 +207,15 @@
                 </li>
 
 
-                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-person-hearts"></i>      Parent</a></li>
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-hearts"></i> Parent</a></li>
 
                 <!-- Accounts Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold"><i class="bi bi-cash-coin"></i>      Accounts</span>
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> Accounts</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -249,7 +251,7 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold"><i class="bi bi-journal-text"></i>      Library</span>
+                        <span class="font-semibold"><i class="bi bi-journal-text"></i> Library</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
@@ -275,21 +277,31 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-pc-display"></i> Requisition </a></li>
-                <!-- Exams Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i>      Exams</span>
+                        <span class="font-semibold"><i class="bi bi-pc-display"></i>  Requisition</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Create New Exam</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Edit or Delete</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Add / Update Exams Marks</a></li>
+                        <li><a href="requistion.html" class="block py-2 hover:bg-gray-700"> Requisition Form</a></li>
+                        <li><a href="review.html" class="block py-2 hover:bg-gray-700"> View Requisitions</a></li>
+                        <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"> Respond Requisitions</a></li>
+                    </ul>
+                </li> <!-- Exams Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i> Exams</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Master List</a></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
                                 <span class="mr-2">Blank Award List</span>
@@ -308,8 +320,10 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-chat-dots-fill"></i>     Message</a></li>
-                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-collection-play-fill"></i>      Media</a></li>
+                <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-chat-dots-fill"></i> Message</a></li>
+                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-collection-play-fill"></i> Media</a></li>
                 <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mail / SMS</a>
                 </li>
                 <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
