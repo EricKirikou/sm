@@ -246,7 +246,7 @@
                     </ul>
                 </li>
 
-                <!-- Library Section with Standalone Style -->
+                <!-- Requisition Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
 
@@ -300,7 +300,7 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
+                        <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Master List</a></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
@@ -318,6 +318,20 @@
                                 </div>
                             </div>
                         </li>
+                    </ul>
+                </li>
+                </li> <!-- Attendance Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-clock-history"></i>  Attendance</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Staff Attendance</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Students Attendance</a></li>
                     </ul>
                 </li>
                 <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i

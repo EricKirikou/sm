@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> School Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
+            <!-- Sidebar Header -->
+            <h4 class="text-2xl font-bold mb-4">📚 SM-Edu</h4>
+
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center">
+                <img src="profile.png" class="rounded-full w-16 h-16 border-2 border-gray-700" alt="Admin">
+                <div class="ml-4">
+                    <p class="text-lg font-semibold">Mr. Admin</p>
+                    <p class="text-gray-400 text-sm">Admin</p>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <ul class="space-y-2">
+                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Dashboard</a>
+                </li>
+
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Teacher</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="new-teacher.html" class="block py-2 hover:bg-gray-700"> Add New Teacher</a></li>
+                        <li><a href="teacher.html" class="block py-2 hover:bg-gray-700"> All Teachers</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Teachers</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Appointment Letter</a><i
+                                class="fas fa-lock ml-auto text-red-300"></i></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Staff ID Card</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Students Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Students</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Add Student</a></li>
+                        <li><a href="students.html" class="block py-2 hover:bg-gray-700"> All Students</a></li>
+                        <li><a href="families.html" class="block py-2 hover:bg-gray-700"> Manage Families</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> Admission Letter</a>
+                        </li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Students ID Cards</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Login</a></li>
+                        <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> Promote Students</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Parent</a></li>
+                <!-- Accounts Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">Accounts</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="account.html" class="block py-2 hover:bg-gray-700"> Account Details</a></li>
+                        <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> Pay Fees</a></li>
+                        <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> Invoices</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Global Payment</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> Expense</a></li>
+                        <li><a href="income.html" class="block py-2 hover:bg-gray-700">Income</a></li>
+                        <li><a href="statement.html" class="block py-2 hover:bg-gray-700">Account Statement</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Library</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Receptionist</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Exam</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mark</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Message</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Media</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Mail / SMS</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Online Exam</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Payroll</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Asset Management</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Inventory</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Leave Application</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Gmeet Live Class</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Transport</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Hostel</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Announcement</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Report</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Online Admission</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Visitor Info</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"> Settings</a></li>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <div class="flex-grow">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+                <div class="container-fluid">
+                    <span class="navbar-brand">📄 Student Report Card</span>
+                    <div>
+                        <span class="me-3">🔔</span>
+                        <span class="me-3">⚙️</span>
+                        <span>🌍</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 mt-12">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-6">Generate Report Card</h2>
+                
+                <!-- Class Selection -->
+                <label class="block text-gray-700">Select Class:</label>
+                <select id="classSelect" class="w-full p-2 border rounded-md mb-4" onchange="loadStudents()">
+                    <option value="">-- Select Class --</option>
+                    <option value="Class A">Class A</option>
+                    <option value="Class B">Class B</option>
+                </select>
+                
+                <!-- Student Selection -->
+                <label class="block text-gray-700">Select Student:</label>
+                <select id="studentSelect" class="w-full p-2 border rounded-md mb-4" onchange="showReportForm()">
+                    <option value="">-- Select Student --</option>
+                </select>
+            </div>
+        
+            <!-- Report Card Form (Hidden Initially) -->
+            <div id="reportForm" class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 mt-6 hidden">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Fill Student Report Card</h2>
+                <table class="w-full bg-white border rounded-lg shadow-md mb-4">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="py-2 px-4 border">Subject</th>
+                            <th class="py-2 px-4 border">Class Score (50%)</th>
+                            <th class="py-2 px-4 border">Exam Score (50%)</th>
+                            <th class="py-2 px-4 border">Total (100%)</th>
+                            <th class="py-2 px-4 border">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subjectsTable">
+                        <tr>
+                            <td class="py-2 px-4 border"><input type="text" class="subject w-full p-2 border rounded-md" placeholder="Subject"></td>
+                            <td class="py-2 px-4 border"><input type="number" class="classScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
+                            <td class="py-2 px-4 border"><input type="number" class="examScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
+                            <td class="py-2 px-4 border text-center totalScore">-</td>
+                            <td class="py-2 px-4 border text-center grade">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+        
+                <button onclick="generateReport()" class="bg-blue-600 text-white px-4 py-2 rounded-md">Generate Report</button>
+            </div>
+        
+            <!-- JavaScript -->
+            <script>
+                function loadStudents() {
+                    let classSelected = document.getElementById("classSelect").value;
+                    let studentSelect = document.getElementById("studentSelect");
+                    studentSelect.innerHTML = '<option value="">-- Select Student --</option>';
+                    
+                    if (classSelected === "Class A") {
+                        studentSelect.innerHTML += '<option value="John Doe">John Doe</option>';
+                        studentSelect.innerHTML += '<option value="Jane Smith">Jane Smith</option>';
+                    } else if (classSelected === "Class B") {
+                        studentSelect.innerHTML += '<option value="Mike Johnson">Mike Johnson</option>';
+                        studentSelect.innerHTML += '<option value="Emily Davis">Emily Davis</option>';
+                    }
+                }
+        
+                function showReportForm() {
+                    let studentSelected = document.getElementById("studentSelect").value;
+                    if (studentSelected) {
+                        document.getElementById("reportForm").classList.remove("hidden");
+                    }
+                }
+        
+                function calculateTotals() {
+                    document.querySelectorAll(".classScore").forEach((input, index) => {
+                        let classScore = parseFloat(input.value) || 0;
+                        let examScore = parseFloat(document.querySelectorAll(".examScore")[index].value) || 0;
+                        let totalScore = classScore + examScore;
+                        
+                        let totalCell = document.querySelectorAll(".totalScore")[index];
+                        let gradeCell = document.querySelectorAll(".grade")[index];
+                        
+                        totalCell.textContent = totalScore;
+                        if (totalScore >= 80) gradeCell.textContent = "A";
+                        else if (totalScore >= 70) gradeCell.textContent = "B";
+                        else if (totalScore >= 60) gradeCell.textContent = "C";
+                        else if (totalScore >= 50) gradeCell.textContent = "D";
+                        else gradeCell.textContent = "F";
+                    });
+                }
+        
+                function generateReport() {
+                    alert("Report Card Generated!");
+                }
+            </script>
+            
+            <!-- Report Card Form (Hidden Initially) -->
+            <div id="reportCardForm" class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">📄 Student Report Card</h2>
+                <p><strong>Name:</strong> <span id="rcName"></span></p>
+                <p><strong>Class:</strong> <span id="rcClass"></span></p>
+            
+                <table class="w-full bg-white border rounded-lg shadow-md mt-4">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="py-2 px-4 border">Subject</th>
+                            <th class="py-2 px-4 border">Class Score</th>
+                            <th class="py-2 px-4 border">Exam Score</th>
+                            <th class="py-2 px-4 border">Total</th>
+                            <th class="py-2 px-4 border">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rcTable"></tbody>
+                </table>
+            
+                <button onclick="printReport()" class="mt-4 bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
+                    <i class="bi bi-printer"></i> Print Report
+                </button>
+            </div>
+            
+            <script>
+                const students = {
+                    "Class 1": ["John Doe", "Jane Smith"],
+                    "Class 2": ["Alice Brown", "Bob White"]
+                };
+            
+                function loadStudents() {
+                    let classSelected = document.getElementById("studentClass").value;
+                    let studentDropdown = document.getElementById("studentList");
+                    studentDropdown.innerHTML = '<option value="">Select Student</option>';
+            
+                    if (students[classSelected]) {
+                        students[classSelected].forEach(student => {
+                            let option = document.createElement("option");
+                            option.value = student;
+                            option.textContent = student;
+                            studentDropdown.appendChild(option);
+                        });
+                    }
+                }
+            
+                function fillStudentDetails() {
+                    let studentName = document.getElementById("studentList").value;
+                    let studentClass = document.getElementById("studentClass").value;
+            
+                    if (studentName) {
+                        document.getElementById("rcName").textContent = studentName;
+                        document.getElementById("rcClass").textContent = studentClass;
+                        document.getElementById("reportCardForm").classList.remove("hidden");
+                    }
+                }
+            
+                function printReport() {
+                    window.print();
+                }
+            </script>
+            
+            <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
+
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
+
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
+</body>
+
+</html>
