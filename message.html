@@ -19,14 +19,31 @@
         body {
             font-family: Arial, sans-serif;
         }
-        .folder-item {
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .folder-item.active {
-            background-color: #0dcaf0;
+        .header {
+            background: #222;
             color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .table-container {
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .action-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-box {
+            float: right;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -201,7 +218,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">💬 Message</span>
+                    <span class="navbar-brand">📩 Mail / SMS</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -209,145 +226,100 @@
                     </div>
                 </div>
             </nav>
-          
-<div class="container-fluid p-4">
-    <div class="bg-white p-3 shadow-sm rounded">
-
-        <!-- Top Row -->
-        <div class="row">
-            <!-- Left Sidebar -->
-            <div class="col-md-3">
-                <button class="btn btn-info w-100 mb-3">Compose</button>
-                <div class="bg-dark text-white p-3 rounded">
-                    <h6 class="p-4">Folders</h6>
-                    <ul class="list-unstyled">
-                        <li class="folder-item active" data-folder="conversation"><i class="bi bi-chat-left-text p-2"></i> Conversation</li>
-                        <li class="folder-item" data-folder="drafts"><i class="bi bi-file-earmark p-2"></i> Drafts</li>
-                        <li class="folder-item" data-folder="sent"><i class="bi bi-envelope p-2"></i> Sent</li>
-                        <li class="folder-item" data-folder="trash"><i class="bi bi-trash p-2"></i> Trash</li>
-                    </ul>
-                </div>
+            <div class="header">
+                <h5></h5>
+                <a href="#" style="color: white; text-decoration: none;">📂 Dashboard / <span style="color: lightgreen;">Mail / SMS</span></a>
             </div>
-
-            <!-- Right Section -->
-            <div class="col-md-9">
-                <div class="bg-dark text-white p-3 rounded d-flex justify-content-between">
-                    <span id="folder-title">Conversation</span>
+        
+            <div class="container">
+                <div class="mt-3">
+                    <a href="#" class="btn btn-outline-primary">+ Add a mail / sms</a>
                 </div>
-
-                <!-- Action Buttons -->
-                <div class="d-flex mt-3">
-                    <button class="btn btn-primary me-2"><i class="bi bi-check-square"></i></button>
-                    <button class="btn btn-danger me-2"><i class="bi bi-trash"></i></button>
-                    <button class="btn btn-info"><i class="bi bi-arrow-repeat"></i></button>
-                </div>
-
-                <!-- Table -->
-                <div class="table-responsive mt-3">
-                    <table class="table table-striped">
+        
+                <div class="table-container mt-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-light">Copy</button>
+                            <button class="btn btn-light">Excel</button>
+                            <button class="btn btn-light">CSV</button>
+                            <button class="btn btn-light">PDF</button>
+                        </div>
+                        <input type="text" class="form-control w-25 search-box" placeholder="Search">
+                    </div>
+        
+                    <table class="table table-striped mt-3">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
-                                <th>Status</th>
-                                <th>Name</th>
-                                <th>Subject</th>
-                                <th>Attach</th>
-                                <th>Time</th>
-                                <th>Reply</th>
+                                <th>#</th>
+                                <th>Role</th>
+                                <th>Users</th>
+                                <th>Type</th>
+                                <th>Date and Time</th>
+                                <th>Message</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="message-table">
-                            <!-- Messages will be loaded here dynamically -->
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Parents</td>
+                                <td>George Chapman</td>
+                                <td>Email</td>
+                                <td>07 Jan 2025 09:57:24 am</td>
+                                <td>Our school is going to arrange a Gua..</td>
+                                <td><button class="action-btn">👁</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Student</td>
+                                <td>Ryan Thompson, Kiera Turnbull, Brady..</td>
+                                <td>SMS</td>
+                                <td>07 Jan 2025 09:55:32 am</td>
+                                <td>Dear student in 21st February our cl..</td>
+                                <td><button class="action-btn">👁</button></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Student</td>
+                                <td>Ryan Thompson, Kiera Turnbull, Brady..</td>
+                                <td>SMS</td>
+                                <td>07 Jan 2025 09:54:53 am</td>
+                                <td>Dear student in 21st February our cl..</td>
+                                <td><button class="action-btn">👁</button></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Student</td>
+                                <td>Ryan Thompson, Kiera Turnbull, Brady..</td>
+                                <td>SMS</td>
+                                <td>07 Jan 2025 09:53:12 am</td>
+                                <td>Dear student in 21st February our cl..</td>
+                                <td><button class="action-btn">👁</button></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Teacher</td>
+                                <td>Alisha Henry</td>
+                                <td>Email</td>
+                                <td>06 Jan 2025 05:54:49 am</td>
+                                <td>Our school is going to arrange a Gua..</td>
+                                <td><button class="action-btn">👁</button></td>
+                            </tr>
                         </tbody>
                     </table>
+        
+                    <div class="d-flex justify-content-between">
+                        <p>Showing 1 to 5 of 5 entries</p>
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item disabled"><a class="page-link">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-
-                <!-- Pagination -->
-                <div class="d-flex justify-content-between mt-3">
-                    <span id="entry-count">Showing 1 to 3 of 3 entries</span>
-                    <nav>
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item disabled"><a class="page-link">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
-
             </div>
-        </div>
-
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Sample data for different folders
-    const messages = {
-        conversation: [
-            { name: "Mr. Admin", subject: "Making Fee..", time: "07 Jan 2025 03:36 PM", replies: 0 },
-            { name: "Mr. Admin", subject: "Making que..", time: "07 Jan 2025 03:35 PM", replies: 0 },
-            { name: "Mr. Admin", subject: "Parents...", time: "07 Jan 2025 03:32 PM", replies: 0 }
-        ],
-        drafts: [
-            { name: "Me", subject: "Draft message..", time: "06 Jan 2025 10:00 AM", replies: 0 }
-        ],
-        sent: [
-            { name: "User A", subject: "Meeting update", time: "05 Jan 2025 02:15 PM", replies: 2 },
-            { name: "User B", subject: "Assignment", time: "04 Jan 2025 05:00 PM", replies: 1 }
-        ],
-        trash: [
-            { name: "Spammer", subject: "Win a lottery!", time: "02 Jan 2025 09:00 AM", replies: 0 }
-        ]
-    };
-
-    // Function to load messages into the table
-    function loadMessages(folder) {
-        const tableBody = document.getElementById("message-table");
-        const folderTitle = document.getElementById("folder-title");
-        const entryCount = document.getElementById("entry-count");
-
-        folderTitle.textContent = folder.charAt(0).toUpperCase() + folder.slice(1); // Capitalize first letter
-        tableBody.innerHTML = ""; // Clear table before loading new messages
-
-        let data = messages[folder] || [];
-        if (data.length === 0) {
-            tableBody.innerHTML = "<tr><td colspan='7' class='text-center'>No messages found</td></tr>";
-        } else {
-            data.forEach(msg => {
-                let row = `
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td><i class="bi bi-star text-warning"></i></td>
-                        <td>${msg.name}</td>
-                        <td>${msg.subject}</td>
-                        <td>-</td>
-                        <td>${msg.time}</td>
-                        <td><button class="btn btn-info btn-sm">${msg.replies}</button></td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-        }
-
-        // Update entry count
-        entryCount.textContent = `Showing 1 to ${data.length} of ${data.length} entries`;
-    }
-
-    // Attach event listeners to sidebar items
-    document.querySelectorAll(".folder-item").forEach(item => {
-        item.addEventListener("click", function () {
-            document.querySelectorAll(".folder-item").forEach(i => i.classList.remove("active")); // Remove active class
-            this.classList.add("active"); // Add active class to clicked item
-
-            let folder = this.getAttribute("data-folder");
-            loadMessages(folder);
-        });
-    });
-
-    // Load default messages (Conversation)
-    loadMessages("conversation");
-</script>
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();

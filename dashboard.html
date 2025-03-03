@@ -108,14 +108,14 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold"><i class="bi bi-person-workspace"></i>     Teacher</span>
+                        <span class="font-semibold"><i class="bi bi-person-workspace"></i>     Employees</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="new-teacher.html" class="block py-2 hover:bg-gray-700"> Add New Teacher</a></li>
-                        <li><a href="teacher.html" class="block py-2 hover:bg-gray-700"> All Teachers</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Teachers</a></li>
+                        <li><a href="add-teacher.html" class="block py-2 hover:bg-gray-700"> Add New Employee</a></li>
+                        <li><a href="teacher.html" class="block py-2 hover:bg-gray-700"> All Employees</a></li>
+                        <li><a href="manage.html" class="block py-2 hover:bg-gray-700"> Manage Employees</a></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
                                 <span class="mr-2">⚖ Active / Inactive</span>
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Appointment Letter</a><i
+                        <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"> Appointment Letter</a><i
                                 class="fas fa-lock ml-auto text-red-300"></i></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
@@ -164,7 +164,6 @@
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
                         <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Add Student</a></li>
                         <li><a href="students.html" class="block py-2 hover:bg-gray-700"> All Students</a></li>
-                        <li><a href="families.html" class="block py-2 hover:bg-gray-700"> Manage Families</a></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
                                 <span class="mr-2">⚖ Active / Inactive</span>
@@ -255,7 +254,6 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="members.html" class="block py-2 hover:bg-gray-700"> Members</a></li>
                         <li><a href="books.html" class="block py-2 hover:bg-gray-700"> Books</a></li>
                         <li><a href="issued.html" class="block py-2 hover:bg-gray-700"> Issued Out</a></li>
                         <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
@@ -277,7 +275,7 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-pc-display"></i>      Receptionist</a></li>
+                <li><a href="#" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i class="bi bi-pc-display"></i> Requisition </a></li>
                 <!-- Exams Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
@@ -366,16 +364,16 @@
                     class="rounded p-2 transition-colors duration-300">
 
                     <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                        <span class="font-semibold">Inventory</span>
+                        <span class="font-semibold">Shop</span>
                         <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Caategory</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Product</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Supplier</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Books & Stationaries</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Uniform & Clothing</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Purchase</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Sale</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Orders</a></li>
                     </ul>
                 </li>
 
