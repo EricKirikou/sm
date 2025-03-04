@@ -467,7 +467,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><i class="bi bi-file-earmark-spreadsheet"></i> Master Sheet</span>
+                    <span class="navbar-brand"><i class="bi bi-cart"></i> Purchase</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -475,109 +475,121 @@
                     </div>
                 </div>
             </nav>
-            <div class="max-w-7xl mx-auto bg-white p-5 rounded-lg mt-12">
-                <!-- Filter Section -->
-                <div class="mb-4 flex justify-between items-center">
-                    <label for="categorySelect" class="font-semibold">Filter By</label>
-                    <select id="categorySelect" class="form-select w-1/3 md:w-1/4" onchange="sortTable()">
-                        <option value="">-- Select --</option>
-                        <option value="Lowest Marks">Lowest Marks</option>
-                        <option value="Highest Marks">Highest Marks</option>
-                    </select>
+            <div class="container mt-3">
+                <div class="d-flex justify-content-between align-items-center p-3 bg-dark text-white">
+                    <h5></h5>
+                    <a href="#" class="text-white">Dashboard / Purchase</a>
                 </div>
-        
-                <!-- Table Section -->
-                <div class="overflow-x-auto">
-                    <table id="studentTable" class="w-full border border-black">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="border border-black px-4 py-2">Name</th>
-                                <th class="border border-black px-4 py-2">English</th>
-                                <th class="border border-black px-4 py-2">Maths</th>
-                                <th class="border border-black px-4 py-2">Science</th>
-                                <th class="border border-black px-4 py-2">History</th>
-                                <th class="border border-black px-4 py-2">R.M.E</th>
-                                <th class="border border-black px-4 py-2">French</th>
-                                <th class="border border-black px-4 py-2">Creative Art</th>
-                                <th class="border border-black px-4 py-2">Asante Twi</th>
-                                <th class="border border-black px-4 py-2">Total Marks</th>
-                                <th class="border border-black px-4 py-2">Position</th>
+            
+                <div class="mt-3">
+                    <a href="#" class="text-primary"><strong>+ Add a Purchase</strong></a>
+                </div>
+            
+                <div class="mt-2 d-flex">
+                    <button class="btn btn-light btn-sm me-2">Copy</button>
+                    <button class="btn btn-light btn-sm me-2">Excel</button>
+                    <button class="btn btn-light btn-sm me-2">CSV</button>
+                    <button class="btn btn-light btn-sm">PDF</button>
+                    <div class="ms-auto">
+                        <input type="text" class="form-control form-control-sm" placeholder="Search">
+                    </div>
+                </div>
+            
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Reference No</th>
+                                <th>Supplier</th>
+                                <th>Date</th>
+                                <th>File</th>
+                                <th>Grand Total</th>
+                                <th>Paid</th>
+                                <th>Balance</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                            <tr class="h-10 border border-black text-center">
-                                <td class="border border-black px-4 py-2">John Doe</td>
-                                <td class="border border-black px-4 py-2">85</td>
-                                <td class="border border-black px-4 py-2">90</td>
-                                <td class="border border-black px-4 py-2">88</td>
-                                <td class="border border-black px-4 py-2">76</td>
-                                <td class="border border-black px-4 py-2">80</td>
-                                <td class="border border-black px-4 py-2">72</td>
-                                <td class="border border-black px-4 py-2">89</td>
-                                <td class="border border-black px-4 py-2">95</td>
-                                <td class="border border-black px-4 py-2">675</td>
-                                <td class="border border-black px-4 py-2">1</td>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>01</td>
+                                <td>Greenlab</td>
+                                <td>21 Oct 2025</td>
+                                <td></td>
+                                <td>27,000.00</td>
+                                <td>0.00</td>
+                                <td>27,000.00</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm"><i class="bi bi-check"></i> </button>
+                                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> </button>
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> </button>
+                                    <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> </button>
+                                </td>
                             </tr>
-                            <tr class="h-10 border border-black text-center">
-                                <td class="border border-black px-4 py-2">Jane Smith</td>
-                                <td class="border border-black px-4 py-2">78</td>
-                                <td class="border border-black px-4 py-2">82</td>
-                                <td class="border border-black px-4 py-2">85</td>
-                                <td class="border border-black px-4 py-2">74</td>
-                                <td class="border border-black px-4 py-2">79</td>
-                                <td class="border border-black px-4 py-2">71</td>
-                                <td class="border border-black px-4 py-2">85</td>
-                                <td class="border border-black px-4 py-2">90</td>
-                                <td class="border border-black px-4 py-2">644</td>
-                                <td class="border border-black px-4 py-2">2</td>
+                            <tr>
+                                <td>2</td>
+                                <td>02</td>
+                                <td>Smart Shop</td>
+                                <td>26 May 2025</td>
+                                <td></td>
+                                <td>62,500.00</td>
+                                <td>0.00</td>
+                                <td>62,500.00</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm"><i class="bi bi-check"></i> </button>
+                                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> </button>
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> </button>
+                                    <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> </button>
+                                </td>
                             </tr>
-                            <tr class="h-10 border border-black text-center">
-                                <td class="border border-black px-4 py-2">Mark Lee</td>
-                                <td class="border border-black px-4 py-2">80</td>
-                                <td class="border border-black px-4 py-2">85</td>
-                                <td class="border border-black px-4 py-2">79</td>
-                                <td class="border border-black px-4 py-2">70</td>
-                                <td class="border border-black px-4 py-2">83</td>
-                                <td class="border border-black px-4 py-2">77</td>
-                                <td class="border border-black px-4 py-2">80</td>
-                                <td class="border border-black px-4 py-2">85</td>
-                                <td class="border border-black px-4 py-2">639</td>
-                                <td class="border border-black px-4 py-2">3</td>
+                            <tr>
+                                <td>3</td>
+                                <td>03</td>
+                                <td>Greenlab</td>
+                                <td>02 Feb 2025</td>
+                                <td></td>
+                                <td>9,800.00</td>
+                                <td>0.00</td>
+                                <td>9,800.00</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm"><i class="bi bi-check"></i> </button>
+                                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> </button>
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> </button>
+                                    <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>05</td>
+                                <td>Smart Shop</td>
+                                <td>12 Apr 2025</td>
+                                <td></td>
+                                <td>250,000.00</td>
+                                <td>0.00</td>
+                                <td>250,000.00</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm"><i class="bi bi-check"></i> </button>
+                                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> </button>
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> </button>
+                                    <button class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-        
-                <!-- Print Button -->
-                <div class="text-center mt-4">
-                    <button onclick="window.print()" class="bg-black text-white px-6 py-2 rounded-lg">Print</button>
+            
+                <div class="d-flex justify-content-between">
+                    <span>Showing 1 to 4 of 4 entries</span>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
-        
-            <script>
-                function sortTable() {
-                    let table = document.getElementById("studentTable");
-                    let tbody = document.getElementById("tableBody");
-                    let rows = Array.from(tbody.getElementsByTagName("tr"));
-                    let filterValue = document.getElementById("categorySelect").value;
-        
-                    rows.sort((a, b) => {
-                        let totalA = parseInt(a.cells[9].innerText); // Total Marks Column
-                        let totalB = parseInt(b.cells[9].innerText);
-        
-                        if (filterValue === "Highest Marks") {
-                            return totalB - totalA; // Descending Order
-                        } else if (filterValue === "Lowest Marks") {
-                            return totalA - totalB; // Ascending Order
-                        } else {
-                            return 0;
-                        }
-                    });
-        
-                    tbody.innerHTML = ""; // Clear existing table
-                    rows.forEach(row => tbody.appendChild(row)); // Append sorted rows
-                }
-            </script>
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();

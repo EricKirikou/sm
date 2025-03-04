@@ -492,78 +492,106 @@
                 </select>
             </div>
         
-            <!-- Report Card Form (Hidden Initially) -->
-            <div id="reportForm" class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 mt-6 hidden">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Fill Student Report Card</h2>
-                <table class="w-full bg-white border rounded-lg shadow-md mb-4">
-                    <thead class="bg-blue-600 text-white">
-                        <tr>
-                            <th class="py-2 px-4 border">Subject</th>
-                            <th class="py-2 px-4 border">Class Score (50%)</th>
-                            <th class="py-2 px-4 border">Exam Score (50%)</th>
-                            <th class="py-2 px-4 border">Total (100%)</th>
-                            <th class="py-2 px-4 border">Grade</th>
-                        </tr>
-                    </thead>
-                    <tbody id="subjectsTable">
-                        <tr>
-                            <td class="py-2 px-4 border"><input type="text" class="subject w-full p-2 border rounded-md" placeholder="Subject"></td>
-                            <td class="py-2 px-4 border"><input type="number" class="classScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
-                            <td class="py-2 px-4 border"><input type="number" class="examScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
-                            <td class="py-2 px-4 border text-center totalScore">-</td>
-                            <td class="py-2 px-4 border text-center grade">-</td>
-                        </tr>
-                    </tbody>
-                </table>
-        
-                <button onclick="generateReport()" class="bg-blue-600 text-white px-4 py-2 rounded-md">Generate Report</button>
-            </div>
-        
-            <!-- JavaScript -->
-            <script>
-                function loadStudents() {
-                    let classSelected = document.getElementById("classSelect").value;
-                    let studentSelect = document.getElementById("studentSelect");
-                    studentSelect.innerHTML = '<option value="">-- Select Student --</option>';
-                    
-                    if (classSelected === "Class A") {
-                        studentSelect.innerHTML += '<option value="John Doe">John Doe</option>';
-                        studentSelect.innerHTML += '<option value="Jane Smith">Jane Smith</option>';
-                    } else if (classSelected === "Class B") {
-                        studentSelect.innerHTML += '<option value="Mike Johnson">Mike Johnson</option>';
-                        studentSelect.innerHTML += '<option value="Emily Davis">Emily Davis</option>';
-                    }
-                }
-        
-                function showReportForm() {
-                    let studentSelected = document.getElementById("studentSelect").value;
-                    if (studentSelected) {
-                        document.getElementById("reportForm").classList.remove("hidden");
-                    }
-                }
-        
-                function calculateTotals() {
-                    document.querySelectorAll(".classScore").forEach((input, index) => {
-                        let classScore = parseFloat(input.value) || 0;
-                        let examScore = parseFloat(document.querySelectorAll(".examScore")[index].value) || 0;
-                        let totalScore = classScore + examScore;
-                        
-                        let totalCell = document.querySelectorAll(".totalScore")[index];
-                        let gradeCell = document.querySelectorAll(".grade")[index];
-                        
-                        totalCell.textContent = totalScore;
-                        if (totalScore >= 80) gradeCell.textContent = "A";
-                        else if (totalScore >= 70) gradeCell.textContent = "B";
-                        else if (totalScore >= 60) gradeCell.textContent = "C";
-                        else if (totalScore >= 50) gradeCell.textContent = "D";
-                        else gradeCell.textContent = "F";
-                    });
-                }
-        
-                function generateReport() {
-                    alert("Report Card Generated!");
-                }
-            </script>
+        <!-- Report Card Form (Hidden Initially) -->
+<div id="reportForm" class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 mt-6 hidden">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Fill Student Report Card</h2>
+    <table class="w-full bg-white border rounded-lg shadow-md mb-4">
+        <thead class="bg-blue-600 text-white">
+            <tr>
+                <th class="py-2 px-4 border">Subject</th>
+                <th class="py-2 px-4 border">Class Score (50%)</th>
+                <th class="py-2 px-4 border">Exam Score (50%)</th>
+                <th class="py-2 px-4 border">Total (100%)</th>
+                <th class="py-2 px-4 border">Grade</th>
+                <th class="py-2 px-4 border">Action</th>
+            </tr>
+        </thead>
+        <tbody id="subjectsTable">
+            <tr>
+                <td class="py-2 px-4 border"><input type="text" class="subject w-full p-2 border rounded-md" placeholder="Subject"></td>
+                <td class="py-2 px-4 border"><input type="number" class="classScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
+                <td class="py-2 px-4 border"><input type="number" class="examScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
+                <td class="py-2 px-4 border text-center totalScore">-</td>
+                <td class="py-2 px-4 border text-center grade">-</td>
+                <td class="py-2 px-4 border text-center">
+                    <button onclick="addRow()" class="bg-green-500 text-white px-3 py-1 rounded-md">+</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="generateReport()" class="bg-blue-600 text-white px-4 py-2 rounded-md">Generate Report</button>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function loadStudents() {
+        let classSelected = document.getElementById("classSelect").value;
+        let studentSelect = document.getElementById("studentSelect");
+        studentSelect.innerHTML = '<option value="">-- Select Student --</option>';
+
+        if (classSelected === "Class A") {
+            studentSelect.innerHTML += '<option value="John Doe">John Doe</option>';
+            studentSelect.innerHTML += '<option value="Jane Smith">Jane Smith</option>';
+        } else if (classSelected === "Class B") {
+            studentSelect.innerHTML += '<option value="Mike Johnson">Mike Johnson</option>';
+            studentSelect.innerHTML += '<option value="Emily Davis">Emily Davis</option>';
+        }
+    }
+
+    function showReportForm() {
+        let studentSelected = document.getElementById("studentSelect").value;
+        if (studentSelected) {
+            document.getElementById("reportForm").classList.remove("hidden");
+        }
+    }
+
+    function calculateTotals() {
+        document.querySelectorAll(".classScore").forEach((input, index) => {
+            let classScore = parseFloat(input.value) || 0;
+            let examScore = parseFloat(document.querySelectorAll(".examScore")[index].value) || 0;
+            let totalScore = classScore + examScore;
+
+            let totalCell = document.querySelectorAll(".totalScore")[index];
+            let gradeCell = document.querySelectorAll(".grade")[index];
+
+            totalCell.textContent = totalScore;
+            if (totalScore >= 80) gradeCell.textContent = "A";
+            else if (totalScore >= 70) gradeCell.textContent = "B";
+            else if (totalScore >= 60) gradeCell.textContent = "C";
+            else if (totalScore >= 50) gradeCell.textContent = "D";
+            else gradeCell.textContent = "F";
+        });
+    }
+
+    function addRow() {
+        let table = document.getElementById("subjectsTable");
+        let row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td class="py-2 px-4 border"><input type="text" class="subject w-full p-2 border rounded-md" placeholder="Subject"></td>
+            <td class="py-2 px-4 border"><input type="number" class="classScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
+            <td class="py-2 px-4 border"><input type="number" class="examScore w-full p-2 border rounded-md" placeholder="0-50" oninput="calculateTotals()"></td>
+            <td class="py-2 px-4 border text-center totalScore">-</td>
+            <td class="py-2 px-4 border text-center grade">-</td>
+            <td class="py-2 px-4 border text-center">
+                <button onclick="removeRow(this)" class="bg-red-500 text-white px-3 py-1 rounded-md">-</button>
+            </td>
+        `;
+
+        table.appendChild(row);
+    }
+
+    function removeRow(button) {
+        let row = button.parentElement.parentElement;
+        row.remove();
+    }
+
+    function generateReport() {
+        alert("Report Card Generated!");
+    }
+</script>
+
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();
