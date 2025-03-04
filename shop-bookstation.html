@@ -10,79 +10,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 
     <style>
         body {
             font-family: Arial, sans-serif;
-        }
-
-        #calendar-container {
-            width: 100%;
-            max-width: 2000px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
-        }
-
-        .fc-toolbar-title {
-            font-size: 22px !important;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .fc-daygrid-day:hover {
-            background: rgba(255, 99, 132, 0.1);
-            transition: 0.3s;
-        }
-
-        .fc-day-today {
-            background: rgba(54, 162, 235, 0.2) !important;
-        }
-
-        .fc-event {
-            border-radius: 8px !important;
-            font-size: 14px !important;
-        }
-
-        .dashboard-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            color: white;
-        }
-
-        .chart-container {
-            width: 100%;
-            /* Full width */
-            height: 400px;
-            /* Adjust height as needed */
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .chart-container canvas {
-            height: 300px !important;
-            /* Reduce chart height */
         }
     </style>
 </head>
 
 <body class="bg-gray-100">
     <div class="d-flex">
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
         <!-- Sidebar -->
         <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
             <!-- Sidebar Header -->
@@ -403,8 +344,8 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700"> Books & Stationaries</a></li>
-                        <li><a href="shop-uniform.html" class="block py-2 hover:bg-gray-700"> Uniform & Clothing</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Books & Stationaries</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Uniform & Clothing</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Purchase</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Sale</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Orders</a></li>
@@ -521,13 +462,12 @@
             </ul>
         </nav>
 
-
         <!-- Main Content -->
         <div class="flex-grow">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><i class="bi bi-speedometer2"></i> Dashboard</span>
+                    <span class="navbar-brand"><i class="bi bi-book-fill"></i>  Books & Stationaries</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -535,351 +475,108 @@
                     </div>
                 </div>
             </nav>
-
-            <div class="container mt-4 al">
-                <!-- Dashboard Cards -->
-                <div class="row g-4 ">
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-danger">
-                            <div>
-                                <h3 class="font-bold text-4xl">44</h3>
-                                <p class="text-lg">Students</p>
-                            </div>
-                            <img src="image1.png" alt="Students" width="60" class="rounded-circle">
-                        </div>
+            <div class="container-fluid p-3">
+        
+                <!-- Header Section -->
+                <div class="bg-dark text-white d-flex justify-content-between align-items-center p-3 rounded">
+                    <div class="fw-bold">
+                
                     </div>
-
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-success">
-                            <div>
-                                <h3 class="font-bold text-4xl">10</h3>
-                                <p class="text-lg">Parents</p>
-                            </div>
-                            <img src="image2.png" alt="Parents" width="60" class="rounded-circle">
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-info">
-                            <div>
-                                <h3 class="font-bold text-4xl">12</h3>
-                                <p class="text-lg">Teachers</p>
-                            </div>
-                            <img src="image3.png" alt="Teachers" width="60" class="rounded-circle">
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-primary">
-                            <div>
-                                <h3 class="font-bold text-4xl">35</h3>
-                                <p class="text-lg">Subjects</p>
-                            </div>
-                            <img src="image4.png" alt="Subjects" width="60" class="rounded-circle">
-                        </div>
+                    <div>
+                        Dashboard / <span class="text-primary">Books & Stationaries</span>
                     </div>
                 </div>
-
-                <!-- Chart Section -->
-                <div class="container-fluid mt-4">
-                    <div class="text-center bg-teal-500 text-white fw-bold">
-                        <h2>2025 Accounts Summary</h2>
-                        <p>Click month income or expense column to view day-wise account summary</p>
+        
+                <!-- Content Section -->
+                <div class="bg-white p-3 mt-3 shadow-sm rounded">
+                    
+                    <!-- Add Book -->
+                    <div class="mb-3">
+                        <a href="#" class="text-primary fw-bold"><i class="bi bi-plus-lg"></i> Add a Book / Stationary</a>
                     </div>
-                    <div class="chart-container w-100">
-
-                        <canvas id="accountsChart"></canvas>
+        
+                    <!-- Action Buttons -->
+                    <div class="mb-2">
+                        <button class="btn btn-light btn-sm">Copy</button>
+                        <button class="btn btn-success btn-sm">Excel</button>
+                        <button class="btn btn-secondary btn-sm">CSV</button>
+                        <button class="btn btn-danger btn-sm">PDF</button>
                     </div>
+        
+                    <!-- Table Section -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Serial Code</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Pencils</td>
+                                    <td>AE0980</td>
+                                    <td>GHC 3</td>
+                                    <td>500</td>
+                                    <td><span class="badge bg-info">In Stock</span></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>French</td>
+                                    <td>CB4558</td>
+                                    <td>GHC 250</td>
+                                    <td>0</td>
+                                    <td><span class="badge bg-danger">Out of Stock</span></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+        
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between">
+                        <span>Showing 1 to 5 of 5 entries</span>
+                        <div>
+                            <button class="btn btn-light btn-sm">Previous</button>
+                            <button class="btn btn-dark btn-sm">1</button>
+                            <button class="btn btn-light btn-sm">Next</button>
+                        </div>
+                    </div>
+        
                 </div>
-
-                <script>
-                    const ctx = document.getElementById('accountsChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                            datasets: [
-                                {
-                                    label: 'Income',
-                                    data: [100000, 50000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    borderColor: 'lightblue',
-                                    backgroundColor: 'rgba(173, 216, 230, 0.5)',
-                                    fill: true,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'blue',
-                                },
-                                {
-                                    label: 'Expense',
-                                    data: [90000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    borderColor: 'purple',
-                                    backgroundColor: 'rgba(255, 0, 255, 0.5)',
-                                    fill: true,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'purple',
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (tooltipItem) {
-                                            return tooltipItem.dataset.label + ": " + tooltipItem.raw.toLocaleString();
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function (value) {
-                                            return value.toLocaleString();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                </script>
-
-                <!-- User Profile & Attendance Section -->
-                <div class="row mt-5 d-flex align-items-stretch">
-                    <!-- User Profile Section -->
-                    <div class="col-md-3 d-flex flex-column">
-                        <div class="bg-pink-600 text-white rounded-lg shadow-md p-4 text-center flex-grow-1">
-                            <img src="profile.png" alt="Admin" class="rounded-full mx-auto border-4 border-white"
-                                width="80">
-                            <h3 class="mt-2 text-lg font-semibold">Mr. Admin</h3>
-                            <p class="italic">Admin</p>
-                        </div>
-                        <div class="bg-white shadow-md mt-3 p-3 rounded-lg flex-grow-1">
-                            <ul class="list-unstyled">
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-user text-pink-600 me-2"></i> <span>Username:</span> <span
-                                        class="ms-auto">admin</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-envelope text-pink-600 me-2"></i> <span>Email:</span> <span
-                                        class="ms-auto">info@smedu.net</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-phone text-pink-600 me-2"></i> <span>Phone:</span> <span
-                                        class="ms-auto">---</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-map-marker-alt text-pink-600 me-2"></i> <span>Address:</span> <span
-                                        class="ms-auto">---</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Attendance Section -->
-                    <div class="col-md-9 d-flex">
-                        <div class="bg-white p-4 rounded-lg shadow-md w-100 d-flex flex-column">
-                            <h4 class="text-lg font-semibold">Students Today's Attendance</h4>
-                            <p class="text-sm text-gray-500">Click the columns to view this month's student attendance.
-                            </p>
-
-                            <!-- Attendance Chart -->
-                            <div class="mt-4 flex-grow-1 d-flex align-items-center">
-                                <canvas id="attendanceChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Attendance Chart -->
-                <script>
-                    const ctx2 = document.getElementById('attendanceChart').getContext('2d');
-                    new Chart(ctx2, {
-                        type: 'bar',
-                        data: {
-                            labels: ['One', 'Two', 'Three', 'Four', 'Five', 'Graduate'],
-                            datasets: [
-                                { label: 'Present', data: [5, 10, 7, 8, 9, 6], backgroundColor: 'rgba(54, 162, 235, 0.6)' },
-                                { label: 'Absent', data: [2, 4, 3, 5, 1, 2], backgroundColor: 'rgba(255, 99, 132, 0.6)' }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                </script>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <!-- Notice Section -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h4 class="text-lg font-semibold mb-3">Notice</h4>
-                        <ul class="divide-y divide-gray-300">
-                            <li class="flex items-center justify-between py-2">
-                                <span>1</span>
-                                <span class="flex-1 ml-2 truncate">Farewell Ceremo..</span>
-                                <span class="flex-1 truncate">The most of the words ado..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>2</span>
-                                <span class="flex-1 ml-2 truncate">Second Semester..</span>
-                                <span class="flex-1 truncate">Dedicated athlete, an ama..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>3</span>
-                                <span class="flex-1 ml-2 truncate">First Semester ..</span>
-                                <span class="flex-1 truncate">If you are a dedicated at..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>4</span>
-                                <span class="flex-1 ml-2 truncate">Annual Sports D..</span>
-                                <span class="flex-1 truncate">You surely are familiar w..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>5</span>
-                                <span class="flex-1 ml-2 truncate">Teachers Reunio..</span>
-                                <span class="flex-1 truncate">An amateur player, or a sport geek, than you ..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Site Stats Section -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <div class="flex justify-between items-center">
-                            <h4 class="text-lg font-semibold">Site Stats</h4>
-                            <i class="fas fa-bars text-gray-500"></i>
-                        </div>
-                        <div class="mt-4">
-                            <canvas id="siteStatsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    const ctx3 = document.getElementById('siteStatsChart').getContext('2d');
-                    const siteStatsChart = new Chart(ctx3, {
-                        type: 'line',
-                        data: {
-                            labels: ['19 Feb'],
-                            datasets: [{
-                                label: 'Visitors',
-                                data: [1],
-                                borderColor: 'pink',
-                                backgroundColor: 'rgba(255, 105, 180, 0.5)',
-                                fill: true,
-                                pointRadius: 5,
-                                pointBackgroundColor: 'pink',
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                }
-                            }
-                        }
-                    });
-                </script>
-
-                <!-- FullCalendar CSS -->
-                <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" rel="stylesheet">
-
-                <!-- Google Font -->
-                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-                    rel="stylesheet">
-
-                <!-- Custom Styling -->
-
-
-                <div id="calendar-container">
-                    <div id="calendar"></div>
-                </div>
-
-                <!-- FullCalendar JS -->
-                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var calendarEl = document.getElementById('calendar');
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            initialView: 'dayGridMonth',
-                            selectable: true,
-                            editable: true,
-                            eventLimit: true,
-
-                            headerToolbar: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                            },
-
-                            events: [
-                                { title: '📚 Exam', start: '2025-02-21', color: '#ff4d4d' },
-                                { title: '🎉 School Event', start: '2025-02-24', color: '#28a745' },
-                                { title: '💻 IT Workshop', start: '2025-02-27', color: '#007bff' }
-                            ],
-
-                            dateClick: function (info) {
-                                let eventTitle = prompt('Enter Event Title:');
-                                if (eventTitle) {
-                                    calendar.addEvent({
-                                        title: eventTitle,
-                                        start: info.dateStr,
-                                        allDay: true,
-                                        color: '#ff9800'
-                                    });
-                                }
-                            },
-
-                            eventClick: function (info) {
-                                if (confirm('Delete this event?')) {
-                                    info.event.remove();
-                                }
-                            }
-                        });
-
-                        calendar.render();
-                    });
-                </script>
-                <script>
-                    document.getElementById("menuToggle").addEventListener("click", function (event) {
-                        event.preventDefault();
-                        let submenu = document.getElementById("submenu");
-                        let arrow = document.getElementById("arrow");
-
-                        submenu.classList.toggle("hidden"); // Toggle submenu
-                        arrow.classList.toggle("rotate-90"); // Rotate arrow
-                    });
-                </script>
-
-                <style>
-                    .rotate-90 {
-                        transform: rotate(90deg);
-                    }
-                </style>
             </div>
+        
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
+
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
+
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
 </body>
 
 </html>
