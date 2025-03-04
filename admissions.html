@@ -514,7 +514,11 @@
                             <label class="font-medium">Discount in Fee *</label>
                             <input type="text" class="form-control" placeholder="In %">
                         </div>
-                        <div class="col-span-2">
+                        <div>
+                            <label class="font-medium">Hostel Allocation *</label>
+                            <input type="text" class="form-control" placeholder="Hostel">
+                        </div>
+                        <div>
                             <label class="font-medium">Mobile No. for SMS/WhatsApp</label>
                             <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
                         </div>
@@ -555,6 +559,30 @@
                             <input type="text" class="form-control">
                         </div>
                         <div>
+                            <label class="font-medium">Father's Name *</label>
+                            <input type="text" class="form-control" placeholder="Father's Name">
+                        </div>
+                        <div>
+                            <label class="font-medium">Father's Contact No. *</label>
+                            <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
+                        </div>
+                        <div>
+                            <label class="font-medium">Father's Occupation</label>
+                            <input type="text" class="form-control" placeholder="Occupation">
+                        </div>
+                        <div>
+                            <label class="font-medium">Mother's Name *</label>
+                            <input type="text" class="form-control" placeholder="Mother's Name">
+                        </div>
+                        <div>
+                            <label class="font-medium">Mother's Contact No.</label>
+                            <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
+                        </div>
+                        <div>
+                            <label class="font-medium">Mother's Occupation</label>
+                            <input type="text" class="form-control" placeholder="Occupation">
+                        </div>
+                        <div>
                             <label class="font-medium">Guardian's Name <span class="text-gray-500">(If
                                     Required)</span></label>
                             <input type="text" class="form-control" placeholder="Guardian's Name">
@@ -564,63 +592,38 @@
                                     Required)</span></label>
                             <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
                         </div>
-
-                        <div>
-                            <label class="font-medium">Orphan Student</label>
-                            <select class="form-control" id="orphanStatus">
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                        </div>
                     </div>
 
-                    <!-- Parents & Guardian Information -->
-                    <div id="parentsSection" class="mt-6 bg-gray-100 p-4 rounded-lg hidden">
-                        <h3 class="text-lg font-semibold">3️⃣ Parents & Guardian Information</h3>
-                        <div class="grid grid-cols-2 gap-4 mt-3">
-                            <div>
-                                <label class="font-medium">Father's Name *</label>
-                                <input type="text" class="form-control" placeholder="Father's Name">
-                            </div>
-                            <div>
-                                <label class="font-medium">Father's Contact No. *</label>
-                                <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
-                            </div>
-                            <div>
-                                <label class="font-medium">Father's Occupation</label>
-                                <input type="text" class="form-control" placeholder="Occupation">
-                            </div>
-                            <div>
-                                <label class="font-medium">Mother's Name *</label>
-                                <input type="text" class="form-control" placeholder="Mother's Name">
-                            </div>
-                            <div>
-                                <label class="font-medium">Mother's Contact No.</label>
-                                <input type="text" class="form-control" placeholder="e.g +44xxxxxxxxxx">
-                            </div>
-                            <div>
-                                <label class="font-medium">Mother's Occupation</label>
-                                <input type="text" class="form-control" placeholder="Occupation">
-                            </div>
-                        </div>
+                    <div>
+                        <label class="font-medium">Medical Condition</label>
+                        <select class="form-control" id="medicalStatus" onchange="toggleHealthIssue()">
+                            <option value="No" selected>No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
                     </div>
 
-                    <div class="mt-6">
-                        <button type="submit"
-                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+                    <div id="healthIssueDiv" style="display: none; margin-top: 10px;">
+                        <label class="font-medium">Specify Health Issue</label>
+                        <input type="text" class="form-control py-8" id="healthIssue" placeholder="Enter health issue">
                     </div>
-                </form>
             </div>
-            <script>
-                document.getElementById('admissionForm').addEventListener('submit', function(event) {
-                    event.preventDefault();
-                
-                    let formData = new FormData(this);
-                
-                    fetch('save_admission.php', {
-                        method: 'POST',
-                        body: formData
-                    })
+
+
+            <div class="mt-6">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+            </div>
+            </form>
+        </div>
+        <script>
+            document.getElementById('admissionForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                let formData = new FormData(this);
+
+                fetch('save_admission.php', {
+                    method: 'POST',
+                    body: formData
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -632,45 +635,38 @@
                         }
                     })
                     .catch(error => console.error('Error:', error));
-                });
-                </script>
-                
-            <script>
-                document.getElementById('orphanStatus').addEventListener('change', function () {
-                    const parentsSection = document.getElementById('parentsSection');
-                    if (this.value === 'Yes') {
-                        parentsSection.style.display = 'none';
-                    } else {
-                        parentsSection.style.display = 'block';
-                    }
-                });
+            });
+        </script>
 
-                document.getElementById('admissionForm').addEventListener('submit', function (event) {
-                    event.preventDefault();
+        <script>
+            function toggleHealthIssue() {
+                var medicalStatus = document.getElementById("medicalStatus").value;
+                var healthIssueDiv = document.getElementById("healthIssueDiv");
 
-                    // Auto-generate Registration ID
-                    document.getElementById('registrationId').value = 'SID' + Math.floor(1000 + Math.random() * 9000);
-
-                    alert('Form Submitted Successfully!');
-                });
-            </script>
-             <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
-                });
-            </script>
-
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
+                if (medicalStatus === "Yes") {
+                    healthIssueDiv.style.display = "block";
+                } else {
+                    healthIssueDiv.style.display = "none";
                 }
-            </style>
-        </div>
+            }
+        </script>
+        <script>
+            document.getElementById("menuToggle").addEventListener("click", function (event) {
+                event.preventDefault();
+                let submenu = document.getElementById("submenu");
+                let arrow = document.getElementById("arrow");
+
+                submenu.classList.toggle("hidden"); // Toggle submenu
+                arrow.classList.toggle("rotate-90"); // Rotate arrow
+            });
+        </script>
+
+        <style>
+            .rotate-90 {
+                transform: rotate(90deg);
+            }
+        </style>
+    </div>
 
 </body>
 

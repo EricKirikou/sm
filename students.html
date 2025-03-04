@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 
-   <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
         }
@@ -467,7 +467,10 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📊 Dashboard</span>
+                    <span class="navbar-brand">
+                        <h2 class="text-lg font-semibold"><i class="bi bi-person-workspace"></i> Students <span
+                                class="text-gray-500">- All Students</span></h2>
+                    </span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -475,6 +478,35 @@
                     </div>
                 </div>
             </nav>
+            <div class="max-w-7xl mx-auto p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <input type="text" placeholder="Search Student" class="border p-2 rounded w-1/3">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                        <span>&#x21bb;</span> All
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-4 gap-6">
+                    <!-- Employee Card -->
+                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col items-center text-center">
+                        <img src="https://via.placeholder.com/80" alt="Profile" class="rounded-full mb-2">
+                        <h3 class="font-semibold">Jonah Zugah</h3>
+                        <p class="text-sm text-gray-500">Class 1B</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col items-center text-center">
+                        <img src="https://via.placeholder.com/80" alt="Profile" class="rounded-full mb-2">
+                        <h3 class="font-semibold">Charles Borne</h3>
+                        <p class="text-sm text-gray-500">Class 3A</p>
+                    </div>
+
+                    <!-- Add New Card -->
+                    <div
+                        class="border-2 border-dashed border-blue-400 p-6 rounded-xl flex flex-col items-center justify-center text-blue-600 cursor-pointer">
+                        <span class="text-2xl">➕</span>
+                        <p class="mt-2">Add New</p>
+                    </div>
+                </div>
+            </div>
 
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
