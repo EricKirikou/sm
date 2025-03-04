@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payslip - SM-Edu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            margin: auto;
+            background: #fff;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #000;
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        .details, .table-container {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .details td, .table-container td, .table-container th {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .table-container th {
+            background: #f2f2f2;
+        }
+        .signature {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .print-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .print-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function updateReceipt() {
+            const payslipData = JSON.parse(localStorage.getItem("currentPayslip"));
+            if (payslipData) {
+                document.getElementById("employeeName").textContent = payslipData.employee;
+                document.getElementById("baseSalary").textContent = "GHS " + payslipData.baseSalary;
+                document.getElementById("overtimePay").textContent = "GHS " + payslipData.overtimePay;
+                document.getElementById("deductions").textContent = "GHS " + payslipData.deductions;
+                document.getElementById("totalSalary").textContent = "GHS " + payslipData.totalSalary;
+            }
+        }
+
+        function saveToPayslipPage() {
+            const payslipData = JSON.parse(localStorage.getItem("currentPayslip"));
+            if (payslipData) {
+                let payslips = JSON.parse(localStorage.getItem("payslips")) || [];
+                payslips.push(payslipData);
+                localStorage.setItem("payslips", JSON.stringify(payslips));
+            }
+            window.location.href = "payslip.html";
+        }
+        
+        window.onload = updateReceipt;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Payslip</h2>
+        <h3>SM-Edu</h3>
+        <p style="text-align: center;">21023 Pearson Point Road, Gate Avenue</p>
+        
+        <table class="details">
+            <tr>
+                <td><strong>Employee Name:</strong> <span id="employeeName">N/A</span></td>
+                <td><strong>Designation:</strong> Marketing Executive</td>
+            </tr>
+        </table>
+        
+        <table class="table-container">
+            <tr>
+                <th>Earnings</th>
+                <th>Amount</th>
+                <th>Deductions</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>Basic Pay</td>
+                <td id="baseSalary">GHS 0</td>
+                <td>Provident Fund</td>
+                <td id="deductions">GHS 0</td>
+            </tr>
+            <tr>
+                <td>Overtime Pay</td>
+                <td id="overtimePay">GHS 0</td>
+                <td>Total Deductions</td>
+                <td>GHS 0</td>
+            </tr>
+            <tr>
+                <th>Total Earnings</th>
+                <th>GHS 0</th>
+                <th>Net Pay</th>
+                <th id="totalSalary">GHS 0</th>
+            </tr>
+        </table>
+        
+        <p><strong>Amount in Words:</strong> <span id="amountInWords">N/A</span></p>
+        
+        <div class="signature">
+            <p><strong>Employer Signature:</strong> ____________</p>
+            <p><strong>Employee Signature:</strong> ____________</p>
+        </div>
+        
+        <p style="text-align: center; font-size: 12px;">This is a system-generated payslip</p>
+        
+        <button class="print-btn" onclick="window.print()">Print Receipt</button>
+        <button class="print-btn" onclick="saveToPayslipPage()">Save & View All Payslips</button>
+    </div>
+</body>
+</html>

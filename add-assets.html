@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 
-   <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
         }
@@ -467,7 +467,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📊 Dashboard</span>
+                    <span class="navbar-brand"> <i class="bi bi-box"></i> Asset</span>
                     <div>
                         <span class="me-3">🔔</span>
                         <span class="me-3">⚙️</span>
@@ -475,7 +475,68 @@
                     </div>
                 </div>
             </nav>
-
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                       
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Serial <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Serial">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter Title">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status <span class="text-danger">*</span></label>
+                                <select class="form-select">
+                                    <option selected>Select Status</option>
+                                    <option>In Storage</option>
+                                    <option>Checked Out</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Condition <span class="text-danger">*</span></label>
+                                <select class="form-select">
+                                    <option selected>Select Condition</option>
+                                    <option>New</option>
+                                    <option>Used</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category <span class="text-danger">*</span></label>
+                                <select class="form-select">
+                                    <option selected>Select Category</option>
+                                    <option>Books</option>
+                                    <option>Instruments</option>
+                                    <option>Sports</option>
+                                    <option>Others</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Location <span class="text-danger">*</span></label>
+                                <select class="form-select">
+                                    <option selected>Select Location</option>
+                                    <option>Class Room</option>
+                                    <option>Store Room</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Attachment</label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control">
+                                    <button class="btn btn-info" type="button"><i class="bi bi-arrow-clockwise"></i> File Browse</button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add Asset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {
                     event.preventDefault();
