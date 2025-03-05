@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> School Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
+            <!-- Sidebar Header -->
+            <h4 class="text-1xl font-bold mb-4 flex items-center ml-6"><img src="favicon.png" class="h-24 w-36" alt="">
+                </h4>
+
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center">
+                <img src="profile.png" class="rounded-full w-16 h-16 border-2 border-gray-700" alt="Admin">
+                <div class="ml-4">
+                    <p class="text-lg font-semibold">Mr. Admin</p>
+                    <p class="text-gray-400 text-sm">Admin</p>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <ul class="space-y-2">
+                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> <i
+                            class="bi bi-speedometer2"></i> Dashboard</a>
+                </li>
+
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-person-workspace"></i> Employees</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="add-employee.html" class="block py-2 hover:bg-gray-700"> Add New Employee</a></li>
+                        <li><a href="employee.html" class="block py-2 hover:bg-gray-700"> All Employees</a></li>
+                        <li><a href="manage.html" class="block py-2 hover:bg-gray-700"> Manage Employees</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"> Appointment
+                                Letter</a><i class="fas fa-lock ml-auto text-red-300"></i></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Staff ID Card</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Students Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-people-fill"></i> Students</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Add Student</a></li>
+                        <li><a href="students.html" class="block py-2 hover:bg-gray-700"> All Students</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> Admission Letter</a>
+                        </li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Students ID Cards</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Login</a></li>
+                        <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> Promote Students</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-hearts"></i> Parent</a></li>
+
+                <!-- Accounts Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> Accounts</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="account.html" class="block py-2 hover:bg-gray-700"> Account Details</a></li>
+                        <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> Pay Fees</a></li>
+                        <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> Receipts</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Global Payment</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> Expenditure</a></li>
+                        <li><a href="petty-cash.html" class="block py-2 hover:bg-gray-700"> Petty Cash</a></li>
+                        <li><a href="income.html" class="block py-2 hover:bg-gray-700">Income</a></li>
+                        <li><a href="statement.html" class="block py-2 hover:bg-gray-700">Account Statement</a></li>
+                    </ul>
+                </li>
+
+                <!-- Requisition Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-journal-text"></i> Library</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="books.html" class="block py-2 hover:bg-gray-700"> Books</a></li>
+                        <li><a href="issued.html" class="block py-2 hover:bg-gray-700"> Issued Out</a></li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">E-books</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-pc-display"></i> Requisition</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="requistion.html" class="block py-2 hover:bg-gray-700"> Requisition Form</a></li>
+                        <li><a href="review.html" class="block py-2 hover:bg-gray-700"> View Requisitions</a></li>
+                        <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"> Respond
+                                Requisitions</a></li>
+                    </ul>
+                </li> <!-- Exams Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i> Exams</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
+                        <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> Master Sheet</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Blank Award List</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                </li> <!-- Attendance Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-clock-history"></i> Attendance</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"> Staffs Attendance</a>
+                        </li>
+                        <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"> Students Attendance</a>
+                        </li>
+                        <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700">Attendance List</a></li>
+                    </ul>
+                </li>
+                <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-chat-dots-fill"></i> Message</a></li>
+                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-collection-play-fill"></i> Media</a></li>
+                <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-envelope-at"></i> Mail / SMS</a>
+                </li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="mr-2"><i class="bi bi-router-fill"></i> Online Exams</span>
+                        <i class="bi bi-lock ml-auto text-red-300"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <!-- Payroll Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> Payroll</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700">Pay Salary</a></li>
+                        <li><a href="payslip.html" class="block py-2 hover:bg-gray-700">Pay Slip</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Manage Salary</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-cassette"></i> Asset Management</a></li>
+                <!-- Inventory Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cart-check-fill"></i> Shop</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700"> Books & Stationaries</a></li>
+                        <li><a href="shop-uniform.html" class="block py-2 hover:bg-gray-700"> Uniform & Clothing</a></li>
+                        <li><a href="purchase.html" class="block py-2 hover:bg-gray-700"> Purchase</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Sale</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Orders</a></li>
+                    </ul>
+                </li>
+
+                <!----Inventory Section with Standalone Style------->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-window-fullscreen"></i> Leave Application</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="leave.html" class="block py-2 hover:bg-gray-700">Apply for Leave</a></li>
+                        <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> Applications</a></li>
+                    </ul>
+                </li>
+                <li><a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-camera-video-fill"></i> Gmeet Live Class</a>
+                </li>
+                <li><a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-bus-front"></i> Transport</a>
+                </li>
+                <li><a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-house-door"></i> Hostel</a></li>
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-megaphone"></i> Announcement</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="notice.html" class="block py-2 hover:bg-gray-700"> Notice</a></li>
+                        <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"> Timetable</a></li>
+                        <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> Academic Calendar</a></li>
+                    </ul>
+                </li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="mr-2"><i class="bi bi-router-fill"></i> Online Admission</span>
+                        <i class="bi bi-lock ml-auto text-red-300"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-walking"></i> Visitor Info</a>
+                </li>
+                <!-- Settings Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-gear-wide-connected"></i> Settings</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Institution Profile</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Fees Particulars</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Fees Structure</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Discount Type</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="" class="block py-2 hover:bg-gray-700"> Accounts For Fees Invoice</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Rules and Regulations</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Marks Grading</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Theme and Language</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Account Settings</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Audit Trail</a></li>
+                        <li><a href="index.html" class="block py-2 hover:bg-gray-700"> Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <div class="flex-grow">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+                <div class="container-fluid">
+                    <span class="navbar-brand">
+                        <h2 class="text-lg font-semibold"><i class="bi bi-person-workspace"></i> Employees <span
+                                class="text-gray-500">- All Employees</span></h2>
+                    </span>
+                    <div>
+                        <span class="me-3">🔔</span>
+                        <span class="me-3">⚙️</span>
+                        <span>🌍</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="max-w-7xl mx-auto p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <input type="text" placeholder="Search Employee" class="border p-2 rounded w-1/3">
+                    <button onclick="fetchEmployees()"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                        <span>&#x21bb;</span> All
+                    </button>
+                </div>
+
+                <div id="employeeGrid" class="grid grid-cols-4 gap-6">
+                    <!-- Employee Cards will be inserted dynamically -->
+                </div>
+            </div>
+
+<!-- Edit Employee Pop-up -->
+<div id="editPopup" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 max-h-[80vh] overflow-auto">
+        <h2 class="text-lg font-bold mb-4">Edit Employee</h2>
+
+        <input type="hidden" id="editEmployeeId">
+
+        <label class="block mb-2">Name</label>
+        <input type="text" id="editName" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Staff ID</label>
+        <input type="text" id="editStaffID" class="w-full border p-2 rounded mb-3 bg-gray-100" readonly>
+        
+        <label class="block mb-2">Role</label>
+        <select id="editRole" class="w-full border p-2 rounded mb-3">
+            <option value="">Select Role</option>
+            <option value="Accountant">Accountant</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Librarian">Librarian</option>
+            <option value="Head Master">Head Master</option>
+        </select>
+        
+        <label class="block mb-2">Phone</label>
+        <input type="text" id="editPhone" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Salary</label>
+        <input type="number" id="editSalary" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Gender</label>
+        <select id="editGender" class="w-full border p-2 rounded mb-3">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label class="block mb-2">Education</label>
+        <input type="text" id="editEducation" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Experience</label>
+        <input type="text" id="editExperience" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Email</label>
+        <input type="email" id="editEmail" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Date of Birth</label>
+        <input type="date" id="editDob" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Address</label>
+        <input type="text" id="editAddress" class="w-full border p-2 rounded mb-3">
+
+        <label class="block mb-2">Profile Photo</label>
+<input type="file" id="editPhoto" class="w-full border p-2 rounded mb-3" onchange="previewEditPhoto(event)">
+
+<!-- Image Preview -->
+<img id="editPhotoPreview" src="" alt="Profile" class="rounded-full mb-2 w-20 h-20 object-cover">
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2 sticky bottom-0 bg-white py-3">
+            <button onclick="closeEditPopup()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+            <button onclick="updateEmployee()" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+        </div>
+    </div>
+</div>
+
+
+
+            <script>
+              async function fetchEmployees() {
+    try {
+        const response = await fetch("http://localhost:5000/api/employees");
+        const employees = await response.json();
+
+        const employeeGrid = document.getElementById("employeeGrid");
+        employeeGrid.innerHTML = ""; // Clear existing content
+
+        employees.forEach(emp => {
+            const employeeCard = `
+            <div class="bg-white p-4 rounded-xl shadow-md flex flex-col items-center text-center relative">
+                <img src="/uploads/${emp.photo}" alt="Profile" class="rounded-full mb-2 w-20 h-20 object-cover" id="emp-img-${emp._id}">
+                <h3 class="font-semibold">${emp.name}</h3>
+                <p class="text-sm text-gray-500">${emp.role}</p>
+
+                <div class="mt-3 flex gap-2">
+                    <button onclick="editEmployee('${emp._id}')" class="bg-blue-500 text-white px-3 py-1 rounded">Edit</button>
+                    <button onclick="deleteEmployee('${emp._id}')" class="bg-red-500 text-white px-3 py-1 rounded">Delete</button>
+                </div>
+            </div>
+            `;
+            employeeGrid.innerHTML += employeeCard;
+        });
+    } catch (error) {
+        console.error("Error fetching employees:", error);
+    }
+}
+
+                // Handle Delete Employee
+                async function deleteEmployee(employeeId) {
+                    if (!confirm("Are you sure you want to delete this employee?")) return;
+            
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/employees/${employeeId}`, {
+                            method: "DELETE"
+                        });
+            
+                        if (!response.ok) throw new Error("Failed to delete employee");
+            
+                        alert("Employee deleted successfully!");
+                        fetchEmployees(); // Refresh the list
+            
+                    } catch (error) {
+                        console.error("Error deleting employee:", error);
+                    }
+                }
+            
+                // ✏️ Edit Employee (Autofill Form & Show Modal)
+                async function editEmployee(id) {
+                    try {
+                        console.log("Fetching Employee:", id); // Debugging
+            
+                        const response = await fetch(`http://localhost:5000/api/employees/${id}`);
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            
+                        const emp = await response.json();
+                        console.log("Employee Data:", emp); // Debugging
+            
+                        // Autofill form
+                        document.getElementById("editEmployeeId").value = emp._id || "";
+                        document.getElementById("editName").value = emp.name || "";
+                        document.getElementById("editStaffID").value = emp.staffID || "";
+                        document.getElementById("editPhone").value = emp.phone || "";
+                        document.getElementById("editDob").value = emp.dob ? emp.dob.split("T")[0] : "";
+                        document.getElementById("editRole").value = emp.role || "";
+                        document.getElementById("editSalary").value = emp.salary || "";
+                        document.getElementById("editGender").value = emp.gender || "";
+                        document.getElementById("editEmail").value = emp.email || "";
+                        document.getElementById("editExperience").value = emp.experience || "";
+                        document.getElementById("editEducation").value = emp.education || "";
+                        document.getElementById("editAddress").value = emp.address || "";
+            
+                        // Show the modal
+                        document.getElementById("editPopup").classList.remove("hidden");
+            
+                    } catch (error) {
+                        console.error("Error fetching employee details:", error);
+                        alert("Failed to load employee details. Check console.");
+                    }
+                }
+            
+                // Function to close the modal
+                function closeEditPopup() {
+                    document.getElementById("editPopup").classList.add("hidden");
+                }
+            
+                // ✅ Update Employee (Autofilled Data)
+                async function updateEmployee() {
+    try {
+        const id = document.getElementById("editEmployeeId").value;
+        
+        const formData = new FormData();
+        formData.append("name", document.getElementById("editName").value);
+        formData.append("phone", document.getElementById("editPhone").value);
+        formData.append("dob", document.getElementById("editDob").value);
+        formData.append("role", document.getElementById("editRole").value);
+        formData.append("salary", document.getElementById("editSalary").value);
+        formData.append("gender", document.getElementById("editGender").value);
+        formData.append("email", document.getElementById("editEmail").value);
+        formData.append("experience", document.getElementById("editExperience").value);
+        formData.append("education", document.getElementById("editEducation").value);
+        formData.append("address", document.getElementById("editAddress").value);
+
+        // Append image only if selected
+        const photo = document.getElementById("editPhoto").files[0];
+        if (photo) {
+            formData.append("photo", photo);
+        }
+
+        const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+            method: "PUT",
+            body: formData // Send as FormData
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+        alert("Employee updated successfully!");
+
+        // Close modal after update
+        closeEditPopup();
+
+        // Refresh the employee list
+        fetchEmployees();
+
+    } catch (error) {
+        console.error("Error updating employee:", error);
+        alert("Failed to update employee.");
+    }
+}
+
+                // Fetch employees when the page loads
+                document.addEventListener("DOMContentLoaded", fetchEmployees);
+            </script>
+            
+
+            <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
+
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
+
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
+</body>
+
+</html>

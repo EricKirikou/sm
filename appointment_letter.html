@@ -24,8 +24,8 @@
 
 <body class="bg-gray-100">
     <div class="d-flex">
-        <!-- Sidebar -->
-        <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
+         <!-- Sidebar -->
+         <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
             <!-- Sidebar Header -->
             <h4 class="text-1xl font-bold mb-4 flex items-center ml-6"><img src="favicon.png" class="h-24 w-36" alt="">
                 </h4>
@@ -55,8 +55,8 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="add-teacher.html" class="block py-2 hover:bg-gray-700"> Add New Employee</a></li>
-                        <li><a href="teacher.html" class="block py-2 hover:bg-gray-700"> All Employees</a></li>
+                        <li><a href="add-employee.html" class="block py-2 hover:bg-gray-700"> Add New Employee</a></li>
+                        <li><a href="employee.html" class="block py-2 hover:bg-gray-700"> All Employees</a></li>
                         <li><a href="manage.html" class="block py-2 hover:bg-gray-700"> Manage Employees</a></li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
@@ -461,7 +461,7 @@
                 </li>
             </ul>
         </nav>
-        
+
         <!-- Main Content -->
         <div class="flex-grow">
 
@@ -475,47 +475,76 @@
                         <span>🌍</span>
                     </div>
                 </div>
-                
+
             </nav>
             <div class="container mt-5">
-                <h2 class="text-center mb-4">Search Staff</h2>
+                <h2 class="text-center mb-4">Select Staff</h2>
                 <div class="row">
                     <div class="col-md-6 offset-md-3">
-                        <input type="text" id="staffID" class="form-control" placeholder="Enter Staff ID">
-                        <button class="btn btn-primary mt-3 w-100" onclick="fetchStaff()">Generate Letter</button>
+                        <select id="staffDropdown" class="form-control">
+                            <option value="">Select Staff</option>
+                        </select>
+                        <button class="btn btn-primary mt-3 w-100" onclick="generateLetter()">Generate Appointment
+                            Letter</button>
                     </div>
                 </div>
-            
-                <div class="mt-5 p-4 bg-white rounded shadow" id="admissionLetter" style="display: none;">
-                    <h3 class="text-center">Admission Letter</h3>
-                    <hr>
-                    <p>Date: <span id="admissionDate"></span></p>
-                    <p>Dear <strong id="studentName"></strong>,</p>
-                    <p>We are pleased to inform you that you have been admitted into the <strong id="studentProgram"></strong> program at our institution.</p>
-                    <p>Congratulations and welcome!</p>
-                    <button class="btn btn-success mt-3" onclick="window.print()">Print</button>
-                </div>
+            </div>
+
             <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
-                });
-            </script>
-
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
+                document.addEventListener("DOMContentLoaded", loadStaff);
+            
+                // Function to load employees into dropdown
+                async function loadStaff() {
+                    try {
+                        const response = await fetch("http://localhost:5000/api/employees");
+                        const employees = await response.json();
+                        let dropdown = document.getElementById("staffDropdown");
+            
+                        employees.forEach(employee => {
+                            let option = document.createElement("option");
+                            option.value = employee._id; // MongoDB ID
+                            option.textContent = `${employee.name} - ${employee.staffID}`;
+                            dropdown.appendChild(option);
+                        });
+                    } catch (error) {
+                        console.error("Error loading staff:", error);
+                    }
                 }
-            </style>
+            
+                // Function to generate letter and redirect with employee ID
+                function generateLetter() {
+                    let selectedEmployeeID = document.getElementById("staffDropdown").value;
+                    if (!selectedEmployeeID) {
+                        alert("Please select a staff member.");
+                        return;
+                    }
+            
+                    // Redirect to letter-ui.html with employee ID
+                    window.location.href = `letter-ui.html?employeeid=${selectedEmployeeID}`;
+                }
+            </script>
+            
+            
+    <script>
+        document.getElementById("menuToggle").addEventListener("click", function (event) {
+            event.preventDefault();
+            let submenu = document.getElementById("submenu");
+            let arrow = document.getElementById("arrow");
+
+            submenu.classList.toggle("hidden"); // Toggle submenu
+            arrow.classList.toggle("rotate-90"); // Rotate arrow
+        });
+    </script>
+
+    <style>
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+    </style>
+
         </div>
-        
-    </div>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>
