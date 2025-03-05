@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .letter-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #000;
+            background-color: white;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #letterContent, #letterContent * {
+                visibility: visible;
+            }
+            #letterContent {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+
+        .header {
+            background: #002147;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .print-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Editable content styling */
+        .editable {
+            border-bottom: 1px dashed #333;
+            min-width: 100px;
+            display: inline-block;
+            cursor: text;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="container mt-4">
+        <div class="letter-container" id="letterContent">
+            <div class="header">
+                <h5>Sukuu Educational Foundation</h5>
+                <p>(A Non-Profit Charitable Trust)</p>
+            </div>
+
+            <div class="text-center">
+                <img id="staffPhoto" class="profile-img" src="" alt="Profile Photo">
+            </div>
+            
+            <p><strong>Online Exam Result:</strong> <span class="text-success">Pass</span></p>
+
+            <h6><strong>SUBJECT:</strong> APPOINTMENT LETTER FOR BASIC TRAINING</h6>
+            <p>Dear Candidate,</p>
+            <p>Mr <strong><span id="staffName2" contenteditable="true" class="editable"></span></strong>, you have passed your online test. You are appointed
+                for Medical and Interview.</p>
+            <p>Name: <span id="staffName" contenteditable="true" class="editable"></span></p>
+            <p>Staff ID: <span id="staffID" contenteditable="true" class="editable"></span></p>
+            <p>Role: <span id="staffRole" contenteditable="true" class="editable"></span></p>
+            <p>Address: <span id="address" contenteditable="true" class="editable"></span></p>
+            <p>Medical Date: <span id="medicalDate" contenteditable="true" class="editable"></span></p>
+            <p>Reporting Time: <span id="reportingTime" contenteditable="true" class="editable"></span></p>
+
+            <h6><strong>Required Documents:</strong></h6>
+            <ul id="documentList">
+                <li><input type="text" value="10th Marksheet" class="form-control"></li>
+                <li><input type="text" value="Aadhar Card" class="form-control"></li>
+                <li><input type="text" value="Two passport size photos" class="form-control"></li>
+                <li><input type="text" value="Rs. 4000/- Medical Fee" class="form-control"></li>
+            </ul>
+
+
+            <p><strong>For queries:</strong> Call 7303013488 | Visit: <a href="#">https://www.sukuu.com</a></p>
+            <p><strong>Reporting Address:</strong> Same as above</p>
+            <p><strong>With Warm Regards,</strong></p>
+            <p>Invigilator</p>
+
+            <div class="text-center">
+                <img src="signature.png" alt="Signature" width="150">
+                <p><strong>+2332745355745</strong><br>sukuu@info.com</p>
+            </div>
+        </div>
+
+        <div class="print-btn">
+            <button class="btn btn-primary" onclick="printLetter()">Print Letter</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", populateLetter);
+    
+        // ✅ Extract employee ID from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+    
+        // ✅ Fetch and populate letter with employee details
+        async function populateLetter() {
+            const employeeID = getQueryParam("employeeid");
+            if (!employeeID) {
+                console.error("No Employee ID found in URL.");
+                return;
+            }
+    
+            try {
+                const response = await fetch(`http://localhost:5000/api/employees/${employeeID}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch employee data: ${response.statusText}`);
+                }
+    
+                const data = await response.json();
+                console.log("Fetched Employee Data:", data); // Debugging
+    
+                // ✅ Ensure elements exist before modifying them
+                document.getElementById("staffName").textContent = data.name || "N/A";
+                document.getElementById("staffID").textContent = data.staffID || "N/A";
+                document.getElementById("staffRole").textContent = data.role || "N/A";
+                document.getElementById("staffName2").textContent = data.name || "N/A";
+                document.getElementById("medicalDate").textContent = data.meddate || "N/A";
+                document.getElementById("reportingTime").textContent = data.reportday ? `${data.reportday} years` : "N/A";
+                document.getElementById("address").textContent = data.address || "N/A";
+
+                // ✅ Handle staff photo (if available)
+                const photoElement = document.getElementById("staffPhoto");
+                if (data.photo) {
+                    const photoURL = `http://localhost:5000/uploads/${data.photo}`; // Construct the full URL
+                    photoElement.src = photoURL;
+                    photoElement.style.display = "block";
+                } else {
+                    photoElement.style.display = "none"; // Hide if no photo
+                }
+            } catch (error) {
+                console.error("Error fetching employee details:", error);
+            }
+        }
+
+        function printLetter() {
+            window.print();
+        }
+    </script>
+
+</body>
+
+</html>

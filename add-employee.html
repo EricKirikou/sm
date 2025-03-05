@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> School Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
+            <!-- Sidebar Header -->
+            <h4 class="text-1xl font-bold mb-4 flex items-center ml-6"><img src="favicon.png" class="h-24 w-36" alt="">
+                </h4>
+
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center">
+                <img src="profile.png" class="rounded-full w-16 h-16 border-2 border-gray-700" alt="Admin">
+                <div class="ml-4">
+                    <p class="text-lg font-semibold">Mr. Admin</p>
+                    <p class="text-gray-400 text-sm">Admin</p>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <ul class="space-y-2">
+                <li><a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"> <i
+                            class="bi bi-speedometer2"></i> Dashboard</a>
+                </li>
+
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-person-workspace"></i> Employees</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="add-employee.html" class="block py-2 hover:bg-gray-700"> Add New Employee</a></li>
+                        <li><a href="employee.html" class="block py-2 hover:bg-gray-700"> All Employees</a></li>
+                        <li><a href="manage.html" class="block py-2 hover:bg-gray-700"> Manage Employees</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"> Appointment
+                                Letter</a><i class="fas fa-lock ml-auto text-red-300"></i></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Staff ID Card</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Students Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-people-fill"></i> Students</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> Add Student</a></li>
+                        <li><a href="students.html" class="block py-2 hover:bg-gray-700"> All Students</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">⚖ Active / Inactive</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> Admission Letter</a>
+                        </li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Students ID Cards</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Login</a></li>
+                        <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> Promote Students</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-hearts"></i> Parent</a></li>
+
+                <!-- Accounts Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> Accounts</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="account.html" class="block py-2 hover:bg-gray-700"> Account Details</a></li>
+                        <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> Pay Fees</a></li>
+                        <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> Receipts</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Global Payment</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> Expenditure</a></li>
+                        <li><a href="petty-cash.html" class="block py-2 hover:bg-gray-700"> Petty Cash</a></li>
+                        <li><a href="income.html" class="block py-2 hover:bg-gray-700">Income</a></li>
+                        <li><a href="statement.html" class="block py-2 hover:bg-gray-700">Account Statement</a></li>
+                    </ul>
+                </li>
+
+                <!-- Requisition Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-journal-text"></i> Library</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="books.html" class="block py-2 hover:bg-gray-700"> Books</a></li>
+                        <li><a href="issued.html" class="block py-2 hover:bg-gray-700"> Issued Out</a></li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">E-books</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-pc-display"></i> Requisition</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="requistion.html" class="block py-2 hover:bg-gray-700"> Requisition Form</a></li>
+                        <li><a href="review.html" class="block py-2 hover:bg-gray-700"> View Requisitions</a></li>
+                        <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"> Respond
+                                Requisitions</a></li>
+                    </ul>
+                </li> <!-- Exams Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i> Exams</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
+                        <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> Master Sheet</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Blank Award List</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                </li> <!-- Attendance Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-clock-history"></i> Attendance</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"> Staffs Attendance</a>
+                        </li>
+                        <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"> Students Attendance</a>
+                        </li>
+                        <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700">Attendance List</a></li>
+                    </ul>
+                </li>
+                <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-chat-dots-fill"></i> Message</a></li>
+                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-collection-play-fill"></i> Media</a></li>
+                <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-envelope-at"></i> Mail / SMS</a>
+                </li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="mr-2"><i class="bi bi-router-fill"></i> Online Exams</span>
+                        <i class="bi bi-lock ml-auto text-red-300"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <!-- Payroll Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> Payroll</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700">Pay Salary</a></li>
+                        <li><a href="payslip.html" class="block py-2 hover:bg-gray-700">Pay Slip</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Manage Salary</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-cassette"></i> Asset Management</a></li>
+                <!-- Inventory Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cart-check-fill"></i> Shop</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700"> Books & Stationaries</a></li>
+                        <li><a href="shop-uniform.html" class="block py-2 hover:bg-gray-700"> Uniform & Clothing</a></li>
+                        <li><a href="purchase.html" class="block py-2 hover:bg-gray-700"> Purchase</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Sale</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Orders</a></li>
+                    </ul>
+                </li>
+
+                <!----Inventory Section with Standalone Style------->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-window-fullscreen"></i> Leave Application</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="leave.html" class="block py-2 hover:bg-gray-700">Apply for Leave</a></li>
+                        <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> Applications</a></li>
+                    </ul>
+                </li>
+                <li><a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-camera-video-fill"></i> Gmeet Live Class</a>
+                </li>
+                <li><a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-bus-front"></i> Transport</a>
+                </li>
+                <li><a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-house-door"></i> Hostel</a></li>
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-megaphone"></i> Announcement</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="notice.html" class="block py-2 hover:bg-gray-700"> Notice</a></li>
+                        <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"> Timetable</a></li>
+                        <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> Academic Calendar</a></li>
+                    </ul>
+                </li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="mr-2"><i class="bi bi-router-fill"></i> Online Admission</span>
+                        <i class="bi bi-lock ml-auto text-red-300"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-walking"></i> Visitor Info</a>
+                </li>
+                <!-- Settings Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-gear-wide-connected"></i> Settings</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Institution Profile</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Fees Particulars</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Fees Structure</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Discount Type</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="" class="block py-2 hover:bg-gray-700"> Accounts For Fees Invoice</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Rules and Regulations</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Marks Grading</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Theme and Language</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Account Settings</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Audit Trail</a></li>
+                        <li><a href="index.html" class="block py-2 hover:bg-gray-700"> Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="flex-grow">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+                <div class="container-fluid">
+                    <span class="navbar-brand">
+                        <h2 class="text-xl font-semibold">
+                            <h2 class="text-lg font-semibold"><i class="bi bi-person-workspace"></i> Employees <span
+                                    class="text-gray-500">- New Staff</span>
+                            </h2>
+                    </span>
+                    <div>
+                        <span class="me-3">🔔</span>
+                        <span class="me-3">⚙️</span>
+                        <span>🌍</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-md mt-12">
+                <form id="employeeForm">
+                    <h1 class="text-center text-2xl font-bold">Employee Form</h1>
+                    <p class="text-center text-gray-500"><span class="text-purple-500">Required*</span></p>
+            
+                    <div class="mt-6">
+                        <h3 class="font-bold">1 Basic Information</h3>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <input type="hidden" id="employeeId"> <!-- Hidden field for editing -->
+                            <input type="text" id="name" placeholder="Name of Employee" class="border p-2 rounded w-full" required>
+            
+                            <!-- Auto-generated Staff ID -->
+                            <input type="text" id="staffID" class="border p-2 rounded w-full bg-gray-100" readonly>
+            
+                            <input type="text" id="phone" placeholder="Mobile No for SMS/WhatsApp" class="border p-2 rounded w-full">
+                            <div>
+                                <label for="dob" class="text-sm">Date Of Birth</label>
+                                <input type="date" id="dob" class="border p-2 rounded w-full">
+                            </div>
+            
+                            <select id="role" class="border p-2 rounded w-full">
+                                <option value="">Select Role</option>
+                                <option value="Accountant">Accountant</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Librarian">Librarian</option>
+                                <option value="Head Master">Head Master</option>
+                            </select>
+            
+                            <input type="text" id="salary" placeholder="Monthly Salary" class="border p-2 rounded w-full">
+                        </div>
+                    </div>
+            
+                    <div class="mt-6">
+                        <input type="file" id="photo" name="photo" class="border p-2 rounded w-full">
+                        <img id="photoPreview" class="hidden mt-2 rounded-lg" width="100" height="100">
+                    </div>
+            
+                    <div class="mt-6">
+                        <h3 class="font-bold">2 Other Information</h3>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <input type="text" id="fatherName" placeholder="Legal Contact Name" class="border p-2 rounded w-full">
+            
+                            <select id="gender" class="border p-2 rounded w-full">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+            
+                            <input type="text" id="email" placeholder="Mobile Number / Mail" class="border p-2 rounded w-full">
+                            <input type="text" id="experience" placeholder="Experience" class="border p-2 rounded w-full">
+                            <input type="text" id="education" placeholder="Education" class="border p-2 rounded w-full">
+                            <input type="text" id="address" placeholder="Home Address" class="border p-2 rounded w-full col-span-2">
+                        </div>
+                    </div>
+            
+                    <div class="flex justify-between mt-6">
+                        <button type="reset" class="bg-yellow-400 px-6 py-2 rounded-lg">Reset</button>
+                        <button id="submitButton" type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg">Save</button>
+                    </div>
+                </form>
+            </div>
+            
+            <script src="script.js"></script>
+            
+
+            <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
+
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
+
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
+</body>
+
+</html>
