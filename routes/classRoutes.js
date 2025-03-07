@@ -1,14 +1,23 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Class = require("../models/Class"); // Ensure correct path
+const Class = require("../models/Class");
 
-// Get all classes
-router.get("/", async (req, res) => {
+// ✅ Create a new class
+router.post("/add", async (req, res) => {
     try {
-        const classes = await Class.find();
-        res.json(classes);
+        const { className, section, classTeacher, capacity } = req.body;
+
+        if (!className || !section || !classTeacher || !capacity) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const newClass = new Class({ className, section, classTeacher, capacity });
+        await newClass.save();
+
+        res.status(201).json({ message: "Class added successfully!", newClass });
     } catch (error) {
-        res.status(500).json({ message: "Error fetching classes", error });
+        console.error("❌ Error saving class:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
