@@ -210,7 +210,7 @@
                 <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
                             class="bi bi-person-hearts"></i> Parent</a></li>
 
-                
+
                 <!-- Classes Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
@@ -221,7 +221,7 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="classes.html" class="block py-2 hover:bg-gray-700"> All Classes</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> All Classes</a></li>
                         <li><a href="class.html" class="block py-2 hover:bg-gray-700"> Add Class</a></li>
                     </ul>
                 </li>
@@ -553,350 +553,69 @@
                 </div>
             </nav>
 
-            <div class="container mt-4 al">
-                <!-- Dashboard Cards -->
-                <div class="row g-4 ">
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-danger">
-                            <div>
-                                <h3 class="font-bold text-4xl">44</h3>
-                                <p class="text-lg">Students</p>
-                            </div>
-                            <img src="image1.png" alt="Students" width="60" class="rounded-circle">
-                        </div>
-                    </div>
+           <!-- Display Classes Section -->
+<div id="classList" class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-md mt-12">
+    <h2 class="text-center text-2xl font-bold">Class List</h2>
+    <div id="classContainer" class="mt-6 space-y-4"></div>
+</div>
 
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-success">
-                            <div>
-                                <h3 class="font-bold text-4xl">10</h3>
-                                <p class="text-lg">Parents</p>
-                            </div>
-                            <img src="image2.png" alt="Parents" width="60" class="rounded-circle">
-                        </div>
-                    </div>
+<script>
+    async function loadClasses() {
+        try {
+            const response = await fetch("http://localhost:5000/api/classes");
+            if (!response.ok) {
+                throw new Error("Failed to fetch classes");
+            }
 
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-info">
-                            <div>
-                                <h3 class="font-bold text-4xl">12</h3>
-                                <p class="text-lg">Teachers</p>
-                            </div>
-                            <img src="image3.png" alt="Teachers" width="60" class="rounded-circle">
-                        </div>
-                    </div>
+            const classes = await response.json();
+            const classContainer = document.getElementById("classContainer");
 
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-primary">
-                            <div>
-                                <h3 class="font-bold text-4xl">35</h3>
-                                <p class="text-lg">Subjects</p>
-                            </div>
-                            <img src="image4.png" alt="Subjects" width="60" class="rounded-circle">
-                        </div>
-                    </div>
-                </div>
+            classContainer.innerHTML = ""; // Clear previous content
 
-                <!-- Chart Section -->
-                <div class="container-fluid mt-4">
-                    <div class="text-center bg-teal-500 text-white fw-bold">
-                        <h2>2025 Accounts Summary</h2>
-                        <p>Click month income or expense column to view day-wise account summary</p>
-                    </div>
-                    <div class="chart-container w-100">
+            if (classes.length === 0) {
+                classContainer.innerHTML = `<p class="text-center text-gray-500">No classes found.</p>`;
+                return;
+            }
 
-                        <canvas id="accountsChart"></canvas>
-                    </div>
-                </div>
+            classes.forEach(cls => {
+                const classDiv = document.createElement("div");
+                classDiv.className = "border p-4 rounded-lg shadow-md bg-gray-100";
 
-                <script>
-                    const ctx = document.getElementById('accountsChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                            datasets: [
-                                {
-                                    label: 'Income',
-                                    data: [100000, 50000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    borderColor: 'lightblue',
-                                    backgroundColor: 'rgba(173, 216, 230, 0.5)',
-                                    fill: true,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'blue',
-                                },
-                                {
-                                    label: 'Expense',
-                                    data: [90000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    borderColor: 'purple',
-                                    backgroundColor: 'rgba(255, 0, 255, 0.5)',
-                                    fill: true,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'purple',
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (tooltipItem) {
-                                            return tooltipItem.dataset.label + ": " + tooltipItem.raw.toLocaleString();
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function (value) {
-                                            return value.toLocaleString();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                </script>
+                classDiv.innerHTML = `
+                    <h3 class="text-xl font-semibold">${cls.className} - Section ${cls.section || "N/A"}</h3>
+                    <p><strong>Teacher:</strong> ${cls.classTeacher || "Not Assigned"}</p>
+                    <p><strong>Subjects:</strong> ${cls.subjects ? cls.subjects.join(", ") : "None"}</p>
+                `;
 
-                <!-- User Profile & Attendance Section -->
-                <div class="row mt-5 d-flex align-items-stretch">
-                    <!-- User Profile Section -->
-                    <div class="col-md-3 d-flex flex-column">
-                        <div class="bg-pink-600 text-white rounded-lg shadow-md p-4 text-center flex-grow-1">
-                            <img src="profile.png" alt="Admin" class="rounded-full mx-auto border-4 border-white"
-                                width="80">
-                            <h3 class="mt-2 text-lg font-semibold">Mr. Admin</h3>
-                            <p class="italic">Admin</p>
-                        </div>
-                        <div class="bg-white shadow-md mt-3 p-3 rounded-lg flex-grow-1">
-                            <ul class="list-unstyled">
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-user text-pink-600 me-2"></i> <span>Username:</span> <span
-                                        class="ms-auto">admin</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-envelope text-pink-600 me-2"></i> <span>Email:</span> <span
-                                        class="ms-auto">info@sukuu.com</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-phone text-pink-600 me-2"></i> <span>Phone:</span> <span
-                                        class="ms-auto">---</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-map-marker-alt text-pink-600 me-2"></i> <span>Address:</span> <span
-                                        class="ms-auto">---</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                classContainer.appendChild(classDiv);
+            });
+        } catch (error) {
+            console.error("Error loading classes:", error);
+            document.getElementById("classContainer").innerHTML = `<p class="text-center text-red-500">Error loading classes.</p>`;
+        }
+    }
 
-                    <!-- Attendance Section -->
-                    <div class="col-md-9 d-flex">
-                        <div class="bg-white p-4 rounded-lg shadow-md w-100 d-flex flex-column">
-                            <h4 class="text-lg font-semibold">Students Today's Attendance</h4>
-                            <p class="text-sm text-gray-500">Click the columns to view this month's student attendance.
-                            </p>
+    // Load classes when the page loads
+    document.addEventListener("DOMContentLoaded", loadClasses);
+</script>
 
-                            <!-- Attendance Chart -->
-                            <div class="mt-4 flex-grow-1 d-flex align-items-center">
-                                <canvas id="attendanceChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
 
-                <!-- Attendance Chart -->
-                <script>
-                    const ctx2 = document.getElementById('attendanceChart').getContext('2d');
-                    new Chart(ctx2, {
-                        type: 'bar',
-                        data: {
-                            labels: ['One', 'Two', 'Three', 'Four', 'Five', 'Graduate'],
-                            datasets: [
-                                { label: 'Present', data: [5, 10, 7, 8, 9, 6], backgroundColor: 'rgba(54, 162, 235, 0.6)' },
-                                { label: 'Absent', data: [2, 4, 3, 5, 1, 2], backgroundColor: 'rgba(255, 99, 132, 0.6)' }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                </script>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <!-- Notice Section -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h4 class="text-lg font-semibold mb-3">Notice</h4>
-                        <ul class="divide-y divide-gray-300">
-                            <li class="flex items-center justify-between py-2">
-                                <span>1</span>
-                                <span class="flex-1 ml-2 truncate">Farewell Ceremo..</span>
-                                <span class="flex-1 truncate">The most of the words ado..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>2</span>
-                                <span class="flex-1 ml-2 truncate">Second Semester..</span>
-                                <span class="flex-1 truncate">Dedicated athlete, an ama..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>3</span>
-                                <span class="flex-1 ml-2 truncate">First Semester ..</span>
-                                <span class="flex-1 truncate">If you are a dedicated at..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>4</span>
-                                <span class="flex-1 ml-2 truncate">Annual Sports D..</span>
-                                <span class="flex-1 truncate">You surely are familiar w..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>5</span>
-                                <span class="flex-1 ml-2 truncate">Teachers Reunio..</span>
-                                <span class="flex-1 truncate">An amateur player, or a sport geek, than you ..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
 
-                    <!-- Site Stats Section -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <div class="flex justify-between items-center">
-                            <h4 class="text-lg font-semibold">Site Stats</h4>
-                            <i class="fas fa-bars text-gray-500"></i>
-                        </div>
-                        <div class="mt-4">
-                            <canvas id="siteStatsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    const ctx3 = document.getElementById('siteStatsChart').getContext('2d');
-                    const siteStatsChart = new Chart(ctx3, {
-                        type: 'line',
-                        data: {
-                            labels: ['19 Feb'],
-                            datasets: [{
-                                label: 'Visitors',
-                                data: [1],
-                                borderColor: 'pink',
-                                backgroundColor: 'rgba(255, 105, 180, 0.5)',
-                                fill: true,
-                                pointRadius: 5,
-                                pointBackgroundColor: 'pink',
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                }
-                            }
-                        }
-                    });
-                </script>
-
-                <!-- FullCalendar CSS -->
-                <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" rel="stylesheet">
-
-                <!-- Google Font -->
-                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-                    rel="stylesheet">
-
-                <!-- Custom Styling -->
-
-
-                <div id="calendar-container">
-                    <div id="calendar"></div>
-                </div>
-
-                <!-- FullCalendar JS -->
-                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var calendarEl = document.getElementById('calendar');
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            initialView: 'dayGridMonth',
-                            selectable: true,
-                            editable: true,
-                            eventLimit: true,
-
-                            headerToolbar: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                            },
-
-                            events: [
-                                { title: '📚 Exam', start: '2025-02-21', color: '#ff4d4d' },
-                                { title: '🎉 School Event', start: '2025-02-24', color: '#28a745' },
-                                { title: '💻 IT Workshop', start: '2025-02-27', color: '#007bff' }
-                            ],
-
-                            dateClick: function (info) {
-                                let eventTitle = prompt('Enter Event Title:');
-                                if (eventTitle) {
-                                    calendar.addEvent({
-                                        title: eventTitle,
-                                        start: info.dateStr,
-                                        allDay: true,
-                                        color: '#ff9800'
-                                    });
-                                }
-                            },
-
-                            eventClick: function (info) {
-                                if (confirm('Delete this event?')) {
-                                    info.event.remove();
-                                }
-                            }
-                        });
-
-                        calendar.render();
-                    });
-                </script>
-                <script>
-                    document.getElementById("menuToggle").addEventListener("click", function (event) {
-                        event.preventDefault();
-                        let submenu = document.getElementById("submenu");
-                        let arrow = document.getElementById("arrow");
-
-                        submenu.classList.toggle("hidden"); // Toggle submenu
-                        arrow.classList.toggle("rotate-90"); // Rotate arrow
-                    });
-                </script>
-
-                <style>
-                    .rotate-90 {
-                        transform: rotate(90deg);
-                    }
-                </style>
-            </div>
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
 </body>
 
 </html>
