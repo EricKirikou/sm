@@ -477,32 +477,28 @@
             </nav>
             <div class="flex justify-center items-center min-h-70">
 
-                <div class="bg-white p-6 rounded-lg shadow-md w-full align-items-center mt-4 max-w-4xl">
+                <div class="bg-white p-6 rounded-lg shadow-md w-full mt-12 max-w-4xl">
                     <!-- Title -->
-                    <h2 class="text-2xl font-bold text-center mb-6"></h2>
+                    <h2 class="text-2xl font-bold text-center mb-6">Change Fee Particulars</h2>
             
                     <!-- Filter Options (Top Center) -->
                     <div class="flex flex-col items-center space-y-3 mb-6">
                         <label class="block text-sm font-medium text-gray-700">Filter By:</label>
                         <div class="flex space-x-4">
-                            <select class="p-2 border rounded-md bg-blue-100 text-gray-800">
-                                <option>All Students</option>
-                                <option>Specific Class</option>
-                                <option>Specific Student</option>
+                            <select id="filterSelect" class="p-2 border rounded-md bg-blue-100 text-gray-800">
+                                <option value="all">All Students</option>
+                                <option value="class">Specific Class</option>
+                                <option value="student">Specific Student</option>
                             </select>
-                            <input type="text" placeholder="Enter Student ID" class="p-2 border rounded-md w-60 bg-gray-100 text-gray-800" />
-                        </div>
-                    </div>
             
-                    <!-- Toggle Switch -->
-                    <div class="flex justify-center items-center space-x-4 mb-4">
-                   
+                            <!-- Student ID Input (Hidden by Default) -->
+                            <input type="text" id="studentIdInput" placeholder="Enter Student ID" class="p-2 border rounded-md w-60 bg-gray-100 text-gray-800 hidden" />
+                        </div>
                     </div>
             
                     <!-- Fee Particulars List -->
-                    <div class="space-y-4">
-                        <!-- Fee Input Rows (Editable Fields) -->
-                        <div class="grid grid-cols-2 gap-4">
+                    <div id="feeEntries" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4 fee-entry">
                             <div>
                                 <label class="block text-sm font-medium text-purple-600">Particular Label*</label>
                                 <input type="text" placeholder="Enter fee name" class="w-full p-2 border rounded-md">
@@ -512,28 +508,13 @@
                                 <input type="number" placeholder="Enter amount" class="w-full p-2 border rounded-md">
                             </div>
                         </div>
+                    </div>
             
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-purple-600">Particular Label*</label>
-                                <input type="text" placeholder="Enter fee name" class="w-full p-2 border rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-purple-600">Prefix Amount*</label>
-                                <input type="number" placeholder="Enter amount" class="w-full p-2 border rounded-md">
-                            </div>
-                        </div>
-            
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-purple-600">Particular Label*</label>
-                                <input type="text" placeholder="Enter fee name" class="w-full p-2 border rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-purple-600">Prefix Amount*</label>
-                                <input type="number" placeholder="Enter amount" class="w-full p-2 border rounded-md">
-                            </div>
-                        </div>
+                    <!-- Add Entry Button -->
+                    <div class="flex justify-center mt-4">
+                        <button id="addEntryBtn" class="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-600">
+                            Add Entry
+                        </button>
                     </div>
             
                     <!-- Save Button -->
@@ -543,6 +524,47 @@
                         </button>
                     </div>
                 </div>
+            
+                <!-- JavaScript for Dynamic Filtering & Adding Entries -->
+                <script>
+                    document.getElementById("filterSelect").addEventListener("change", function() {
+                        let studentIdInput = document.getElementById("studentIdInput");
+                        if (this.value === "student") {
+                            studentIdInput.classList.remove("hidden"); // Show input field
+                        } else {
+                            studentIdInput.classList.add("hidden"); // Hide input field
+                        }
+                    });
+            
+                    document.getElementById("addEntryBtn").addEventListener("click", function() {
+                        let feeEntries = document.getElementById("feeEntries");
+                        
+                        let newEntry = document.createElement("div");
+                        newEntry.classList.add("grid", "grid-cols-2", "gap-4", "fee-entry");
+            
+                        newEntry.innerHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-purple-600">Particular Label*</label>
+                                <input type="text" placeholder="Enter fee name" class="w-full p-2 border rounded-md">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-full">
+                                    <label class="block text-sm font-medium text-purple-600">Prefix Amount*</label>
+                                    <input type="number" placeholder="Enter amount" class="w-full p-2 border rounded-md">
+                                </div>
+                                <button class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 removeEntryBtn"><i class="bi bi-x-lg"></i></button>
+                            </div>
+                        `;
+            
+                        feeEntries.appendChild(newEntry);
+            
+                        // Add event listener to remove button
+                        newEntry.querySelector(".removeEntryBtn").addEventListener("click", function() {
+                            newEntry.remove();
+                        });
+                    });
+                </script>
+            
             </div>
         
             <script>
