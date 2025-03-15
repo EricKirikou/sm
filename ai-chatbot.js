@@ -15,13 +15,13 @@ const createMessageElement = (content, isUser = true, imageURL = null) => {
     div.classList.add("flex", "gap-2", "items-start", isUser ? "justify-end" : "justify-start");
 
     let messageContent = `
-        <div class="message-text bg-gray-800 text-white p-3 rounded-lg max-w-sm shadow">
+        <div class="message-text bg-gray-500 text-white p-3 rounded-lg max-w-sm shadow">
             <p>${content}</p>
         </div>`;
 
     if (imageURL) {
         messageContent = `
-            <div class="message-text bg-gray-800 text-white p-3 rounded-lg max-w-sm shadow">
+            <div class="message-text bg-gray-500 text-white p-3 rounded-lg max-w-sm shadow">
                 <p>${content}</p>
                 <img src="${imageURL}" class="w-[150px] h-[150px] object-cover mt-2 rounded-lg">
             </div>`;

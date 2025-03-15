@@ -156,7 +156,7 @@
                 <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
                             class="bi bi-person-hearts"></i> Parent</a></li>
 
-                
+
                 <!-- Classes Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
@@ -172,58 +172,58 @@
                     </ul>
                 </li>
 
-            </li> 
-            
-        </li> <!-- Attendance Section with Standalone Style -->
-        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-            class="rounded p-2 transition-colors duration-300">
-
-            <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                <span class="font-semibold"><i class="bi bi-clock-history"></i> Attendance</span>
-                <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
-            </button>
-
-            <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"> Staffs Attendance</a>
                 </li>
-                <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"> Students Attendance</a>
+
+                </li> <!-- Attendance Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-clock-history"></i> Attendance</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"> Staffs Attendance</a>
+                        </li>
+                        <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"> Students Attendance</a>
+                        </li>
+                        <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700">Attendance List</a></li>
+                    </ul>
                 </li>
-                <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700">Attendance List</a></li>
-            </ul>
-        </li>
 
-            <!-- Exams Section with Standalone Style -->
-            <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                class="rounded p-2 transition-colors duration-300">
+                <!-- Exams Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
 
-                <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                    <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i> Exams</span>
-                    <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
-                </button>
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i> Exams</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
 
-                <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                    <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
-                    <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> Master Sheet</a></li>
-                    <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                        <a href="#" class="flex items-center">
-                            <span class="mr-2">Blank Award List</span>
-                            <i class="bi bi-lock ml-auto text-red-300"></i>
-                        </a>
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> Result Card</a></li>
+                        <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> Master Sheet</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Blank Award List</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
 
-                        <!-- Tooltip -->
-                        <div
-                            class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                            This option is available in <br>
-                            premium Version only.
+                            <!-- Tooltip -->
                             <div
-                                class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            
-          
+                        </li>
+                    </ul>
+                </li>
+
+
                 <!-- Accounts Section with Standalone Style -->
                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
                     class="rounded p-2 transition-colors duration-300">
@@ -260,36 +260,36 @@
                     </ul>
                 </li>
 
-                 <!-- Payroll Section with Standalone Style -->
-                 <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                 class="rounded p-2 transition-colors duration-300">
+                <!-- Payroll Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
 
-                 <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                     <span class="font-semibold"><i class="bi bi-cash-coin"></i> Payroll</span>
-                     <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
-                 </button>
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> Payroll</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
 
-                 <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                     <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700">Pay Salary</a></li>
-                     <li><a href="payslip.html" class="block py-2 hover:bg-gray-700">Pay Slip</a></li>
-                     <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                         <a href="#" class="flex items-center">
-                             <span class="mr-2">Manage Salary</span>
-                             <i class="bi bi-lock ml-auto text-red-300"></i>
-                         </a>
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700">Pay Salary</a></li>
+                        <li><a href="payslip.html" class="block py-2 hover:bg-gray-700">Pay Slip</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">Manage Salary</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
 
-                         <!-- Tooltip -->
-                         <div
-                             class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                             This option is available in <br>
-                             premium Version only.
-                             <div
-                                 class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                             </div>
-                         </div>
-                     </li>
-                 </ul>
-             </li>
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
 
 
                 <!-- Requisition Section with Standalone Style -->
@@ -337,7 +337,7 @@
                         <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"> Respond
                                 Requisitions</a></li>
                     </ul>
-               
+
 
                 <li><a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
                             class="bi bi-chat-dots-fill"></i> Message</a></li>
@@ -361,7 +361,7 @@
                         </div>
                     </div>
                 </li>
-               
+
                 <li><a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
                             class="bi bi-cassette"></i> Asset Management</a></li>
                 <!-- Inventory Section with Standalone Style -->
@@ -449,8 +449,10 @@
                     </button>
 
                     <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                        <li><a href="institution-info.html" class="block py-2 hover:bg-gray-700"> Institution Profile</a></li>
-                        <li><a href="fees-particulars.html" class="block py-2 hover:bg-gray-700"> Fees Particulars</a></li>
+                        <li><a href="institution-info.html" class="block py-2 hover:bg-gray-700"> Institution
+                                Profile</a></li>
+                        <li><a href="fees-particulars.html" class="block py-2 hover:bg-gray-700"> Fees Particulars</a>
+                        </li>
                         <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
                             <a href="#" class="flex items-center">
                                 <span class="mr-2">Fees Structure</span>
@@ -491,50 +493,52 @@
                     </ul>
                 </li>
                 <!-- AI Integration Section with Standalone Style -->
-<li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-class="rounded p-2 transition-colors duration-300">
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
 
-<button @click="open = !open" class="flex items-center justify-between w-full text-white">
-    <span class="font-semibold"><i class="bi bi-robot"></i> AI Integration</span>
-    <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
-</button>
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-robot"></i> AI Integration</span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''">▼</span>
+                    </button>
 
-<ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-    <li><a href="ai-chatbot.html" class="block py-2 hover:bg-gray-700"> AI Chatbot</a></li>
-    <li><a href="ai-analytics.html" class="block py-2 hover:bg-gray-700"> AI-Powered Analytics</a></li>
-    <li><a href="ai-automation.html" class="block py-2 hover:bg-gray-700"> AI Automation</a></li>
-    <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-        <a href="#" class="flex items-center">
-            <span class="mr-2">AI Personalized Learning</span>
-            <i class="bi bi-lock ml-auto text-red-300"></i>
-        </a>
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="ai-chatbot.html" class="block py-2 hover:bg-gray-700"> AI Chatbot</a></li>
+                        <li><a href="ai-analytics.html" class="block py-2 hover:bg-gray-700"> AI-Powered Analytics</a>
+                        </li>
+                        <li><a href="ai-automation.html" class="block py-2 hover:bg-gray-700"> AI Automation</a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">AI Personalized Learning</span>
+                                <i class="bi bi-lock ml-auto text-red-300"></i>
+                            </a>
 
-        <!-- Tooltip -->
-        <div
-            class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-            This option is available in <br>
-            premium Version only.
-            <div
-                class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-            </div>
-        </div>
-    </li>
-    <li><a href="ai-reports.html" class="block py-2 hover:bg-gray-700"> AI-Generated Reports</a></li>
-</ul>
-</li>
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="ai-reports.html" class="block py-2 hover:bg-gray-700"> AI-Generated Reports</a>
+                        </li>
+                    </ul>
+                </li>
 
             </ul>
         </nav>
         <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
-            <button id="chat-sukuu-btn" 
+            <button id="chat-sukuu-btn"
                 class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
                 <i class="bi bi-chat-dots text-2xl"></i>
                 <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
             </button>
         </div>
-        
+
         <script>
-            document.getElementById("chat-sukuu-btn").addEventListener("click", function() {
+            document.getElementById("chat-sukuu-btn").addEventListener("click", function () {
                 window.location.href = "ai-chatbot.html";
             });
         </script>
@@ -583,32 +587,33 @@ class="rounded p-2 transition-colors duration-300">
                     </div>
 
                     <!-- Chat Input -->
-<div class="relative bg-white px-5 py-3 flex items-center gap-3 rounded-b-2xl shadow-md">
-    <!-- Emoji Button -->
-    <button type="button" id="emoji-btn" class="text-gray-400 hover:text-blue-500 transition relative">
-        <i class="bi bi-emoji-smile text-2xl"></i>
-    </button>
+                    <div class="relative bg-white px-5 py-3 flex items-center gap-3 rounded-b-2xl shadow-md">
+                        <!-- Emoji Button -->
+                        <button type="button" id="emoji-btn"
+                            class="text-gray-400 hover:text-blue-500 transition relative">
+                            <i class="bi bi-emoji-smile text-2xl"></i>
+                        </button>
 
-    <!-- Emoji Picker (Hidden by Default) -->
-    <div id="emoji-picker-container" 
-        class="absolute bottom-full left-0 mb-2 hidden z-50 bg-white shadow-lg rounded-lg p-2 border">
-    </div>
+                        <!-- Emoji Picker (Hidden by Default) -->
+                        <div id="emoji-picker-container"
+                            class="absolute bottom-full left-0 mb-2 hidden z-50 bg-white shadow-lg rounded-lg p-2 border">
+                        </div>
 
-    <textarea id="chat-input"
-        class="flex-1 border-none outline-none resize-none text-sm px-4 py-3 bg-gray-100 rounded-full"
-        placeholder="Type a message..." rows="1"></textarea>
+                        <textarea id="chat-input"
+                            class="flex-1 border-none outline-none resize-none text-sm px-4 py-3 bg-gray-100 rounded-full"
+                            placeholder="Type a message..." rows="1"></textarea>
 
-    <button type="button" id="file-btn" class="text-gray-400 hover:text-blue-500 transition">
-        <i class="bi bi-paperclip text-2xl"></i>
-    </button>
-    <input type="file" id="file-input" class="hidden">
+                        <button type="button" id="file-btn" class="text-gray-400 hover:text-blue-500 transition">
+                            <i class="bi bi-paperclip text-2xl"></i>
+                        </button>
+                        <input type="file" id="file-input" class="hidden">
 
-    <!-- Send Button -->
-    <button id="send-btn" type="submit"
-        class="w-12 h-12 bg-blue-600 text-white flex items-center justify-center rounded-full transition opacity-0 pointer-events-none hover:bg-blue-500">
-        <i class="bi bi-arrow-up-short text-2xl"></i>
-    </button>
-</div>
+                        <!-- Send Button -->
+                        <button id="send-btn" type="submit"
+                            class="w-12 h-12 bg-blue-600 text-white flex items-center justify-center rounded-full transition opacity-0 pointer-events-none hover:bg-blue-500">
+                            <i class="bi bi-arrow-up-short text-2xl"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
