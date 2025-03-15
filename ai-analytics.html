@@ -10,81 +10,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 
     <style>
         body {
             font-family: Arial, sans-serif;
-        }
-
-        #calendar-container {
-            width: 100%;
-            max-width: 2000px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
-        }
-
-        .fc-toolbar-title {
-            font-size: 22px !important;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .fc-daygrid-day:hover {
-            background: rgba(255, 99, 132, 0.1);
-            transition: 0.3s;
-        }
-
-        .fc-day-today {
-            background: rgba(54, 162, 235, 0.2) !important;
-        }
-
-        .fc-event {
-            border-radius: 8px !important;
-            font-size: 14px !important;
-        }
-
-        .dashboard-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            color: white;
-        }
-
-        .chart-container {
-            width: 100%;
-            /* Full width */
-            height: 400px;
-            /* Adjust height as needed */
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .chart-container canvas {
-            height: 300px !important;
-            /* Reduce chart height */
         }
     </style>
 </head>
 
 <body class="bg-gray-100">
     <div class="d-flex">
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-        <!-- Sidebar -->
-        <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
+         <!-- Sidebar -->
+         <nav class="bg-gray-900 text-white min-h-screen p-4 w-64">
             <!-- Sidebar Header -->
             <h4 class="text-1xl font-bold mb-4 flex items-center ml-6"><img src="favicon.png" class="h-24 w-36" alt="">
             </h4>
@@ -537,8 +478,10 @@
                             </div>
                         </li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Rules and Regulations</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Marks Grading</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Theme and Language</a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Account Settings</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Audit Trail</a></li>
-                        <li><a href="#" class="block py-2 hover:bg-gray-700"> Manage Login</a></li>
                         <li><a href="index.html" class="block py-2 hover:bg-gray-700"> Log Out</a></li>
                     </ul>
                 </li>
@@ -571,7 +514,7 @@ class="rounded p-2 transition-colors duration-300">
             </div>
         </div>
     </li>
-    <li><a href="404-error.html" class="block py-2 hover:bg-gray-700"> AI-Generated Reports</a></li>
+    <li><a href="ai-reports.html" class="block py-2 hover:bg-gray-700"> AI-Generated Reports</a></li>
 </ul>
 </li>
 
@@ -590,366 +533,131 @@ class="rounded p-2 transition-colors duration-300">
                 window.location.href = "ai-chatbot.html";
             });
         </script>
-        
 
         <!-- Main Content -->
         <div class="flex-grow">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
-                <div class="container-fluid">
-                    <span class="navbar-brand"><i class="bi bi-speedometer2"></i> Dashboard</span>
-                    <div>
-                        <span class="me-3">🔔</span>
-                        <span class="me-3">⚙️</span>
-                        <span>🌍</span>
-                    </div>
-                </div>
-            </nav>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3 flex justify-between">
+    <span class="text-xl font-bold">AI Task Manager</span>
+    <div>
+        <span class="me-3">🔔</span>
+        <span class="me-3">⚙️</span>
+        <span>🌍</span>
+    </div>
+</nav>
 
-            <div class="container mt-4 al">
-                <!-- Dashboard Cards -->
-                <div class="row g-4 ">
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-danger">
-                            <div>
-                                <h3 class="font-bold text-4xl">44</h3>
-                                <p class="text-lg">Students</p>
-                            </div>
-                            <img src="image1.png" alt="Students" width="60" class="rounded-circle">
-                        </div>
-                    </div>
+ <!-- Header & Controls -->
+ <div class="flex justify-between items-center my-6 px-8">
+    <input id="new-task" type="text" placeholder="Add a new task..." 
+           class="border p-2 w-3/5 rounded-md" />
+    <button id="add-task-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500">
+        Add Task
+    </button>
+    <button id="ai-suggest-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500">
+        AI Suggest Task
+    </button>
+</div>
 
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-success">
-                            <div>
-                                <h3 class="font-bold text-4xl">10</h3>
-                                <p class="text-lg">Parents</p>
-                            </div>
-                            <img src="image2.png" alt="Parents" width="60" class="rounded-circle">
-                        </div>
-                    </div>
+<!-- Task Board -->
+<div class="grid grid-cols-3 gap-4 px-8">
+    <div class="bg-white rounded-lg shadow-md p-4">
+        <h2 class="text-lg font-semibold mb-3">To Do</h2>
+        <div id="todo" class="min-h-[150px] p-2 bg-gray-50 rounded-md" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
 
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-info">
-                            <div>
-                                <h3 class="font-bold text-4xl">12</h3>
-                                <p class="text-lg">Teachers</p>
-                            </div>
-                            <img src="image3.png" alt="Teachers" width="60" class="rounded-circle">
-                        </div>
-                    </div>
+    <div class="bg-white rounded-lg shadow-md p-4">
+        <h2 class="text-lg font-semibold mb-3">In Progress</h2>
+        <div id="in-progress" class="min-h-[150px] p-2 bg-gray-50 rounded-md" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
 
-                    <div class="col-md-3">
-                        <div class="dashboard-card bg-primary">
-                            <div>
-                                <h3 class="font-bold text-4xl">35</h3>
-                                <p class="text-lg">Subjects</p>
-                            </div>
-                            <img src="image4.png" alt="Subjects" width="60" class="rounded-circle">
-                        </div>
-                    </div>
-                </div>
+    <div class="bg-white rounded-lg shadow-md p-4">
+        <h2 class="text-lg font-semibold mb-3">Done</h2>
+        <div id="done" class="min-h-[150px] p-2 bg-gray-50 rounded-md" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+</div>
+</div>
 
-                <!-- Chart Section -->
-                <div class="container-fluid mt-4">
-                    <div class="text-center bg-teal-500 text-white fw-bold">
-                        <h2>2025 Accounts Summary</h2>
-                        <p>Click month income or expense column to view day-wise account summary</p>
-                    </div>
-                    <div class="chart-container w-100">
+<script>
+function allowDrop(event) {
+    event.preventDefault();
+}
 
-                        <canvas id="accountsChart"></canvas>
-                    </div>
-                </div>
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
 
-                <script>
-                    const ctx = document.getElementById('accountsChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                            datasets: [
-                                {
-                                    label: 'Income',
-                                    data: [100000, 50000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    borderColor: 'lightblue',
-                                    backgroundColor: 'rgba(173, 216, 230, 0.5)',
-                                    fill: true,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'blue',
-                                },
-                                {
-                                    label: 'Expense',
-                                    data: [90000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    borderColor: 'purple',
-                                    backgroundColor: 'rgba(255, 0, 255, 0.5)',
-                                    fill: true,
-                                    pointRadius: 5,
-                                    pointBackgroundColor: 'purple',
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (tooltipItem) {
-                                            return tooltipItem.dataset.label + ": " + tooltipItem.raw.toLocaleString();
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function (value) {
-                                            return value.toLocaleString();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                </script>
+function drop(event) {
+    event.preventDefault();
+    let taskId = event.dataTransfer.getData("text");
+    let task = document.getElementById(taskId);
+    event.target.appendChild(task);
+    saveTasks();
+}
 
-                <!-- User Profile & Attendance Section -->
-                <div class="row mt-5 d-flex align-items-stretch">
-                    <!-- User Profile Section -->
-                    <div class="col-md-3 d-flex flex-column">
-                        <div class="bg-pink-600 text-white rounded-lg shadow-md p-4 text-center flex-grow-1">
-                            <img src="profile.png" alt="Admin" class="rounded-full mx-auto border-4 border-white"
-                                width="80">
-                            <h3 class="mt-2 text-lg font-semibold">Mr. Admin</h3>
-                            <p class="italic">Admin</p>
-                        </div>
-                        <div class="bg-white shadow-md mt-3 p-3 rounded-lg flex-grow-1">
-                            <ul class="list-unstyled">
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-user text-pink-600 me-2"></i> <span>Username:</span> <span
-                                        class="ms-auto">admin</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-envelope text-pink-600 me-2"></i> <span>Email:</span> <span
-                                        class="ms-auto">info@sukuu.com</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-phone text-pink-600 me-2"></i> <span>Phone:</span> <span
-                                        class="ms-auto">---</span>
-                                </li>
-                                <li class="d-flex align-items-center py-2">
-                                    <i class="fas fa-map-marker-alt text-pink-600 me-2"></i> <span>Address:</span> <span
-                                        class="ms-auto">---</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+document.getElementById("add-task-btn").addEventListener("click", function() {
+    let taskInput = document.getElementById("new-task");
+    if (taskInput.value.trim() !== "") {
+        addTask(taskInput.value, "todo");
+        taskInput.value = "";
+        saveTasks();
+    }
+});
 
-                    <!-- Attendance Section -->
-                    <div class="col-md-9 d-flex">
-                        <div class="bg-white p-4 rounded-lg shadow-md w-100 d-flex flex-column">
-                            <h4 class="text-lg font-semibold">Students Today's Attendance</h4>
-                            <p class="text-sm text-gray-500">Click the columns to view this month's student attendance.
-                            </p>
+document.getElementById("ai-suggest-btn").addEventListener("click", function() {
+    const aiTasks = [
+        "Review student attendance", "Update class timetable", "Check pending assignments",
+        "Notify parents about fees", "Schedule parent-teacher meetings", "Generate student progress reports"
+    ];
+    const randomTask = aiTasks[Math.floor(Math.random() * aiTasks.length)];
+    addTask(randomTask, "todo");
+    saveTasks();
+});
 
-                            <!-- Attendance Chart -->
-                            <div class="mt-4 flex-grow-1 d-flex align-items-center">
-                                <canvas id="attendanceChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+function addTask(taskText, columnId) {
+    let taskDiv = document.createElement("div");
+    taskDiv.className = "task bg-gray-200 p-2 rounded cursor-move my-2";
+    taskDiv.draggable = true;
+    taskDiv.innerText = taskText;
+    taskDiv.id = `task-${Date.now()}`;
+    taskDiv.ondragstart = drag;
+    document.getElementById(columnId).appendChild(taskDiv);
+    saveTasks();
+}
 
-                <!-- Attendance Chart -->
-                <script>
-                    const ctx2 = document.getElementById('attendanceChart').getContext('2d');
-                    new Chart(ctx2, {
-                        type: 'bar',
-                        data: {
-                            labels: ['One', 'Two', 'Three', 'Four', 'Five', 'Graduate'],
-                            datasets: [
-                                { label: 'Present', data: [5, 10, 7, 8, 9, 6], backgroundColor: 'rgba(54, 162, 235, 0.6)' },
-                                { label: 'Absent', data: [2, 4, 3, 5, 1, 2], backgroundColor: 'rgba(255, 99, 132, 0.6)' }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                </script>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <!-- Notice Section -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h4 class="text-lg font-semibold mb-3">Notice</h4>
-                        <ul class="divide-y divide-gray-300">
-                            <li class="flex items-center justify-between py-2">
-                                <span>1</span>
-                                <span class="flex-1 ml-2 truncate">Farewell Ceremo..</span>
-                                <span class="flex-1 truncate">The most of the words ado..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>2</span>
-                                <span class="flex-1 ml-2 truncate">Second Semester..</span>
-                                <span class="flex-1 truncate">Dedicated athlete, an ama..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>3</span>
-                                <span class="flex-1 ml-2 truncate">First Semester ..</span>
-                                <span class="flex-1 truncate">If you are a dedicated at..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>4</span>
-                                <span class="flex-1 ml-2 truncate">Annual Sports D..</span>
-                                <span class="flex-1 truncate">You surely are familiar w..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                            <li class="flex items-center justify-between py-2">
-                                <span>5</span>
-                                <span class="flex-1 ml-2 truncate">Teachers Reunio..</span>
-                                <span class="flex-1 truncate">An amateur player, or a sport geek, than you ..</span>
-                                <button class="bg-pink-600 text-white px-3 py-1 rounded-full">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+function saveTasks() {
+    const tasks = {};
+    ["todo", "in-progress", "done"].forEach(column => {
+        tasks[column] = Array.from(document.getElementById(column).children).map(task => task.innerText);
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-                    <!-- Site Stats Section -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <div class="flex justify-between items-center">
-                            <h4 class="text-lg font-semibold">Site Stats</h4>
-                            <i class="fas fa-bars text-gray-500"></i>
-                        </div>
-                        <div class="mt-4">
-                            <canvas id="siteStatsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    const ctx3 = document.getElementById('siteStatsChart').getContext('2d');
-                    const siteStatsChart = new Chart(ctx3, {
-                        type: 'line',
-                        data: {
-                            labels: ['19 Feb'],
-                            datasets: [{
-                                label: 'Visitors',
-                                data: [1],
-                                borderColor: 'pink',
-                                backgroundColor: 'rgba(255, 105, 180, 0.5)',
-                                fill: true,
-                                pointRadius: 5,
-                                pointBackgroundColor: 'pink',
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                }
-                            }
-                        }
-                    });
-                </script>
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || { "todo": [], "in-progress": [], "done": [] };
+    Object.keys(tasks).forEach(column => {
+        tasks[column].forEach(taskText => addTask(taskText, column));
+    });
+}
 
-                <!-- FullCalendar CSS -->
-                <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" rel="stylesheet">
+window.onload = loadTasks;
+</script>
+            <script>
+                document.getElementById("menuToggle").addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let submenu = document.getElementById("submenu");
+                    let arrow = document.getElementById("arrow");
 
-                <!-- Google Font -->
-                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-                    rel="stylesheet">
+                    submenu.classList.toggle("hidden"); // Toggle submenu
+                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                });
+            </script>
 
-                <!-- Custom Styling -->
-
-
-                <div id="calendar-container">
-                    <div id="calendar"></div>
-                </div>
-
-                <!-- FullCalendar JS -->
-                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var calendarEl = document.getElementById('calendar');
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            initialView: 'dayGridMonth',
-                            selectable: true,
-                            editable: true,
-                            eventLimit: true,
-
-                            headerToolbar: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                            },
-
-                            events: [
-                                { title: '📚 Exam', start: '2025-02-21', color: '#ff4d4d' },
-                                { title: '🎉 School Event', start: '2025-02-24', color: '#28a745' },
-                                { title: '💻 IT Workshop', start: '2025-02-27', color: '#007bff' }
-                            ],
-
-                            dateClick: function (info) {
-                                let eventTitle = prompt('Enter Event Title:');
-                                if (eventTitle) {
-                                    calendar.addEvent({
-                                        title: eventTitle,
-                                        start: info.dateStr,
-                                        allDay: true,
-                                        color: '#ff9800'
-                                    });
-                                }
-                            },
-
-                            eventClick: function (info) {
-                                if (confirm('Delete this event?')) {
-                                    info.event.remove();
-                                }
-                            }
-                        });
-
-                        calendar.render();
-                    });
-                </script>
-                <script>
-                    document.getElementById("menuToggle").addEventListener("click", function (event) {
-                        event.preventDefault();
-                        let submenu = document.getElementById("submenu");
-                        let arrow = document.getElementById("arrow");
-
-                        submenu.classList.toggle("hidden"); // Toggle submenu
-                        arrow.classList.toggle("rotate-90"); // Rotate arrow
-                    });
-                </script>
-
-                <style>
-                    .rotate-90 {
-                        transform: rotate(90deg);
-                    }
-                </style>
-            </div>
+            <style>
+                .rotate-90 {
+                    transform: rotate(90deg);
+                }
+            </style>
+        </div>
 </body>
 
 </html>
