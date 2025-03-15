@@ -536,7 +536,6 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a href="" class="block py-2 hover:bg-gray-700"> Accounts For Fees Invoice</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Rules and Regulations</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Marks Grading</a></li>
                         <li><a href="#" class="block py-2 hover:bg-gray-700"> Theme and Language</a></li>
@@ -580,7 +579,20 @@ class="rounded p-2 transition-colors duration-300">
 
             </ul>
         </nav>
-
+        <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
+            <button id="chat-sukuu-btn" 
+                class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
+                <i class="bi bi-chat-dots text-2xl"></i>
+                <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
+            </button>
+        </div>
+        
+        <script>
+            document.getElementById("chat-sukuu-btn").addEventListener("click", function() {
+                window.location.href = "ai-chatbot.html";
+            });
+        </script>
+        
 
         <!-- Main Content -->
         <div class="flex-grow">
