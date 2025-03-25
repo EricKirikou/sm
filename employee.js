@@ -60,7 +60,7 @@ async function fetchEmployees() {
 
 // 📌 Function to Open "Add Employee" Modal
 function openAddEmployeeModal() {
-    alert("Open Add Employee Form!");
+    console.log("Opening Add Employee Modal");
 }
 
 
