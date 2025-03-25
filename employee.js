@@ -50,17 +50,6 @@ async function fetchEmployees() {
             const actions = document.createElement("div");
             actions.className = "flex gap-2 mt-3";
 
-            const viewBtn = document.createElement("button");
-            viewBtn.className = "bg-blue-500 text-white p-2 rounded-full text-sm";
-            viewBtn.innerHTML = "";
-            viewBtn.onclick = () => editEmployee(emp._id);
-
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "bg-red-500 text-white p-2 rounded-full text-sm";
-            deleteBtn.innerHTML = "";
-            deleteBtn.onclick = () => deleteEmployee(emp._id);
-
-            actions.append(viewBtn, deleteBtn);
             card.append(image, name, username, role, actions);
             employeeGrid.appendChild(card);
         });
