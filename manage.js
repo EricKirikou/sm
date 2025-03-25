@@ -2,26 +2,26 @@
 // 🔄 Fetch Employees and Render Table
 async function fetchEmployees() {
     try {
-        const response = await fetch("http://localhost:5000/api/employees");
+        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/employee");
         const employees = await response.json();
 
         const tableBody = document.querySelector("#employeeTable tbody");
         tableBody.innerHTML = ""; // Clear existing content
 
-        employees.forEach(emp => {
+        employees.data.forEach(emp => {
             const row = `
                 <tr>
-                    <td class="p-2">${emp.name}</td>
-                    <td class="p-2">${emp.staffID}</td>
+                    <td class="p-2">${emp.nameOfEmployee}</td>
+                    <td class="p-2">${emp.idNumber}</td>
                     <td class="p-2">${emp.email}</td>
-                    <td class="p-2">${new Date(emp.dob).toLocaleDateString()}</td>
+                    <td class="p-2">${new Date(emp.dateOfBirth).toLocaleDateString()}</td>
                     <td class="p-2">${emp.role}</td>
-                    <td class="p-2">${emp.phone}</td>
+                    <td class="p-2">${emp.mobileNumber}</td>
                     <td class="p-2">${emp.gender}</td>
                     <td class="p-2">${emp.address}</td>
                     <td class="p-2">${emp.education}</td>
                     <td class="p-2">${emp.experience}</td>
-                    <td class="p-2">${emp.salary}</td>
+                    <td class="p-2">${emp.monthlySalary}</td>
                     <td class="p-2">
                         <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="editEmployee('${emp._id}')">Edit</button>
                         <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteEmployee('${emp._id}')">Delete</button>
@@ -39,58 +39,70 @@ async function editEmployee(id) {
     try {
         console.log("Fetching employee with ID:", id); // Debugging
 
-        const response = await fetch(`http://localhost:5000/api/employees/${id}`);
+        const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/${id}`);
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-        const emp = await response.json();
-        console.log("Fetched Employee Data:", emp); // Debugging
+        const empData = await response.json();
+        console.log("Fetched Employee Data:", empData); // Debugging
 
-        // Fill the form with employee data
-        document.getElementById("employeeId").value = emp._id || "";
-        document.getElementById("name").value = emp.name || "";
-        document.getElementById("phone").value = emp.phone || "";
-        document.getElementById("dob").value = emp.dob ? emp.dob.split("T")[0] : "";
-        document.getElementById("role").value = emp.role || "";
-        document.getElementById("salary").value = emp.salary || "";
-        document.getElementById("gender").value = emp.gender || "";
-        document.getElementById("email").value = emp.email || "";
-        document.getElementById("experience").value = emp.experience || "";
-        document.getElementById("education").value = emp.education || "";
-        document.getElementById("address").value = emp.address || "";
+        const emp = empData.data; // Ensure correct data extraction
 
-        // Change button to "Update"
-        const submitBtn = document.getElementById("submitButton");
-        submitBtn.textContent = "Update";
-        submitBtn.setAttribute("onclick", "updateEmployee()");
+        // Fill modal form with employee data
+        document.getElementById("editEmployeeId").value = emp._id || "";
+        document.getElementById("editName").value = emp.nameOfEmployee || "";
+        document.getElementById("editStaffID").value = emp.idNumber || "";
+        document.getElementById("editPhone").value = emp.mobileNumber || "";
+        document.getElementById("editDob").value = emp.dateOfBirth ? emp.dateOfBirth.split("T")[0] : "";
+        document.getElementById("editRole").value = emp.role || "";
+        document.getElementById("editSalary").value = emp.monthlySalary || "";
+        document.getElementById("editGender").value = emp.gender || "";
+        document.getElementById("editEmail").value = emp.email || "";
+        document.getElementById("editExperience").value = emp.experience || "";
+        document.getElementById("editEducation").value = emp.education || "";
+        document.getElementById("editAddress").value = emp.address || "";
 
-        console.log("Button changed to 'Update'"); // Debugging
+        // Show the modal
+        document.getElementById("editPopup").classList.remove("hidden");
+
+        console.log("Form populated successfully!"); // Debugging
 
     } catch (error) {
         console.error("Error fetching employee details:", error);
     }
 }
 
+
+function openEditPopup() {
+    document.getElementById("editPopup").classList.remove("hidden");
+}
+
+function closeEditPopup() {
+    document.getElementById("editPopup").classList.add("hidden");
+}
+
+
 async function updateEmployee() {
     try {
-        const id = document.getElementById("employeeId").value;
+        const id = document.getElementById("editEmployeeId").value;
         console.log("Updating Employee ID:", id); // Debugging
 
         const updatedData = {
-            name: document.getElementById("name").value,
-            phone: document.getElementById("phone").value,
-            dob: document.getElementById("dob").value,
-            role: document.getElementById("role").value,
-            salary: document.getElementById("salary").value,
-            gender: document.getElementById("gender").value,
-            email: document.getElementById("email").value,
-            experience: document.getElementById("experience").value,
-            education: document.getElementById("education").value,
-            address: document.getElementById("address").value,
+            nameOfEmployee: document.getElementById("editName").value,
+            idNumber: document.getElementById("editStaffID").value, // Readonly, unchanged
+            mobileNumber: document.getElementById("editPhone").value,
+            dateOfBirth: document.getElementById("editDob").value,
+            role: document.getElementById("editRole").value,
+            monthlySalary: document.getElementById("editSalary").value,
+            gender: document.getElementById("editGender").value,
+            email: document.getElementById("editEmail").value,
+            experience: document.getElementById("editExperience").value,
+            education: document.getElementById("editEducation").value,
+            address: document.getElementById("editAddress").value,
         };
 
         console.log("Data Sent for Update:", updatedData); // Debugging
 
-        const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+        const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedData),
@@ -101,13 +113,8 @@ async function updateEmployee() {
         alert("Employee updated successfully!");
         fetchEmployees(); // Refresh the employee list
 
-        // Reset form & button to "Save"
-        document.getElementById("employeeForm").reset();
-        const submitBtn = document.getElementById("submitButton");
-        submitBtn.textContent = "Save";
-        submitBtn.setAttribute("onclick", "saveEmployee()");
-
-        console.log("Button reset to 'Save'"); // Debugging
+        // ✅ Close the modal after updating
+        closeEditPopup();
 
     } catch (error) {
         console.error("Error updating employee:", error);
@@ -117,12 +124,14 @@ async function updateEmployee() {
 
 
 
+
+
 // 🗑️ Delete Employee
 async function deleteEmployee(id) {
     if (!confirm("Are you sure you want to delete this employee?")) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/employees/${id}`, { method: "DELETE" });
+        const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/${id}`, { method: "DELETE" });
         if (!response.ok) {
             throw new Error("Failed to delete employee.");
         }
@@ -131,23 +140,6 @@ async function deleteEmployee(id) {
         console.error("Error deleting employee:", error);
     }
 }
-
-// Function to generate unique Staff ID (e.g., ST-20250304-001)
-function generateStaffID() {
-    const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, ""); // YYYYMMDD
-    const randomPart = Math.floor(100 + Math.random() * 900); // 3-digit random number
-    return `ST-${datePart}-${randomPart}`;
-}
-
-// Set Staff ID on page load (only for new employees)
-document.addEventListener("DOMContentLoaded", function () {
-    const employeeIdField = document.getElementById("employeeId");
-    const staffIdField = document.getElementById("staffID");
-
-    if (!employeeIdField.value) { // Only generate if adding a new employee
-        staffIdField.value = generateStaffID();
-    }
-});
 
 
 // 🚀 Initial Load

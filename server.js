@@ -1,79 +1,69 @@
-// 🚀 server.js - Express Server with AI Chatbot Integration
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const multer = require('multer');
-const path = require('path');
-const { OpenAI } = require("openai");
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const employeeRoutes = require("./routes/employeeRoutes");
 
 
-
-// 📌 Load Environment Variables
 dotenv.config();
 
-// 📡 Initialize Express App
 const app = express();
-
-// 🔹 Middleware
-app.use(cors());
-app.use(express.json()); // Use express.json() instead of body-parser
-app.use(express.urlencoded({ extended: true }));
-
-
-// 📂 Configure Multer for File Upload
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, "uploads/"),
-    filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
-});
-const upload = multer({ storage });
-
-// 🔗 Serve Static Files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// 📡 MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB Connected'))
-.catch(err => console.error('❌ MongoDB Connection Error:', err));
-
-// ✅ Initialize OpenAI
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-/* ==================== ROUTES ==================== */
-
-// 🗂️ Import Routes
-const employeeRoutes = require("./routes/employeeRoutes");
-const classRoutes = require('./routes/classRoutes');
-
-// 🔹 Use Routes
-app.use("/api/employees", employeeRoutes);
-app.use("/api/classes", classRoutes);
-
-
-// ✅ AI Chatbot Route
-app.post("/chat", async (req, res) => {
-    try {
-        const { message } = req.body;
-
-        if (!message) {
-            return res.status(400).json({ error: "Message is required" });
-        }
-
-        const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: message }],
-        });
-
-        res.json({ response: response.choices[0].message.content });
-    } catch (error) {
-        console.error("❌ OpenAI API Error:", error);
-        res.status(500).json({ error: "AI is unavailable. Try again later!" });
-    }
-});
-
-// 🟢 Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+const MONGO_URI = "mongodb+srv://erickirikou:pYiRPzLGhrIcQgtb@cluster0.9nlawri.mongodb.net/sukuu";
+
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Could not connect to MongoDB", err));
+
+app.use(cors());
+app.use(express.json());
+
+// Set base API route
+const BASE_URL = "https://sukuu-backend.onrender.com/";
+
+
+app.use(`${BASE_URL}/employee`, employeeRoutes);
+
+
+// Employee routes for fetch, delete, and send
+const Employee = require("./models/Employee");
+
+// Fetch all employees
+app.get(`/v1/api/employee/`, async (req, res) => {
+  try {
+    const employees = await Employee.find();
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch employees" });
+  }
+});
+
+// Add a new employee
+app.post(`/v1/api/employee/add`, async (req, res) => {
+  try {
+    const newEmployee = new Employee(req.body);
+    await newEmployee.save();
+    res.status(201).json(newEmployee);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add employee" });
+  }
+});
+
+// Delete an employee by ID
+app.delete(`/v1/api/employee/:id`, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Employee.findByIdAndDelete(id);
+    res.status(200).json({ message: "Employee deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete employee" });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`https://sukuu-backend.onrender.com/`);
+});
