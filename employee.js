@@ -60,8 +60,9 @@ async function fetchEmployees() {
 
 // 📌 Function to Open "Add Employee" Modal
 function openAddEmployeeModal() {
-    console.log("Opening Add Employee Modal");
+    window.open("add-employee.html");
 }
+
 
 
 // 🔍 Search Employee
