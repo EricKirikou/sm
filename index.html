@@ -484,25 +484,25 @@
         underline.style.left = `${firstTab.offsetLeft}px`;
         underline.style.width = `${firstTab.offsetWidth}px`;
 
-// Check if the user has accepted cookies
-if (!localStorage.getItem("cookieConsent")) {
-    const consentPopup = document.createElement("div");
-    consentPopup.innerHTML = `
-        <div id="cookie-popup" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(0, 0, 0, 0.9); color: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); font-family: Arial, sans-serif;">
-            <p style="margin-bottom: 15px; font-size: 14px;">We use cookies to track visitors, measure ads, ad campaign effectiveness, and analyze site traffic. For more info, see our <a href="/cookie-policy" style="color: #ffcc00; text-decoration: underline;">Cookie Policy</a> and <a href="/privacy-policy" style="color: #ffcc00; text-decoration: underline;">Privacy Policy</a>.</p>
-            <div style="display: flex; justify-content: center; gap: 10px;">
-                <button id="accept-cookies" style="padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;">Accept all</button>
-                <button id="cookie-preferences" style="padding: 10px 15px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;">Preferences</button>
+    // Check if the user has accepted cookies
+    if (!localStorage.getItem("cookieConsent")) {
+        const consentPopup = document.createElement("div");
+        consentPopup.innerHTML = `
+            <div id="cookie-popup" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #28a745; color: white; padding: 20px; text-align: center; box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2); font-family: Arial, sans-serif;">
+                <p style="margin-bottom: 15px; font-size: 16px;">We use cookies to track visitors, measure ads, ad campaign effectiveness, and analyze site traffic. For more info, see our <a href="/cookie-policy" style="color: #ffcc00; text-decoration: underline;">Cookie Policy</a> and <a href="/privacy-policy" style="color: #ffcc00; text-decoration: underline;">Privacy Policy</a>.</p>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <button id="accept-cookies" style="padding: 10px 20px; background: white; color: #28a745; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;">Accept all</button>
+                    <button id="cookie-preferences" style="padding: 10px 20px; background: #ffffff; color: #28a745; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;">Preferences</button>
+                </div>
             </div>
-        </div>
-    `;
-    document.body.appendChild(consentPopup);
-    
-    document.getElementById("accept-cookies").onclick = function() {
-        localStorage.setItem("cookieConsent", "accepted");
-        document.getElementById("cookie-popup").remove();
-    };
-}
+        `;
+        document.body.appendChild(consentPopup);
+        
+        document.getElementById("accept-cookies").onclick = function() {
+            localStorage.setItem("cookieConsent", "accepted");
+            document.getElementById("cookie-popup").remove();
+        };
+    }
     });
 </script>
 
