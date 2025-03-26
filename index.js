@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         document.body.appendChild(consentPopup);
 
-        document.getElementById("accept-cookies").onclick = function() {
+        document.getElementById("accept-cookies").onclick = function () {
             localStorage.setItem("cookieConsent", JSON.stringify({
                 strictlyNecessary: true,
                 functional: true,
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("cookie-popup").remove();
         };
 
-        document.getElementById("cookie-preferences").onclick = function() {
+        document.getElementById("cookie-preferences").onclick = function () {
             showPreferencesPopup();
         };
     }
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("targeting").checked = savedPreferences.targeting;
         }
 
-        document.getElementById("save-preferences").onclick = function() {
+        document.getElementById("save-preferences").onclick = function () {
             let newPreferences = {
                 strictlyNecessary: true,
                 functional: document.getElementById("functional").checked,
@@ -99,4 +99,21 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("cookie-popup").remove();
         };
     }
+    document.getElementById('menuToggle').addEventListener('click', function () {
+        let menu = document.getElementById('mobileDropdown');
+        let hamburgerIcon = document.getElementById('hamburgerIcon');
+        let closeIcon = document.getElementById('closeIcon');
+
+        // Toggle menu visibility
+        menu.classList.toggle('hidden');
+
+        // Show the correct icon
+        if (menu.classList.contains('hidden')) {
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+        } else {
+            hamburgerIcon.classList.add('hidden');
+            closeIcon.classList.remove('hidden');
+        }
+    });
 });

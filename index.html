@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Online School Management Software</title>
+    <title>Sukuu Online School Management Software</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="404.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
         @keyframes float1 {
@@ -37,35 +38,79 @@
     </style>
 </head>
 <body class="bg-green-900 text-white" >
-    <nav class="flex justify-between items-center p-6">
-        <h1 class="text-2xl font-bold"><img src="favicon.png" alt="" class="w-full h-16"></h1>
-        <div>
-            <a href="#" class="text-white px-4">Products</a>
-            <a href="#" class="text-white px-4">Help</a>
-            <a href="signup.html" class="bg-yellow-500 text-white px-4 py-2 rounded-md">Sign Up</a>
-            <a href="login.html" class="bg-white text-yellow-900 px-4 py-2 rounded-md">Login</a>
+<!-- Navigation Bar -->
+<!-- Navigation Bar -->
+<nav class="flex justify-between items-center p-6 bg-green-900 text-white">
+    <!-- Logo -->
+    <h1 class="text-2xl font-bold">
+        <img src="favicon.png" alt="Logo" class="w-full h-16">
+    </h1>
+
+    <!-- Right Section (Links & Buttons) -->
+    <div class="flex items-center space-x-4">
+        <!-- Sign Up & Login (Always Visible) -->
+        <a href="signup.html" class="bg-yellow-500 text-white px-3 py-2 rounded-md">Sign Up</a>
+        <a href="login.html" class="bg-white text-yellow-900 px-3 py-2 rounded-md">Login</a>
+
+        <!-- Mobile Menu Toggle (SVG Icons) -->
+        <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none">
+            <!-- Default Hamburger Icon -->
+            <svg id="hamburgerIcon" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+
+            <!-- Close (X) Icon, Hidden by Default -->
+            <svg id="closeIcon" class="w-8 h-8 hidden" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Desktop Menu (Next to Sign Up & Login) -->
+        <div class="hidden md:flex space-x-4">
+            <a href="#" class="px-4">Products</a>
+            <a href="#" class="px-4">Help</a>
         </div>
-    </nav>
-    
-    <section class="text-center mt-16">
-        <h2 class="text-4xl font-bold"> Online School Management Software</h2>
-        <p class="mt-4">Manage your school, college, or educational center with eSkooly. 100% free with no limitations.</p>
-        <div class="mt-6">
-            <a href="signup.html" class="bg-yellow-500 px-6 py-3 rounded-md text-white">Sign Up Now, It’s Free</a>
-            <a href="#" class="bg-white text-yellow-900 px-6 py-3 rounded-md ml-4">Learn More</a>
-        </div>
-    </section>
-    
-    <section class="flex justify-center mt-12 relative bg-cover bg-center" >
-        <img src="laptop.png" alt="Dashboard Preview" class="w-2/3 rounded-lg floating1">
-        <img src="chart-icon.png" alt="Chart Icon" class="absolute left-1/4 top-1/2 mr-[500px] w-16 floating2">
-        <img src="mobile-ui.png" alt="Mobile UI" class="absolute right-1/4 w-72 floating3">
-        <img src="checklist-icon.png" alt="Checklist Icon" class="absolute right-1/5 top-2/2 w-16 ml-[600px] floating4">
-    </section>   
+    </div>
+</nav>
+
+<!-- Mobile Dropdown Menu (Hidden by Default, Positioned Below & Left-Aligned) -->
+<div id="mobileDropdown" class="hidden flex flex-col bg-green-900 text-white p-4 absolute right-5 top-[80px] w-[100px] md:hidden">
+    <a href="#" class="block py-2 px-4">Products</a>
+    <a href="#" class="block py-2 px-4">Help</a>
+</div>
+
+<!-- Hero Section -->
+<section class="text-center mt-12 px-4">
+    <h2 class="text-3xl md:text-4xl font-bold">Online School Management Software</h2>
+    <p class="mt-4 text-sm md:text-base">
+        Manage your school, college, or educational center with Sukuu. Low Cost with no limitations.
+    </p>
+    <div class="mt-6 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+        <a href="signup.html" class="bg-yellow-500 px-6 py-3 rounded-md text-white w-full md:w-auto text-center">Sign Up Now, It’s Free</a>
+        <a href="#" class="bg-white text-yellow-900 px-6 py-3 rounded-md w-full md:w-auto text-center border border-yellow-900">Learn More</a>
+    </div>
+</section>
+
+<!-- Images Section -->
+<section class="flex flex-col md:flex-row justify-center items-center mt-12 relative bg-cover bg-center space-y-6 md:space-y-0">
+    <img src="laptop.png" alt="Dashboard Preview" class="w-5/6 md:w-2/3 rounded-lg floating1">
+    <img src="chart-icon.png" alt="Chart Icon" class="absolute left-10 md:left-1/4 top-1/3 md:top-1/2 w-12 md:w-16 floating2">
+    <img src="mobile-ui.png" alt="Mobile UI" class="absolute right-10 md:right-1/4 w-40 md:w-72 floating3">
+    <img src="checklist-icon.png" alt="Checklist Icon" class="absolute ml-[700px] md:right-1/5 bottom-0 md:top-1/2 w-12 md:w-16 floating4">
+</section>
+
+<script>
+    document.getElementById("menuToggle").addEventListener("click", function() {
+        document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
+</script>
+ 
 
 <!-- Features Section -->
 <div class="relative bg-gradient-to-r from-green-800 to-green-600 text-white py-20 px-8 text-center"
-    style=" backdrop-filter: blur(6px);">
+    style="backdrop-filter: blur(6px);">
     
     <h2 class="text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-300 drop-shadow-md">
         Features Of School Management Software
@@ -75,50 +120,52 @@
         <span class="text-yellow-300 font-semibold">Sukuu</span> is a <span class="text-yellow-400 font-bold">powerful</span> and <span class="text-yellow-400 font-bold">feature-rich</span> school management software. It handles everything from admissions to attendance, exams, and result generation.
     </p>
 
-    <div class="flex justify-center items-center gap-16">
+    <!-- Responsive Container -->
+    <div class="flex flex-col lg:flex-row justify-center items-center lg:gap-16 space-y-10 lg:space-y-0">
         
         <!-- Left Features -->
-        <div class="text-left space-y-8">
+        <div class="space-y-8 w-full lg:w-1/3">
             <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
-                <h3 class="text-xl font-semibold text-yellow-300"><i class="bi bi-gift-fill text-yellow-400"></i> Absolutely Free</h3>
+                <h3 class="text-xl font-semibold text-yellow-300 flex items-center"><i class="bi bi-gift-fill text-yellow-400 mr-2"></i> Absolutely Free</h3>
                 <p class="text-gray-100 mt-1">Sukuu is an <span class="text-yellow-400 font-semibold">affordable</span> school management software with premium features.</p>
             </div>
             <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
-                <h3 class="text-xl font-semibold text-blue-300"><i class="bi bi-cloud-check-fill"></i> Cloud Based Software</h3>
+                <h3 class="text-xl font-semibold text-blue-300 flex items-center"><i class="bi bi-cloud-check-fill mr-2"></i> Cloud Based Software</h3>
                 <p class="text-gray-100 mt-1">Access Sukuu from anywhere, anytime with its <span class="text-yellow-400 font-semibold">always-online</span> cloud-based system.</p>
             </div>
             <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
-                <h3 class="text-xl font-semibold text-red-300"><i class="bi bi-arrow-repeat"></i> Regular Updates & Support</h3>
+                <h3 class="text-xl font-semibold text-red-300 flex items-center"><i class="bi bi-arrow-repeat mr-2"></i> Regular Updates & Support</h3>
                 <p class="text-gray-100 mt-1">We continuously improve Sukuu with <span class="text-yellow-400 font-semibold">free 24/7 support</span> and new features.</p>
             </div>
         </div>
 
         <!-- Center Image -->
-        <div class="relative w-72">
-            <img src="ui-mobile.png" alt="Mobile UI" class="w-full rounded-lg shadow-xl ">
+        <div class="relative w-64 sm:w-72">
+            <img src="ui-mobile.png" alt="Mobile UI" class="w-full rounded-lg shadow-xl">
             <!-- Floating Icons -->
-            <i class="bi bi-hand-thumbs-up-fill text-red-500 text-4xl absolute top-[-15px] left-[5px] animate-float"></i>
-            <i class="bi bi-file-earmark-bar-graph-fill text-yellow-500 text-4xl absolute bottom-[5px] left-[30px] animate-float"></i>
-            <i class="bi bi-shield-lock-fill text-blue-500 text-4xl absolute top-1/2 right-[-15px] transform -translate-y-1/2 animate-float"></i>
+            <i class="bi bi-hand-thumbs-up-fill text-red-500 text-3xl sm:text-4xl absolute top-[-15px] left-[5px] animate-float"></i>
+            <i class="bi bi-file-earmark-bar-graph-fill text-yellow-500 text-3xl sm:text-4xl absolute bottom-[5px] left-[30px] animate-float"></i>
+            <i class="bi bi-shield-lock-fill text-blue-500 text-3xl sm:text-4xl absolute top-1/2 right-[-15px] transform -translate-y-1/2 animate-float"></i>
         </div>
 
         <!-- Right Features -->
-        <div class="text-left space-y-8">
+        <div class="space-y-8 w-full lg:w-1/3">
             <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
-                <h3 class="text-xl font-semibold text-purple-300"><i class="bi bi-phone-fill"></i> Responsive Web Design</h3>
+                <h3 class="text-xl font-semibold text-purple-300 flex items-center"><i class="bi bi-phone-fill mr-2"></i> Responsive Web Design</h3>
                 <p class="text-gray-100 mt-1">Sukuu works flawlessly on <span class="text-yellow-400 font-semibold">mobile, tablet, and desktop</span>.</p>
             </div>
             <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
-                <h3 class="text-xl font-semibold text-orange-400"><i class="bi bi-bar-chart-fill"></i> Infographics & Animations</h3>
+                <h3 class="text-xl font-semibold text-orange-400 flex items-center"><i class="bi bi-bar-chart-fill mr-2"></i> Infographics & Animations</h3>
                 <p class="text-gray-100 mt-1">We use <span class="text-yellow-400 font-semibold">data visualization</span> for easy analysis of student performance.</p>
             </div>
             <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
-                <h3 class="text-xl font-semibold text-green-300"><i class="bi bi-lock-fill"></i> Fast, Secure & Easy</h3>
+                <h3 class="text-xl font-semibold text-green-300 flex items-center"><i class="bi bi-lock-fill mr-2"></i> Fast, Secure & Easy</h3>
                 <p class="text-gray-100 mt-1">Built with <span class="text-yellow-400 font-semibold">advanced security</span>, Sukuu ensures top-level protection.</p>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Custom Tailwind Animations -->
 <style>
@@ -131,16 +178,16 @@
 }
 </style>
 
-
+<!-- Why Us Section -->
 <div class="bg-gradient-to-r from-gray-200 to-gray-100 text-green py-16 px-6 text-center">
     <div class="max-w-6xl mx-auto space-y-16">
         
         <!-- Why Sukuu Section -->
-        <div class="flex flex-col md:flex-row justify-between items-center relative">
-            <div class="relative">
-                <img src="dashboard.png" alt="Dashboard" class="w-64 mb-4 relative z-10 animate-float">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-12 md:space-y-0">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="dashboard.png" alt="Dashboard" class="w-64 md:w-80 animate-float">
             </div>
-            <div class="text-left max-w-lg">
+            <div class="text-left max-w-xl w-full md:w-1/2">
                 <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Why Us?</span>
                 <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-teal-300 to-green-500 text-transparent bg-clip-text">
                     Why Sukuu is the best school management software?
@@ -152,11 +199,11 @@
         </div>
 
         <!-- Separate Portals Section -->
-        <div class="flex flex-col md:flex-row-reverse justify-between items-center relative">
-            <div class="relative">
-                <img src="portals.png" alt="Portals" class="w-96 mb-4 relative z-10 animate-float">
+        <div class="flex flex-col md:flex-row-reverse justify-between items-center space-y-12 md:space-y-0">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="portals.png" alt="Portals" class="w-72 md:w-96 animate-float">
             </div>
-            <div class="text-left max-w-lg">
+            <div class="text-left max-w-xl w-full md:w-1/2">
                 <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Manage User Roles</span>
                 <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text">
                     Separate Portals Available
@@ -171,11 +218,11 @@
         </div>
 
         <!-- Messaging System Section -->
-        <div class="flex flex-col md:flex-row justify-between items-center relative">
-            <div class="relative">
-                <img src="chat.png" alt="Messaging System" class="w-[450px] mb-4 relative z-10 animate-float">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-12 md:space-y-0">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="chat.png" alt="Messaging System" class="w-72 md:w-[450px] animate-float">
             </div>
-            <div class="text-left max-w-lg">
+            <div class="text-left max-w-xl w-full md:w-1/2">
                 <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Message System</span>
                 <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-purple-300 to-purple-500 text-transparent bg-clip-text">
                     Messaging and File Sharing
@@ -190,11 +237,11 @@
         </div>
 
         <!-- Free Mobile App Section -->
-        <div class="flex flex-col md:flex-row-reverse justify-between items-center relative">
-            <div class="relative">
-                <img src="mobile-app.png" alt="Mobile App" class="w-96 mb-4 relative z-10 animate-float">
+        <div class="flex flex-col md:flex-row-reverse justify-between items-center space-y-12 md:space-y-0">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="mobile-app.png" alt="Mobile App" class="w-72 md:w-96 animate-float">
             </div>
-            <div class="text-left max-w-lg">
+            <div class="text-left max-w-xl w-full md:w-1/2">
                 <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Stay Mobile</span>
                 <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-pink-300 to-pink-500 text-transparent bg-clip-text">
                     Mobile Application
@@ -209,11 +256,11 @@
         </div>
 
         <!-- Free SMS Services -->
-        <div class="flex flex-col md:flex-row justify-between items-center relative">
-            <div class="relative">
-                <img src="sms.png" alt="SMS Services" class="w-96 mb-4 relative z-10 animate-float">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-12 md:space-y-0">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="sms.png" alt="SMS Services" class="w-72 md:w-96 animate-float">
             </div>
-            <div class="text-left max-w-lg">
+            <div class="text-left max-w-xl w-full md:w-1/2">
                 <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">SMS Alerts</span>
                 <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-transparent bg-clip-text">
                     SMS Services
@@ -228,11 +275,11 @@
         </div>
 
         <!-- Online Class Services -->
-        <div class="flex flex-col md:flex-row-reverse justify-between items-center relative">
-            <div class="relative">
-                <img src="online-class.png" alt="Online Classes" class="w-96 mb-4 relative z-10 animate-float">
+        <div class="flex flex-col md:flex-row-reverse justify-between items-center space-y-12 md:space-y-0">
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="online-class.png" alt="Online Classes" class="w-72 md:w-96 animate-float">
             </div>
-            <div class="text-left max-w-lg">
+            <div class="text-left max-w-xl w-full md:w-1/2">
                 <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Online Classes</span>
                 <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-teal-300 to-blue-500 text-transparent bg-clip-text">
                     Online Live Class
@@ -249,6 +296,7 @@
     </div>
 </div>
 
+<!-------See More features-->
 <div class="bg-gradient-to-r from-green-700 to-green-500 text-white py-20 px-8">
     <div class="max-w-6xl mx-auto text-center space-y-12">
         
@@ -331,12 +379,13 @@
     </div>
 </div>
 
-<div class="bg-gradient-to-r from-gray-200 to-gray-100 text-gray-900 py-16 px-8">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between relative">
+<!-- Single Stop Solution -->
+<div class="bg-gradient-to-r from-gray-200 to-gray-100 text-gray-900 py-16 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-12 md:space-y-0">
         
         <!-- Left Section (Text) -->
-        <div class="md:w-1/2 space-y-6">
-            <h1 class="text-4xl font-extrabold leading-tight">
+        <div class="md:w-1/2 space-y-6 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">
                 Single Stop Solution For School Management
             </h1>
             <p class="text-gray-600 text-lg">
@@ -350,15 +399,15 @@
 
         <!-- Right Section (Laptop & Floating Images) -->
         <div class="relative md:w-1/2 flex justify-center">
-            <img src="laptop.png" alt="Laptop UI" class="w-96 md:w-[450px] drop-shadow-xl">
+            <img src="laptop.png" alt="Laptop UI" class="max-w-[450px] w-full drop-shadow-xl">
 
             <!-- Floating Image 1 -->
             <img src="floating1.png" alt="Floating UI 1" 
-                class="absolute top-12 left-4 w-32 md:w-40 drop-shadow-lg animate-float1">
+                class="absolute -top-8 left-2 md:left-4 w-28 md:w-40 drop-shadow-lg animate-float1">
 
             <!-- Floating Image 2 -->
             <img src="floating2.png" alt="Floating UI 2" 
-                class="absolute top-1/3 right-2 w-36 md:w-24 drop-shadow-lg animate-float2">
+                class="absolute top-1/4 right-1 md:right-4 w-24 md:w-32 drop-shadow-lg animate-float2">
         </div>
     </div>
 
@@ -378,6 +427,7 @@
     .animate-float2 { animation: float2 4s ease-in-out infinite; }
 </style>
 
+<!-------Contact Us-->
 <div class="bg-gradient-to-r from-green-700 to-green-500 text-white py-16 px-8">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between relative space-y-12 md:space-y-0">
         
@@ -457,6 +507,78 @@
 <script src="index.js"></script>
 
 
+<!-- Footer Section -->
+<footer class="bg-green-900  text-white py-10 px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Brand & Description -->
+        <div>
+            <h1 class="text-2xl font-bold flex items-center">
+                <img src="favicon.png" alt="Logo" class="h-12 mr-2">
+            </h1>
+            <p class="text-white mt-4 text-sm">
+                sukuu is the world's best and #1 ranked low cost online school management software. Our school 
+                management software has more features than any school software in the market.
+            </p>
+            <p class="text-green-500 text-xs mt-4">
+                Copyright © 2025 Joseik Solutions (Sukuu) Ltd. - All rights reserved.
+            </p>
+        </div>
+
+        <!-- Middle Column: Links -->
+        <div class="flex justify-between md:justify-start md:space-x-16">
+            <div>
+                <h2 class="text-lg text-yellow-400 font-semibold">SUKUU</h2>
+                <ul class="text-gray-300 text-sm space-y-2 mt-2">
+                    <li><a href="#" class="hover:text-yellow-300">Home</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">Pricing</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">Get started</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">Help</a></li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-lg text-yellow-400 font-semibold">TERMS</h2>
+                <ul class="text-gray-300 text-sm space-y-2 mt-2">
+                    <li><a href="#" class="hover:text-yellow-300">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-yellow-300">SaaS Services</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Column: Download Buttons -->
+        <div class="flex flex-col items-center md:items-start">
+            <a href="#" class="flex items-center mb-3">
+                <img src="google-play.png" alt="Google Play" class="h-8 mr-2 w-full ">
+            </a>
+            <a href="#" class="flex items-center">
+                <img src="app-store.png" alt="App Store" class="h-8 mr-2 w-full ">
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- Scroll to Top Button -->
+<button id="scrollToTop" class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-700 text-white  h-12 w-12 rounded-full shadow-lg transition-all hidden">
+    <i class="bi bi-arrow-up text-xl"></i>
+</button>
+
+<!-- JavaScript for Scroll Button -->
+<script>
+    const scrollToTopBtn = document.getElementById("scrollToTop");
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.remove("hidden");
+        } else {
+            scrollToTopBtn.classList.add("hidden");
+        }
+    });
+
+    scrollToTopBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+</script>
 
 
 </body>
