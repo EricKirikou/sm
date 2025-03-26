@@ -549,35 +549,21 @@ class="rounded p-2 transition-colors duration-300">
                     </div>
                 </div>
             </nav>
-            <div class="max-w-7xl mx-auto p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <input type="text" placeholder="Search Student" class="border p-2 rounded w-1/3">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                        <span>&#x21bb;</span> All
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-4 gap-6">
-                    <!-- Employee Card -->
-                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col items-center text-center">
-                        <img src="https://via.placeholder.com/80" alt="Profile" class="rounded-full mb-2">
-                        <h3 class="font-semibold">Jonah Zugah</h3>
-                        <p class="text-sm text-gray-500">Class 1B</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col items-center text-center">
-                        <img src="https://via.placeholder.com/80" alt="Profile" class="rounded-full mb-2">
-                        <h3 class="font-semibold">Charles Borne</h3>
-                        <p class="text-sm text-gray-500">Class 3A</p>
-                    </div>
-
-                    <!-- Add New Card -->
-                    <div
-                        class="border-2 border-dashed border-blue-400 p-6 rounded-xl flex flex-col items-center justify-center text-blue-600 cursor-pointer">
-                        <span class="text-2xl">➕</span>
-                        <p class="mt-2">Add New</p>
+            <div class="max-w-7xl mx-auto p-6">
+                <!-- Students Cards Grid -->
+                <div id="studentGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Students Cards will be inserted dynamically -->
+                    <div onclick="openAddStudentModal()"
+                        class="border-2 border-dashed border-blue-400 flex flex-col items-center justify-center p-6 rounded-lg cursor-pointer hover:bg-blue-50 transition">
+                        <span class="text-blue-600 text-3xl">➕</span>
+                        <p class="text-blue-600 font-semibold mt-2">Add New</p>
                     </div>
                 </div>
             </div>
+            
+
+            
+            <script src="student.js"></script>
 
             <script>
                 document.getElementById("menuToggle").addEventListener("click", function (event) {

@@ -557,10 +557,6 @@ class="rounded p-2 transition-colors duration-300">
                         <input type="text" class="form-control border p-2 w-full" id="lastName" required>
                     </div>
                     <div>
-                        <label class="font-medium">Registration Id</label>
-                        <input type="text" class="form-control border p-2 w-full" id="registrationId" value="SID001" disabled>
-                    </div>
-                    <div>
                         <label class="font-medium">Date of Admission *</label>
                         <input type="date" class="form-control border p-2 w-full" id="admissionDate" required>
                     </div>
@@ -634,51 +630,7 @@ class="rounded p-2 transition-colors duration-300">
             <p id="responseMessage" class="text-center mt-4 text-lg font-semibold"></p>
         </div>
     
-        <script>
-            function toggleHealthIssue() {
-                var medicalStatus = document.getElementById("medicalStatus").value;
-                var healthIssueDiv = document.getElementById("healthIssueDiv");
-                healthIssueDiv.style.display = (medicalStatus === "Yes") ? "block" : "none";
-            }
-    
-            document.getElementById("admissionForm").addEventListener("submit", async function(event) {
-                event.preventDefault();
-    
-                let formData = {
-                    firstName: document.getElementById("firstName").value,
-                    otherName: document.getElementById("otherName").value,
-                    lastName: document.getElementById("lastName").value,
-                    registrationId: document.getElementById("registrationId").value,
-                    admissionDate: document.getElementById("admissionDate").value,
-                    class: document.getElementById("class").value,
-                    mobile: document.getElementById("mobile").value,
-                    dob: document.getElementById("dob").value,
-                    gender: document.getElementById("gender").value,
-                    birthId: document.getElementById("birthId").value,
-                    fatherName: document.getElementById("fatherName").value,
-                    fatherContact: document.getElementById("fatherContact").value,
-                    motherName: document.getElementById("motherName").value,
-                    motherContact: document.getElementById("motherContact").value,
-                    medicalStatus: document.getElementById("medicalStatus").value,
-                    healthIssue: document.getElementById("medicalStatus").value === "Yes" ? document.getElementById("healthIssue").value : "None"
-                };
-    
-                try {
-                    let response = await fetch("http://localhost:5000/admission", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(formData)
-                    });
-    
-                    let result = await response.json();
-                    document.getElementById("responseMessage").textContent = result.message;
-                    document.getElementById("responseMessage").classList.add("text-green-600");
-                } catch (error) {
-                    document.getElementById("responseMessage").textContent = "Error submitting form!";
-                    document.getElementById("responseMessage").classList.add("text-red-600");
-                }
-            });
-        </script>
+    <script src="admissions.js"></script>
         <script>
             document.getElementById("menuToggle").addEventListener("click", function (event) {
                 event.preventDefault();

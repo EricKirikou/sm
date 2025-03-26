@@ -1,70 +1,491 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in</title>
+    <title>Free Online School Management Software</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
-        body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        @keyframes float1 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-15px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
         }
+        @keyframes float2 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        @keyframes float3 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(15px) translateX(5px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        @keyframes float4 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-5px) translateX(15px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        .floating1 { animation: float1 4s ease-in-out infinite; }
+        .floating2 { animation: float2 3.5s ease-in-out infinite; }
+        .floating3 { animation: float3 4.5s ease-in-out infinite; }
+        .floating4 { animation: float4 3s ease-in-out infinite; }
     </style>
 </head>
-
-<body class="flex items-center justify-center min-h-screen">
-    <section class="w-full max-w-md p-8 bg-white bg-opacity-20 backdrop-blur-lg rounded-lg shadow-xl border border-gray-300">
-        <h3 class="text-3xl font-bold text-center text-white">Welcome Back!</h3>
-        <p class="text-center text-gray-200">Please login to your account</p>
-
-        <form class="mt-6" id="loginForm">
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-200">User Name</label>
-                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white bg-opacity-30 text-white placeholder-gray-300" placeholder="Username" name="username" type="text" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-200">Password</label>
-                <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white bg-opacity-30 text-white placeholder-gray-300" placeholder="Password" name="password" type="password" required>
-            </div>
-            <div class="flex items-center justify-between mb-4">
-                <label class="flex items-center text-sm text-gray-200">
-                    <input type="checkbox" class="mr-2"> Remember Me
-                </label>
-                <a href="#" class="text-sm text-purple-300 hover:underline">Forgot Password?</a>
-            </div>
-            <button type="submit" class="w-full py-3 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition duration-300">Sign In</button>
-        </form>
-
-        <nav class="mt-6 flex flex-wrap gap-2 justify-center">
-            <button type="button" id="admin" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Admin</button>
-            <button type="button" id="teacher" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Teacher</button>
-            <button type="button" id="student" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Student</button>
-            <button type="button" id="parent" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Parent</button>
-            <button type="button" id="accountant" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Accountant</button>
-            <button type="button" id="librarian" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Librarian</button>
-            <button type="button" id="recep" class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-800 transition duration-300">Receptionist</button>
-        </nav>
+<body class="bg-green-900 text-white" >
+    <nav class="flex justify-between items-center p-6">
+        <h1 class="text-2xl font-bold"><img src="favicon.png" alt="" class="w-full h-16"></h1>
+        <div>
+            <a href="#" class="text-white px-4">Products</a>
+            <a href="#" class="text-white px-4">Help</a>
+            <a href="signup.html" class="bg-yellow-500 text-white px-4 py-2 rounded-md">Sign Up</a>
+            <a href="login.html" class="bg-white text-yellow-900 px-4 py-2 rounded-md">Login</a>
+        </div>
+    </nav>
+    
+    <section class="text-center mt-16">
+        <h2 class="text-4xl font-bold"> Online School Management Software</h2>
+        <p class="mt-4">Manage your school, college, or educational center with eSkooly. 100% free with no limitations.</p>
+        <div class="mt-6">
+            <a href="signup.html" class="bg-yellow-500 px-6 py-3 rounded-md text-white">Sign Up Now, It’s Free</a>
+            <a href="#" class="bg-white text-yellow-900 px-6 py-3 rounded-md ml-4">Learn More</a>
+        </div>
     </section>
+    
+    <section class="flex justify-center mt-12 relative bg-cover bg-center" >
+        <img src="laptop.png" alt="Dashboard Preview" class="w-2/3 rounded-lg floating1">
+        <img src="chart-icon.png" alt="Chart Icon" class="absolute left-1/4 top-1/2 mr-[500px] w-16 floating2">
+        <img src="mobile-ui.png" alt="Mobile UI" class="absolute right-1/4 w-72 floating3">
+        <img src="checklist-icon.png" alt="Checklist Icon" class="absolute right-1/5 top-2/2 w-16 ml-[600px] floating4">
+    </section>   
 
-    <script>
-        // Auto-fill username and password on role button click
-        document.querySelectorAll("nav button").forEach(button => {
-            button.addEventListener("click", () => {
-                document.querySelector("input[name=username]").value = button.id;
-                document.querySelector("input[name=password]").value = "123456";
+<!-- Features Section -->
+<div class="relative bg-gradient-to-r from-green-800 to-green-600 text-white py-20 px-8 text-center"
+    style=" backdrop-filter: blur(6px);">
+    
+    <h2 class="text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-300 drop-shadow-md">
+        Features Of School Management Software
+    </h2>
+    
+    <p class="max-w-3xl mx-auto mb-10 text-gray-200 text-lg leading-relaxed">
+        <span class="text-yellow-300 font-semibold">Sukuu</span> is a <span class="text-yellow-400 font-bold">powerful</span> and <span class="text-yellow-400 font-bold">feature-rich</span> school management software. It handles everything from admissions to attendance, exams, and result generation.
+    </p>
+
+    <div class="flex justify-center items-center gap-16">
+        
+        <!-- Left Features -->
+        <div class="text-left space-y-8">
+            <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
+                <h3 class="text-xl font-semibold text-yellow-300"><i class="bi bi-gift-fill text-yellow-400"></i> Absolutely Free</h3>
+                <p class="text-gray-100 mt-1">Sukuu is an <span class="text-yellow-400 font-semibold">affordable</span> school management software with premium features.</p>
+            </div>
+            <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
+                <h3 class="text-xl font-semibold text-blue-300"><i class="bi bi-cloud-check-fill"></i> Cloud Based Software</h3>
+                <p class="text-gray-100 mt-1">Access Sukuu from anywhere, anytime with its <span class="text-yellow-400 font-semibold">always-online</span> cloud-based system.</p>
+            </div>
+            <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
+                <h3 class="text-xl font-semibold text-red-300"><i class="bi bi-arrow-repeat"></i> Regular Updates & Support</h3>
+                <p class="text-gray-100 mt-1">We continuously improve Sukuu with <span class="text-yellow-400 font-semibold">free 24/7 support</span> and new features.</p>
+            </div>
+        </div>
+
+        <!-- Center Image -->
+        <div class="relative w-72">
+            <img src="ui-mobile.png" alt="Mobile UI" class="w-full rounded-lg shadow-xl ">
+            <!-- Floating Icons -->
+            <i class="bi bi-hand-thumbs-up-fill text-red-500 text-4xl absolute top-[-15px] left-[5px] animate-float"></i>
+            <i class="bi bi-file-earmark-bar-graph-fill text-yellow-500 text-4xl absolute bottom-[5px] left-[30px] animate-float"></i>
+            <i class="bi bi-shield-lock-fill text-blue-500 text-4xl absolute top-1/2 right-[-15px] transform -translate-y-1/2 animate-float"></i>
+        </div>
+
+        <!-- Right Features -->
+        <div class="text-left space-y-8">
+            <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
+                <h3 class="text-xl font-semibold text-purple-300"><i class="bi bi-phone-fill"></i> Responsive Web Design</h3>
+                <p class="text-gray-100 mt-1">Sukuu works flawlessly on <span class="text-yellow-400 font-semibold">mobile, tablet, and desktop</span>.</p>
+            </div>
+            <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
+                <h3 class="text-xl font-semibold text-orange-400"><i class="bi bi-bar-chart-fill"></i> Infographics & Animations</h3>
+                <p class="text-gray-100 mt-1">We use <span class="text-yellow-400 font-semibold">data visualization</span> for easy analysis of student performance.</p>
+            </div>
+            <div class="p-5 rounded-lg bg-white bg-opacity-10 shadow-lg hover:scale-105 transition duration-300">
+                <h3 class="text-xl font-semibold text-green-300"><i class="bi bi-lock-fill"></i> Fast, Secure & Easy</h3>
+                <p class="text-gray-100 mt-1">Built with <span class="text-yellow-400 font-semibold">advanced security</span>, Sukuu ensures top-level protection.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Tailwind Animations -->
+<style>
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+</style>
+
+
+<div class="bg-gradient-to-r from-gray-200 to-gray-100 text-green py-16 px-6 text-center">
+    <div class="max-w-6xl mx-auto space-y-16">
+        
+        <!-- Why Sukuu Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center relative">
+            <div class="relative">
+                <img src="dashboard.png" alt="Dashboard" class="w-64 mb-4 relative z-10 animate-float">
+            </div>
+            <div class="text-left max-w-lg">
+                <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Why Us?</span>
+                <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-teal-300 to-green-500 text-transparent bg-clip-text">
+                    Why Sukuu is the best school management software?
+                </h2>
+                <p class="text-gray-900 mt-2 text-lg leading-relaxed italic">
+                    Sukuu is a feature-rich and easy-to-use school management software with powerful tools for administrators, teachers, and students.
+                </p>
+            </div>
+        </div>
+
+        <!-- Separate Portals Section -->
+        <div class="flex flex-col md:flex-row-reverse justify-between items-center relative">
+            <div class="relative">
+                <img src="portals.png" alt="Portals" class="w-96 mb-4 relative z-10 animate-float">
+            </div>
+            <div class="text-left max-w-lg">
+                <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Manage User Roles</span>
+                <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-blue-300 to-blue-500 text-transparent bg-clip-text">
+                    Separate Portals Available
+                </h2>
+                <p class="text-gray-900 mt-2 text-lg leading-relaxed italic">
+                    Dedicated dashboards for students, teachers, and parents to simplify communication and management.
+                </p>
+                <button class="bg-red-500 px-4 py-2 rounded mt-3 hover:scale-105 transition transform duration-300 shadow-md">
+                    Sign Up For Free
+                </button>
+            </div>
+        </div>
+
+        <!-- Messaging System Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center relative">
+            <div class="relative">
+                <img src="chat.png" alt="Messaging System" class="w-[450px] mb-4 relative z-10 animate-float">
+            </div>
+            <div class="text-left max-w-lg">
+                <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Message System</span>
+                <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-purple-300 to-purple-500 text-transparent bg-clip-text">
+                    Messaging and File Sharing
+                </h2>
+                <p class="text-gray-900 mt-2 text-lg leading-relaxed italic">
+                    Instant messaging and file sharing system for seamless communication within the school.
+                </p>
+                <button class="bg-yellow-500 px-4 py-2 rounded mt-3 hover:scale-105 transition transform duration-300 shadow-md">
+                    Sign Up Now
+                </button>
+            </div>
+        </div>
+
+        <!-- Free Mobile App Section -->
+        <div class="flex flex-col md:flex-row-reverse justify-between items-center relative">
+            <div class="relative">
+                <img src="mobile-app.png" alt="Mobile App" class="w-96 mb-4 relative z-10 animate-float">
+            </div>
+            <div class="text-left max-w-lg">
+                <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Stay Mobile</span>
+                <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-pink-300 to-pink-500 text-transparent bg-clip-text">
+                    Mobile Application
+                </h2>
+                <p class="text-gray-900 mt-2 text-lg leading-relaxed italic">
+                    Manage your school anytime, anywhere with our fully-featured mobile app.
+                </p>
+                <button class="bg-purple-500 px-4 py-2 rounded mt-3 hover:scale-105 transition transform duration-300 shadow-md">
+                    Download
+                </button>
+            </div>
+        </div>
+
+        <!-- Free SMS Services -->
+        <div class="flex flex-col md:flex-row justify-between items-center relative">
+            <div class="relative">
+                <img src="sms.png" alt="SMS Services" class="w-96 mb-4 relative z-10 animate-float">
+            </div>
+            <div class="text-left max-w-lg">
+                <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">SMS Alerts</span>
+                <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-transparent bg-clip-text">
+                    SMS Services
+                </h2>
+                <p class="text-gray-900 mt-2 text-lg leading-relaxed italic">
+                    Notify parents, students, and teachers instantly with our free SMS alert system.
+                </p>
+                <button class="bg-yellow-500 px-4 py-2 rounded mt-3 hover:scale-105 transition transform duration-300 shadow-md">
+                    Download Sukuu
+                </button>
+            </div>
+        </div>
+
+        <!-- Online Class Services -->
+        <div class="flex flex-col md:flex-row-reverse justify-between items-center relative">
+            <div class="relative">
+                <img src="online-class.png" alt="Online Classes" class="w-96 mb-4 relative z-10 animate-float">
+            </div>
+            <div class="text-left max-w-lg">
+                <span class="bg-green-500 text-white px-3 py-1 rounded shadow-lg">Online Classes</span>
+                <h2 class="text-3xl font-extrabold mt-3 bg-gradient-to-r from-teal-300 to-blue-500 text-transparent bg-clip-text">
+                    Online Live Class
+                </h2>
+                <p class="text-gray-900 mt-2 text-lg leading-relaxed italic">
+                    Conduct online classes and meetings seamlessly with our integrated live class platform.
+                </p>
+                <button class="bg-orange-500 px-4 py-2 rounded mt-3 hover:scale-105 transition transform duration-300 shadow-md">
+                    Download Sukuu
+                </button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="bg-gradient-to-r from-green-700 to-green-500 text-white py-20 px-8">
+    <div class="max-w-6xl mx-auto text-center space-y-12">
+        
+        <!-- Features Header -->
+        <p class="text-gray-200 flex items-center justify-center space-x-2 text-lg">
+            <span class="text-2xl">👓</span> 
+            <span class="cursor-pointer hover:text-gray-300 transition">See more features</span>
+        </p>
+
+        <h3 class="text-xl uppercase tracking-wide">That's Not All</h3>
+        <h2 class="text-4xl font-extrabold mt-3">All Features in One Place</h2>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
+            <!-- Feature Card -->
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">🏛️</div>
+                <h3 class="font-bold text-lg">Institute Info</h3>
+                <p class="text-gray-600 text-sm">
+                    Manage your institute details including logo, name, and target line, visible in all reports.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">👥</div>
+                <h3 class="font-bold text-lg">Class Management</h3>
+                <p class="text-gray-600 text-sm">
+                    Organize students, subjects, courses, and marks effortlessly.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">📄</div>
+                <h3 class="font-bold text-lg">Exams Management</h3>
+                <p class="text-gray-600 text-sm">
+                    Manage exams, results, reports, and result cards with ease.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">😊</div>
+                <h3 class="font-bold text-lg">Attendance System</h3>
+                <p class="text-gray-600 text-sm">
+                    Online attendance tracking for students and staff.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">💰</div>
+                <h3 class="font-bold text-lg">Fee Management</h3>
+                <p class="text-gray-600 text-sm">
+                    Automated fee management with easy tracking for every student.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">📝</div>
+                <h3 class="font-bold text-lg">Tests Management</h3>
+                <p class="text-gray-600 text-sm">
+                    Effortless class test tracking and record-keeping.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">⚖️</div>
+                <h3 class="font-bold text-lg">Accounts</h3>
+                <p class="text-gray-600 text-sm">
+                    Simplify income, expenses, and staff salary management.
+                </p>
+            </div>
+
+            <div class="p-6 bg-white text-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 text-center">
+                <div class="text-5xl mb-3 text-green-600">🖨️</div>
+                <h3 class="font-bold text-lg">Printable Reports</h3>
+                <p class="text-gray-600 text-sm">
+                    Generate and print fee slips, salary slips, and admission letters.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-gradient-to-r from-gray-200 to-gray-100 text-gray-900 py-16 px-8">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between relative">
+        
+        <!-- Left Section (Text) -->
+        <div class="md:w-1/2 space-y-6">
+            <h1 class="text-4xl font-extrabold leading-tight">
+                Single Stop Solution For School Management
+            </h1>
+            <p class="text-gray-600 text-lg">
+                Managing any educational institute is not a piece of cake. Sukuu presents a free online school 
+                management system to simplify student, staff, and financial management. Easy to use and powerful.
+            </p>
+            <button class="bg-green-600 text-white font-bold px-6 py-3 rounded-full hover:bg-green-800 transition">
+                Get started for free
+            </button>
+        </div>
+
+        <!-- Right Section (Laptop & Floating Images) -->
+        <div class="relative md:w-1/2 flex justify-center">
+            <img src="laptop.png" alt="Laptop UI" class="w-96 md:w-[450px] drop-shadow-xl">
+
+            <!-- Floating Image 1 -->
+            <img src="floating1.png" alt="Floating UI 1" 
+                class="absolute top-12 left-4 w-32 md:w-40 drop-shadow-lg animate-float1">
+
+            <!-- Floating Image 2 -->
+            <img src="floating2.png" alt="Floating UI 2" 
+                class="absolute top-1/3 right-2 w-36 md:w-24 drop-shadow-lg animate-float2">
+        </div>
+    </div>
+
+    <!-- Schools Trust -->
+    <div class="text-center mt-16 text-gray-600">
+        <p class="text-lg">We build Trust.</p>
+        <p class="text-2xl font-bold text-gray-900">10K+ Schools use our product.</p>
+    </div>
+</div>
+
+<!-- Tailwind Animations -->
+<style>
+    @keyframes float1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes float2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+    .animate-float1 { animation: float1 3s ease-in-out infinite; }
+    .animate-float2 { animation: float2 4s ease-in-out infinite; }
+</style>
+
+<div class="bg-gradient-to-r from-green-700 to-green-500 text-white py-16 px-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between relative space-y-12 md:space-y-0">
+        
+        <!-- Left Section (Form) -->
+        <div class="md:w-1/2 bg-white p-8 rounded-lg shadow-lg text-gray-900">
+            <h2 class="text-3xl font-bold mb-4 text-green-700">Drop us a Line.</h2>
+            <p class="text-gray-600 mb-6">Ask us a question, or just say Hello.</p>
+
+            <form class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="First name *" class="border p-3 rounded w-full focus:ring-2 focus:ring-green-500">
+                    <input type="text" placeholder="Last name *" class="border p-3 rounded w-full focus:ring-2 focus:ring-green-500">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="email" placeholder="Email *" class="border p-3 rounded w-full focus:ring-2 focus:ring-green-500">
+                    <input type="text" placeholder="Phone" class="border p-3 rounded w-full focus:ring-2 focus:ring-green-500">
+                </div>
+                <textarea placeholder="Message *" class="border p-3 rounded w-full h-32 focus:ring-2 focus:ring-green-500"></textarea>
+                <button class="bg-green-600 text-white font-bold px-6 py-3 rounded-full hover:bg-green-800 transition w-full">
+                    Send Message
+                </button>
+            </form>
+        </div>
+
+        <!-- Right Section (Toggleable Contact Info) -->
+        <div class="md:w-2/2 flex flex-col items-center md:items-start text-center md:text-left">
+            
+            <!-- Toggle Menu with Arrow Effect -->
+            <div class="relative w-full flex justify-center md:justify-start">
+                <div class="flex space-x-8 text-gray-200 mb-2">
+                    <span class="tab-btn cursor-pointer" data-tab="email">Email</span>
+                    <span class="tab-btn cursor-pointer" data-tab="location">Location</span>
+                    <span class="tab-btn cursor-pointer" data-tab="phone">Phone</span>
+                </div>
+                <div id="underline" class="absolute bottom-[-5px] left-0 h-1 bg-white w-[60px] transition-all duration-300"></div>
+            </div>
+
+            <!-- Email Section -->
+            <div class="tab-content text-white active mt-4" id="email">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-green-500 p-3 rounded-full">
+                        📧
+                    </div>
+                    <p class="text-lg font-semibold">Contact us by email</p>
+                </div>
+                <p class="text-green-200 text-lg">info@joseiksolutions.com</p>
+            </div>
+
+            <!-- Location Section -->
+            <div class="tab-content text-white hidden mt-4" id="location">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-green-500 p-3 rounded-full">
+                        📍
+                    </div>
+                    <p class="text-lg font-semibold">Visit us @ our Office</p>
+                </div>
+                <p class="text-green-200 text-lg">Afanko, Atonsu - Kumasi, Ghana</p>
+            </div>
+
+            <!-- Phone Section -->
+            <div class="tab-content text-white hidden mt-4" id="phone">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-green-500 p-3 rounded-full">
+                        📞
+                    </div>
+                    <p class="text-lg font-semibold">Call us</p>
+                </div>
+                <p class="text-green-200 text-lg">+233 57 047 6349</p>
+            </div>
+
+            <!-- Illustration -->
+            <img src="cityscape.png" alt="City Illustration" class="w-80 mt-8">
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab-btn");
+        const contents = document.querySelectorAll(".tab-content");
+        const underline = document.getElementById("underline");
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener("click", function () {
+                // Remove active class from all tabs
+                tabs.forEach(btn => btn.classList.remove("text-white"));
+                // Hide all tab contents
+                contents.forEach(content => content.classList.add("hidden"));
+                
+                // Show selected content
+                document.getElementById(this.getAttribute("data-tab")).classList.remove("hidden");
+
+                // Move underline
+                underline.style.left = `${this.offsetLeft}px`;
+                underline.style.width = `${this.offsetWidth}px`;
+
+                // Highlight active tab
+                this.classList.add("text-white");
             });
         });
 
-        // Handle form submission
-        document.getElementById("loginForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent default form submission
-            window.location.href = "dashboard.html"; // Redirect to dashboard
-        });
-    </script>
-</body>
+        // Set initial underline position
+        const firstTab = tabs[0];
+        underline.style.left = `${firstTab.offsetLeft}px`;
+        underline.style.width = `${firstTab.offsetWidth}px`;
+    });
+</script>
 
+
+
+
+</body>
 </html>
