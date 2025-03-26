@@ -29,65 +29,17 @@ function deleteCookie(name) {
 (function checkAuth() {
     const token = getCookie("authToken"); // Get token from cookies
     const restrictedPages = [
-        "account.html",
-        "add-assets.html",
-        "add-employee.html",
-        "admission_letter.html",
-        "admissions.html",
-        "ai-analytics.html",
-        "ai-chatbot.html",
-        "applications.html",
-        "appointment_letter.html",
-        "asset.html",
-        "attendance-list.html",
-        "books.html",
-        "calendar.html",
-        "class.html",
-        "classes.html",
-        "dashboard.html",
-        "employee.html",
-        "expense.html",
-        "families.html",
-        "fees-particulars.html",
-        "fees.html",
-        "gmeet.html",
-        "hostel.html",
-        "income.html",
-        "institution-info.html",
-        "invoices.html",
-        "issued.html",
-        "leave.html",
-        "letter-ui.html",
-        "letters.html",
-        "manage.html",
-        "master-list.html",
-        "media.html",
-        "members.html",
-        "message.html",
-        "notice.html",
-        "parents.html",
-        "pay-salary.html",
-        "payslip.html",
-        "petty-cash.html",
-        "print-receipt.html",
-        "promote_students.html",
-        "purchase.html",
-        "requisition-admin.html",
-        "requistion.html",
-        "result-card.html",
-        "review.html",
-        "rules-regulations.html",
-        "settings.html",
-        "shop-bookstation.html",
-        "shop-uniform.html",
-        "staff-attendance.html",
-        "statement.html",
-        "stud-attendance.html",
-        "student_id.html",
-        "students.html",
-        "timetable.html",
-        "transport.html",
-        "visitor.html"
+        "account.html", "add-assets.html", "add-employee.html", "admission_letter.html", "admissions.html",
+        "ai-analytics.html", "ai-chatbot.html", "applications.html", "appointment_letter.html", "asset.html",
+        "attendance-list.html", "books.html", "calendar.html", "class.html", "classes.html", "dashboard.html",
+        "employee.html", "expense.html", "families.html", "fees-particulars.html", "fees.html", "gmeet.html",
+        "hostel.html", "income.html", "institution-info.html", "invoices.html", "issued.html", "leave.html",
+        "letter-ui.html", "letters.html", "manage.html", "master-list.html", "media.html", "members.html",
+        "message.html", "notice.html", "parents.html", "pay-salary.html", "payslip.html", "petty-cash.html",
+        "print-receipt.html", "promote_students.html", "purchase.html", "requisition-admin.html", "requistion.html",
+        "result-card.html", "review.html", "rules-regulations.html", "settings.html", "shop-bookstation.html",
+        "shop-uniform.html", "staff-attendance.html", "statement.html", "stud-attendance.html", "student_id.html",
+        "students.html", "timetable.html", "transport.html", "visitor.html"
     ];
 
     const currentPage = window.location.pathname.split("/").pop();
@@ -100,8 +52,9 @@ function deleteCookie(name) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
+    const loader = document.createElement("div");  // Create a loader element
+    loader.classList.add("loader"); // Add a loader class (styled in CSS)
 
-    // Login Functionality
     if (loginButton) {
         loginButton.addEventListener("click", async function loginUser(event) {
             event.preventDefault(); // Prevent form submission reload
@@ -114,6 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // Disable login button and show loader
+            loginButton.disabled = true;
+            loginButton.innerHTML = `<div class="spinner-border text-light" role="status"></div> Logging in...`;
+
             const loginData = { username, password };
 
             try {
@@ -125,15 +82,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const result = await response.json();
                 if (response.ok) {
-                    alert("Login successful!");
                     setCookie("authToken", result.token, 1); // Store token in cookie for 1 day
                     window.location.href = "dashboard.html"; // Redirect after login
                 } else {
                     alert(result.message || "Login failed. Please try again.");
+                    loginButton.innerHTML = "Log in"; // Reset button text
+                    loginButton.disabled = false;
                 }
             } catch (error) {
                 console.error("Login error:", error);
                 alert("An error occurred. Please try again later.");
+                loginButton.innerHTML = "Log in"; // Reset button text
+                loginButton.disabled = false;
             }
         });
     }
