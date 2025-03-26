@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Redirect if user is not authenticated and trying to access a restricted page
         if (!token && restrictedPages.includes(currentPage)) {
-            window.location.href = "404-error.html"; // Redirect to 404 page
+            window.location.href = "index.html"; // Redirect to 404 page
         }
     }
 
