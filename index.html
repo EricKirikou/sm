@@ -483,6 +483,24 @@
         const firstTab = tabs[0];
         underline.style.left = `${firstTab.offsetLeft}px`;
         underline.style.width = `${firstTab.offsetWidth}px`;
+
+         // Check if the user has accepted cookies
+    if (!localStorage.getItem("cookieConsent")) {
+        const consentPopup = document.createElement("div");
+        consentPopup.innerHTML = `
+            <div id="cookie-popup" style="position: fixed; bottom: 10px; left: 10px; right: 10px; background: #333; color: white; padding: 15px; border-radius: 5px; text-align: center;">
+                <p>We use cookies to track visitors, measure ads, ad campaign effectiveness, and analyze site traffic. For more info, see our <a href="/cookie-policy" style="color: #ffcc00;">Cookie Policy</a> and <a href="/privacy-policy" style="color: #ffcc00;">Privacy Policy</a>.</p>
+                <button id="accept-cookies" style="margin-right: 10px; padding: 5px 10px; background: green; color: white; border: none;">Accept all</button>
+                <button id="cookie-preferences" style="padding: 5px 10px; background: gray; color: white; border: none;">Preferences</button>
+            </div>
+        `;
+        document.body.appendChild(consentPopup);
+        
+        document.getElementById("accept-cookies").onclick = function() {
+            localStorage.setItem("cookieConsent", "accepted");
+            document.getElementById("cookie-popup").remove();
+        };
+    }
     });
 </script>
 
