@@ -22,16 +22,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password }),
-                    credentials: "include" // ✅ Allows browser to store cookies
+                    credentials: "include" // ✅ Allows browser to store HttpOnly cookies
                 });
 
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                if (response.ok) {
-                    console.log("✅ Login successful! Redirecting...");
-                    
-                    // ✅ Redirect after successful login
+                if (response.ok && result.access_token) {
+                    console.log("✅ Login successful! Storing token...");
+
+                    // 🔥 Store token in localStorage for future use
+                    localStorage.setItem("access_token", result.access_token);
+
+                    // ✅ Redirect to dashboard
                     setTimeout(() => {
                         window.location.href = "dashboard.html";  
                     }, 500);
@@ -51,33 +54,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// 🚀 **Check User Login Status, But Do NOT Redirect Automatically**
+// 🚀 **Check User Login Status and Keep Them Logged In**
 document.addEventListener("DOMContentLoaded", async function () {
-    console.log("🔄 Checking login status...");
+    console.log("🔄 Checking stored authentication token...");
 
-    try {
-        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
-            method: "GET",
-            credentials: "include" // ✅ Send stored cookies automatically
-        });
+    const token = localStorage.getItem("access_token");
 
-        if (response.ok) {
-            console.log("✅ User is authenticated! Showing dashboard link.");
+    if (token) {
+        console.log("✅ Token found! Verifying session...");
 
-            // ✅ Instead of redirecting, show a "Go to Dashboard" button
-            const dashboardLink = document.createElement("button");
-            dashboardLink.textContent = "Go to Dashboard";
-            dashboardLink.style.display = "block";
-            dashboardLink.style.marginTop = "10px";
-            dashboardLink.addEventListener("click", function () {
-                window.location.href = "dashboard.html";
+        try {
+            const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}` // 🔹 Use stored token for authentication
+                },
+                credentials: "include"
             });
 
-            document.body.appendChild(dashboardLink);
-        } else {
-            console.log("❌ User not authenticated. Stay on login page.");
+            if (response.ok) {
+                console.log("✅ User is authenticated! Redirecting...");
+                window.location.href = "dashboard.html";  
+            } else {
+                console.log("❌ Token invalid or expired. Clearing storage...");
+                localStorage.removeItem("access_token"); // Clear invalid token
+            }
+        } catch (error) {
+            console.error("⚠️ Error checking login status:", error);
         }
-    } catch (error) {
-        console.error("⚠️ Error checking login status:", error);
+    } else {
+        console.log("❌ No stored token. User must log in.");
     }
 });
