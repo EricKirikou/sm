@@ -20,12 +20,21 @@ function getCookie(name) {
     return null;
 }
 
-// Function to delete a cookie (only used for logout)
+// Function to delete a cookie (Only used for logout)
 function deleteCookie(name) {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
+// 🚀 **Ensure user stays logged in (Redirect to dashboard if already authenticated)**
 document.addEventListener("DOMContentLoaded", function () {
+    const token = getCookie("access_token");
+
+    if (token) {
+        console.log("✅ Token found! Redirecting to dashboard...");
+        window.location.replace("dashboard.html"); // Redirect if token exists
+        return; // Prevent login logic from running
+    }
+
     const loginButton = document.getElementById("loginButton");
     const loader = document.getElementById("loader"); // Ensure there's a loader in your HTML
 
