@@ -35,9 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("🍪 Stored Cookies Before Redirect:", document.cookie);
 
                     // ✅ Redirect immediately after successful login
-                   // setTimeout(() => {
-                   //     window.location.href = "dashboard.html";  
-                   // }, 500);
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";  
+                    }, 500);
                 } else {
                     console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
