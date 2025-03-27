@@ -26,22 +26,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 const result = await response.json();
-                console.log("🔹 Full Response:", result);
+                console.log("🔹 Full Response:", result); // Logs the entire response
 
-                if (response.ok && result.access_token) {
-                    console.log("✅ Token received:", result.access_token);
+                // ✅ Check if token is actually present
+                const token = result.access_token || result.data?.access_token;
+
+                if (response.ok && token) {
+                    console.log("✅ Token received:", token);
 
                     // Store token in a cookie
-                    document.cookie = `access_token=${result.access_token}; path=/; SameSite=Lax; Secure`;
+                    document.cookie = `access_token=${token}; path=/; SameSite=Lax; Secure`;
 
-                    // ✅ Force reload to ensure redirect
+                    // ✅ Ensure token is stored before redirecting
                     setTimeout(() => {
                         console.log("🔄 Redirecting to dashboard...");
                         window.location.href = "dashboard.html";  
                     }, 500);
                 } else {
-                    console.error("❌ Login failed:", result.message);
-                    alert(result.message || "Login failed. Please try again.");
+                    console.error("❌ Login failed. No token received.", result);
+                    alert(result.message || "Login failed. Please check your credentials.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
