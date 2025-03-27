@@ -32,45 +32,46 @@ document.addEventListener("DOMContentLoaded", async function () {
     // ====================================
     // ✅ Login Process
     // ====================================
-    if (loginButton) {
-        loginButton.addEventListener("click", async function (event) {
-            event.preventDefault();
-
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-
-            if (!username || !password) {
-                alert("Please enter both username and password.");
-                return;
-            }
-
-            loginButton.disabled = true;
-            loader.style.display = "block"; // Show loader
-
-            try {
-                const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password }),
-                    credentials: "include"
-                });
-
-                if (response.ok) {
-                    window.location.href = "dashboard.html"; // ✅ Redirect after login
-                } else {
-                    const result = await response.json();
-                    alert(result.message || "Login failed. Please try again.");
-                    loginButton.disabled = false;
-                    loader.style.display = "none";
+    document.addEventListener("DOMContentLoaded", function () {
+        const loginButton = document.getElementById("loginButton");
+        if (loginButton) {
+            loginButton.addEventListener("click", async function (event) {
+                event.preventDefault(); // Prevent reload
+    
+                const username = document.getElementById("username").value.trim();
+                const password = document.getElementById("password").value.trim();
+    
+                if (!username || !password) {
+                    alert("Please enter both username and password.");
+                    return;
                 }
-            } catch (error) {
-                console.error("Login error:", error);
-                alert("An error occurred. Please try again later.");
-                loginButton.disabled = false;
-                loader.style.display = "none";
-            }
-        });
-    }
+    
+                loginButton.disabled = true;
+    
+                try {
+                    const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username, password }),
+                        credentials: "include" // Let browser store cookies
+                    });
+    
+                    const result = await response.json();
+    
+                    if (response.ok) {
+                        window.location.href = "dashboard.html"; // Redirect after login
+                    } else {
+                        alert(result.message || "Login failed. Please try again.");
+                        loginButton.disabled = false;
+                    }
+                } catch (error) {
+                    console.error("Login error:", error);
+                    alert("An error occurred. Please try again later.");
+                    loginButton.disabled = false;
+                }
+            });
+        }
+    });
 
     // ====================================
     // ✅ Signup Process
@@ -120,14 +121,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     // ====================================
     // ✅ Logout Process
     // ====================================
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-            fetch("https://sukuu-backend.onrender.com/v1/api/auth/logout", {
-                method: "POST",
-                credentials: "include"
-            }).finally(() => {
-                window.location.href = "index.html"; // ✅ Redirect to index.html after logout
+        document.addEventListener("DOMContentLoaded", function () {
+        const logoutButton = document.getElementById("logoutButton");
+        if (logoutButton) {
+            logoutButton.addEventListener("click", async function () {
+                try {
+                    await fetch("https://sukuu-backend.onrender.com/v1/api/auth/logout", {
+                        method: "POST",
+                        credentials: "include"
+                    });
+    
+                    window.location.href = "login.html"; // Redirect to login
+                } catch (error) {
+                    console.error("Logout error:", error);
+                }
             });
-        });
-    }
+        }
+    });
+        
 });
