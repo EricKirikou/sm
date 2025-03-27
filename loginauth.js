@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
             event.preventDefault();
-            
+
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
 
@@ -28,13 +28,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                if (response.ok && result.message.toLowerCase().includes("success")) {
-                    alert("✅ Login successful! Redirecting to dashboard...");
+                // ✅ Store access_token from network response in application cookies
+                let token = result.access_token || (result.data && result.data.access_token);
+                if (response.ok && token) {
+                    console.log("✅ Token received:", token);
+                    document.cookie = `access_token=${token}; path=/; Secure; SameSite=None`; // Stores token explicitly
 
-                    // 🔹 Log stored cookies for debugging
-                    console.log("🍪 Stored Cookies Before Redirect:", document.cookie);
+                    console.log("🍪 Stored Cookies:", document.cookie);
 
-                    // ✅ Redirect immediately after successful login
+                    // ✅ Redirect after successful login
                     setTimeout(() => {
                         window.location.href = "dashboard.html";  
                     }, 500);
