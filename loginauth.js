@@ -1,36 +1,6 @@
-// Function to set a cookie (persistent storage)
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        let date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = `${name}=${value}; path=/; SameSite=Lax; Secure${expires}`;
-}
-
-// Function to get a cookie value
-function getCookie(name) {
-    let nameEQ = name + "=";
-    let cookiesArray = document.cookie.split(";");
-    for (let cookie of cookiesArray) {
-        cookie = cookie.trim();
-        if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length);
-    }
-    return null;
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
     const loader = document.getElementById("loader");
-
-    // ✅ Auto-redirect if already logged in
-    const existingToken = getCookie("access_token") || localStorage.getItem("access_token");
-    if (existingToken) {
-        console.log("✅ Already logged in! Redirecting...");
-        window.location.href = "dashboard.html";
-        return;
-    }
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
@@ -58,24 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                // ✅ Extract token correctly
-                let token = result.access_token || (result.data && result.data.access_token);
+                if (response.ok && result.message.toLowerCase().includes("success")) {
+                    console.log("✅ Login successful! Redirecting to dashboard...");
 
-                if (response.ok && token) {
-                    console.log("✅ Token received:", token);
-
-                    // Store token in both localStorage and cookie (persistent)
-                    setCookie("access_token", token, 7); // Store for 7 days
-                    localStorage.setItem("access_token", token); 
-
-                    // ✅ Redirect after storing token
+                    // ✅ Redirect immediately after successful login
                     setTimeout(() => {
-                        console.log("🔄 Redirecting to dashboard...");
                         window.location.href = "dashboard.html";  
                     }, 500);
                 } else {
-                    console.error("❌ Login failed. No token received.", result);
-                    alert(result.message || "Login failed. Please check your credentials.");
+                    console.error("❌ Login failed:", result.message);
+                    alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
