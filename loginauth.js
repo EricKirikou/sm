@@ -26,7 +26,36 @@ function deleteCookie(name) {
 }
 
 // Authentication Check (Restrict Pages)
+(function checkAuth() {
+    const token = getCookie("access_token");
+    const restrictedPages = [
+        "account.html", "add-assets.html", "add-employee.html", "admission_letter.html", "admissions.html",
+        "ai-analytics.html", "ai-chatbot.html", "applications.html", "appointment_letter.html", "asset.html",
+        "attendance-list.html", "books.html", "calendar.html", "class.html", "classes.html", "dashboard.html",
+        "employee.html", "expense.html", "families.html", "fees-particulars.html", "fees.html", "gmeet.html",
+        "hostel.html", "income.html", "institution-info.html", "invoices.html", "issued.html", "leave.html",
+        "letter-ui.html", "letters.html", "manage.html", "master-list.html", "media.html", "members.html",
+        "message.html", "notice.html", "parents.html", "pay-salary.html", "payslip.html", "petty-cash.html",
+        "print-receipt.html", "promote_students.html", "purchase.html", "requisition-admin.html", "requistion.html",
+        "result-card.html", "review.html", "rules-regulations.html", "settings.html", "shop-bookstation.html",
+        "shop-uniform.html", "staff-attendance.html", "statement.html", "stud-attendance.html", "student_id.html",
+        "students.html", "timetable.html", "transport.html", "visitor.html"
+    ];
 
+    const currentPage = window.location.pathname.split("/").pop();
+
+    // Allow access if login just happened
+    if (sessionStorage.getItem("bypassAuth")) {
+        sessionStorage.removeItem("bypassAuth");
+        return;
+    }
+
+    // Redirect if user is not authenticated and trying to access a restricted page
+    if (!token && restrictedPages.includes(currentPage)) {
+        alert("You need to log in first!");
+        window.location.replace("index.html");
+    }
+})();
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
@@ -34,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function loginUser(event) {
-            event.preventDefault(); // Prevent form submission reload
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -57,36 +85,34 @@ document.addEventListener("DOMContentLoaded", function () {
                     body: JSON.stringify(loginData),
                     credentials: "include"
                 });
-
+            
                 const result = await response.json();
-                console.log("🔹 Full Response:", result); // Debugging - log full response
-
+                console.log("Full Response:", result); // Debugging - log full response
+            
                 // Open dashboard immediately after logging response
-                console.log("🚀 Redirecting to dashboard...");
-                window.location.href = "dashboard.html";
-
+                window.location.replace("dashboard.html");
+            
                 // Extract token from response
                 const token = result.access_token || result.data?.access_token;
-
+            
                 if (response.ok && token) {
-                    console.log("✅ Token received:", token);
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
                     sessionStorage.setItem("bypassAuth", "true"); // Allow dashboard access temporarily
                 } else {
-                    console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
-                console.error("❌ Login error:", error);
+                console.error("Login error:", error);
                 alert("An error occurred. Please try again later.");
                 loginButton.disabled = false;
             } finally {
                 loader.style.display = "none"; // Hide loader on success/failure
             }
+          
         });
     }
-
+    
     // Logout Function
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
@@ -96,4 +122,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
