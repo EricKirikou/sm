@@ -46,12 +46,14 @@ function deleteCookie(name) {
 
     // Allow access if login just happened
     if (sessionStorage.getItem("bypassAuth")) {
+        console.log("Bypassing authentication check due to recent login.");
         sessionStorage.removeItem("bypassAuth");
         return;
     }
 
     // Redirect if user is not authenticated and trying to access a restricted page
     if (!token && restrictedPages.includes(currentPage)) {
+        console.log("User not authenticated. Redirecting to login.");
         alert("You need to log in first!");
         window.location.replace("index.html");
     }
@@ -63,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function loginUser(event) {
+            event.preventDefault(); // Prevent form submission reload
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -85,19 +88,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     body: JSON.stringify(loginData),
                     credentials: "include"
                 });
-            
+
                 const result = await response.json();
                 console.log("Full Response:", result); // Debugging - log full response
-            
-                // Open dashboard immediately after logging response
-                window.location.replace("dashboard.html");
-            
+
                 // Extract token from response
                 const token = result.access_token || result.data?.access_token;
-            
+
                 if (response.ok && token) {
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
-                    sessionStorage.setItem("bypassAuth", "true"); // Allow dashboard access temporarily
+                    sessionStorage.setItem("bypassAuth", "true"); // Set flag to bypass auth check
+                    console.log("Login successful. Redirecting to dashboard.");
+                    window.location.replace("dashboard.html"); // Redirect after login
                 } else {
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
@@ -109,7 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } finally {
                 loader.style.display = "none"; // Hide loader on success/failure
             }
-          
         });
     }
     
