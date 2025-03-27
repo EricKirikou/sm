@@ -28,14 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                // ✅ Success condition: Either token in response OR backend sets HttpOnly cookie
-                if (response.ok && (result.access_token || result.message.toLowerCase().includes("success"))) {
-                    console.log("✅ Login successful!");
+                if (response.ok && result.access_token) {
+                    console.log("✅ Login successful! Storing token in cookies...");
 
-                    // 🔥 Store token in localStorage (optional, since HttpOnly cookies are also used)
-                    if (result.access_token) {
-                        localStorage.setItem("access_token", result.access_token);
-                    }
+                    // ✅ Store token in cookies
+                    document.cookie = `access_token=${result.access_token}; path=/; Secure; SameSite=None; Expires=${new Date(Date.now() + 86400000).toUTCString()}`;
+
+                    console.log("🍪 Stored Cookies:", document.cookie);
 
                     // ✅ Redirect to dashboard
                     setTimeout(() => {
@@ -58,33 +57,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // 🚀 **Check User Login Status and Keep Them Logged In**
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
     console.log("🔄 Checking stored authentication token...");
 
-    const token = localStorage.getItem("access_token");
+    function getCookie(name) {
+        let match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+        return match ? match[2] : null;
+    }
+
+    const token = getCookie("access_token");
 
     if (token) {
-        console.log("✅ Token found! Verifying session...");
-
-        try {
-            const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}` // 🔹 Use stored token for authentication
-                },
-                credentials: "include"
-            });
-
-            if (response.ok) {
-                console.log("✅ User is authenticated! Redirecting...");
-                window.location.href = "dashboard.html";  
-            } else {
-                console.log("❌ Token invalid or expired. Clearing storage...");
-                localStorage.removeItem("access_token"); // Clear invalid token
-            }
-        } catch (error) {
-            console.error("⚠️ Error checking login status:", error);
-        }
+        console.log("✅ Token found! Redirecting...");
+        window.location.href = "dashboard.html";  
     } else {
         console.log("❌ No stored token. User must log in.");
     }
