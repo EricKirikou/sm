@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 const result = await response.json();
-                console.log("🔹 Full Response:", result); // Logs the entire response
+                console.log("🔹 Full Response:", result);
 
-                // ✅ Check if token is actually present
-                const token = result.access_token || result.data?.access_token;
+                // ✅ Fix: Extract token properly
+                let token = result.access_token || (result.data && result.data.access_token);
 
                 if (response.ok && token) {
                     console.log("✅ Token received:", token);
@@ -37,14 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Store token in a cookie
                     document.cookie = `access_token=${token}; path=/; SameSite=Lax; Secure`;
 
-                    // ✅ Ensure token is stored before redirecting
+                    // ✅ Redirect after storing token
                     setTimeout(() => {
                         console.log("🔄 Redirecting to dashboard...");
                         window.location.href = "dashboard.html";  
                     }, 500);
                 } else {
                     console.error("❌ Login failed. No token received.", result);
-                    alert(result.message || "Login failed. Please check your credentials.");
+                    alert("Login failed. Please check your credentials.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
