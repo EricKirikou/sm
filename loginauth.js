@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const result = await response.json();
                 if (response.ok) {
-                    getCookie("access_token", result.access_token, 1); // Store token in cookie for 1 day
+                    setCookie("access_token", result.access_token, 1); // Store token in cookie for 1 day
                     window.location.href = "dashboard.html"; // Redirect after login
                 } else {
                     alert(result.message || "Login failed. Please try again.");
