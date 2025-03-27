@@ -6,7 +6,7 @@ function setCookie(name, value, days) {
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + value + "; path=/; SameSite=Lax" + expires;
+    document.cookie = `${name}=${value}; path=/; SameSite=Lax; Secure${expires}`;
 }
 
 // Function to get a cookie value
@@ -22,7 +22,7 @@ function getCookie(name) {
 
 // Function to delete a cookie
 function deleteCookie(name) {
-    document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
 // Authentication Check (Restrict Pages)
@@ -46,13 +46,14 @@ function deleteCookie(name) {
 
     // Redirect if user is not authenticated and trying to access a restricted page
     if (!token && restrictedPages.includes(currentPage)) {
-        window.location.replace("index.html"); // Redirect instantly to index.html
+        alert("You need to log in first!");
+        window.location.replace("index.html");
     }
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
-    const loader = document.getElementById("loader"); // Make sure there's a loader element in your HTML
+    const loader = document.getElementById("loader"); // Ensure there's a loader in your HTML
 
     if (loginButton) {
         loginButton.addEventListener("click", async function loginUser(event) {
@@ -81,23 +82,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 const result = await response.json();
-                if (response.ok) {
-                    setCookie("access_token", result.access_token, 1); // Store token in cookie for 1 day
+                console.log("Full Response:", result); // Debugging - log full response
+
+                // Check where the token is stored in response
+                const token = result.access_token || result.data?.access_token;
+                
+                if (response.ok && token) {
+                    setCookie("access_token", token, 1); // Store token in cookie for 1 day
                     window.location.href = "dashboard.html"; // Redirect after login
                 } else {
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
-                    loader.style.display = "none"; // Hide loader on failure
                 }
             } catch (error) {
                 console.error("Login error:", error);
                 alert("An error occurred. Please try again later.");
                 loginButton.disabled = false;
-                loader.style.display = "none"; // Hide loader on error
+            } finally {
+                loader.style.display = "none"; // Hide loader on success/failure
             }
         });
     }
-
+    
     // Logout Function
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
