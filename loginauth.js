@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password }),
-                    credentials: "include" // ✅ Allows browser to store HttpOnly cookies
+                    credentials: "include"
                 });
 
                 const result = await response.json();
@@ -32,15 +32,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("✅ Login successful! Storing token in cookies...");
 
                     // 🔥 Store token in cookies (Valid for 1 day)
-                    document.cookie = `access_token=${result.token}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=86400`;
+                    document.cookie = `access_token=${result.token}; Path=/; Secure; SameSite=Lax; Max-Age=86400`;
 
-                    // ✅ Redirect to dashboard
+                    // ✅ Redirect to dashboard if login was successful
                     setTimeout(() => {
                         window.location.href = "dashboard.html";  
                     }, 500);
                 } else {
                     console.error("❌ Login failed:", result.message);
-                    alert(result.message || "Login failed. Please try again.");
+                    alert("❌ Incorrect username or password. Please try again.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 window.location.href = "dashboard.html";  
             } else {
                 console.log("❌ Token invalid or expired. Clearing cookies...");
-                document.cookie = "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure; HttpOnly; SameSite=Lax";
+                document.cookie = "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure; SameSite=Lax";
             }
         } catch (error) {
             console.error("⚠️ Error checking login status:", error);
