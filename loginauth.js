@@ -46,14 +46,12 @@ function deleteCookie(name) {
 
     // Allow access if login just happened
     if (sessionStorage.getItem("bypassAuth")) {
-        console.log("Bypassing authentication check due to recent login.");
         sessionStorage.removeItem("bypassAuth");
         return;
     }
 
     // Redirect if user is not authenticated and trying to access a restricted page
     if (!token && restrictedPages.includes(currentPage)) {
-        console.log("User not authenticated. Redirecting to login.");
         alert("You need to log in first!");
         window.location.replace("index.html");
     }
@@ -96,16 +94,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 const token = result.access_token || result.data?.access_token;
 
                 if (response.ok && token) {
+                    console.log("✅ Token received:", token);
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
                     sessionStorage.setItem("bypassAuth", "true"); // Set flag to bypass auth check
-                    console.log("Login successful. Redirecting to dashboard.");
-                    window.location.replace("dashboard.html"); // Redirect after login
+                    
+                    console.log("🚀 Redirecting to dashboard...");
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html"; // Ensure the redirect happens
+                    }, 1000); // Small delay for debugging
                 } else {
+                    console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
-                console.error("Login error:", error);
+                console.error("❌ Login error:", error);
                 alert("An error occurred. Please try again later.");
                 loginButton.disabled = false;
             } finally {
@@ -113,13 +116,5 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    
-    // Logout Function
-    const logoutButton = document.getElementById("logoutButton");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-            deleteCookie("access_token"); // Remove authentication cookie
-            window.location.href = "login.html"; // Redirect to login page
-        });
-    }
 });
+
