@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                if (response.ok && result.access_token) {
+                if (response.ok && result.data && result.access_token) {
                     console.log("✅ Login successful! Storing token in cookies...");
 
                     // ✅ Store token in cookies
