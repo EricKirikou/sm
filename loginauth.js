@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password }),
-                    credentials: "include"
+                    credentials: "include" // 🔹 Ensures cookies are stored
                 });
 
                 const result = await response.json();
@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (response.ok && result.message.toLowerCase().includes("success")) {
                     console.log("✅ Login successful! Redirecting to dashboard...");
+
+                    // 🔹 Log stored cookies for debugging
+                    console.log("🍪 Stored Cookies:", document.cookie);
 
                     // ✅ Redirect immediately after successful login
                     setTimeout(() => {
