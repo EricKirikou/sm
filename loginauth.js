@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password }),
-                    credentials: "include" // 🔹 Ensures cookies are stored
+                    credentials: "include" // 🔹 Ensures browser stores response cookies
                 });
 
                 const result = await response.json();
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("✅ Login successful! Redirecting to dashboard...");
 
                     // 🔹 Log stored cookies for debugging
-                    console.log("🍪 Stored Cookies:", document.cookie);
+                    console.log("🍪 Stored Cookies Before Redirect:", document.cookie);
 
                     // ✅ Redirect immediately after successful login
                     setTimeout(() => {
@@ -51,5 +51,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 loader.style.display = "none";
             }
         });
+    }
+});
+
+// 🚀 Keep User Logged In After Refresh
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("🔄 Checking stored cookies on page load...");
+    console.log("🍪 Current Cookies:", document.cookie);
+
+    if (document.cookie.includes("access_token")) {
+        console.log("✅ User already logged in! Redirecting...");
+        window.location.href = "dashboard.html"; // Redirect if token exists
     }
 });
