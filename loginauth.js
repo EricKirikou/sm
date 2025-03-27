@@ -20,7 +20,7 @@ function getCookie(name) {
     return null;
 }
 
-// Function to delete a cookie
+// Function to delete a cookie (only used for logout)
 function deleteCookie(name) {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
@@ -65,7 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("✅ Token received:", token);
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
                     sessionStorage.setItem("bypassAuth", "true"); // Allow access temporarily
-                    window.location.replace("dashboard.html"); // Redirect to dashboard
+
+                    // Ensure all token data is stored before redirection
+                    setTimeout(() => {
+                        window.location.replace("dashboard.html"); // Redirect to dashboard
+                    }, 500); // Short delay to ensure data storage
                 } else {
                     console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
