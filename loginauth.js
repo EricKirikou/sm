@@ -1,29 +1,4 @@
-// Function to set a cookie (Permanent Storage)
-function setCookie(name, value) {
-    document.cookie = `${name}=${value}; path=/; SameSite=Lax; Secure`;
-}
-
-// Function to get a cookie value
-function getCookie(name) {
-    let nameEQ = name + "=";
-    let cookiesArray = document.cookie.split(";");
-    for (let cookie of cookiesArray) {
-        cookie = cookie.trim();
-        if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length);
-    }
-    return null;
-}
-
-// 🚀 **Auto-redirect if already logged in**
 document.addEventListener("DOMContentLoaded", function () {
-    const token = getCookie("access_token");
-
-    if (token) {
-        console.log("✅ Token found! Redirecting to dashboard...");
-        window.location.href = "dashboard.html";
-        return;
-    }
-
     const loginButton = document.getElementById("loginButton");
     const loader = document.getElementById("loader");
 
@@ -55,12 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (response.ok && result.access_token) {
                     console.log("✅ Token received:", result.access_token);
-                    setCookie("access_token", result.access_token); // Store token permanently
 
-                    // ✅ Redirect to dashboard after storing the token
+                    // Store token in a cookie
+                    document.cookie = `access_token=${result.access_token}; path=/; SameSite=Lax; Secure`;
+
+                    // ✅ Force reload to ensure redirect
                     setTimeout(() => {
                         console.log("🔄 Redirecting to dashboard...");
-                        window.location.href = "dashboard.html";
+                        window.location.href = "dashboard.html";  
                     }, 500);
                 } else {
                     console.error("❌ Login failed:", result.message);

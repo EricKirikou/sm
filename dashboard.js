@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const response = await fetch("https://sukuu-backend.onrender.com/v1/api/dashboard", {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,  // Pass token in headers
+                "Authorization": `Bearer ${token}`, 
                 "Content-Type": "application/json"
             }
         });
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
-// Function to get cookies (Same function as in login)
+// Function to get cookie value
 function getCookie(name) {
     let nameEQ = name + "=";
     let cookiesArray = document.cookie.split(";");
@@ -46,15 +46,4 @@ function getCookie(name) {
         if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length);
     }
     return null;
-}
-
-// Logout Function
-document.getElementById("logoutButton").addEventListener("click", function () {
-    deleteCookie("access_token");
-    window.location.href = "login.html";
-});
-
-// Function to delete a cookie
-function deleteCookie(name) {
-    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
