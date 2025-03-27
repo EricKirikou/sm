@@ -89,8 +89,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (response.ok && token) {
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
-                    window.location.href = "dashboard.html"; // Redirect after login
-                } else {
+                    console.log("Login successful, redirecting to dashboard...");
+                    window.location.replace("dashboard.html"); // Redirect after login
+                }
+                 else {
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
