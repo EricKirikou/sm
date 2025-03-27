@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent form from submitting
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -22,21 +22,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password }),
-                    credentials: "include" // 🔹 Ensures browser stores response cookies
+                    credentials: "include" // ✅ Allows browser to store cookies
                 });
 
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                // ✅ Store access_token from network response in cookies manually
                 let token = result.access_token || (result.data && result.data.access_token);
                 if (response.ok && token) {
                     console.log("✅ Token received:", token);
 
-                    // Explicitly set cookie with secure attributes
-                    document.cookie = `access_token=${token}; path=/; Secure; SameSite=Lax; Max-Age=86400`;
+                    // ❌ Don't store manually, let the browser handle it
+                    // document.cookie = `access_token=${token}; path=/; Secure; SameSite=None`;
 
-                    console.log("🍪 Stored Cookies:", document.cookie);
+                    console.log("🍪 Checking stored cookies:", document.cookie);
 
                     // ✅ Redirect after successful login
                     setTimeout(() => {
@@ -58,19 +57,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// 🚀 Keep User Logged In After Refresh
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔄 Checking stored cookies on page load...");
-    
-    const cookies = document.cookie;
-    console.log("🍪 Current Cookies:", cookies);
+// 🚀 **Keep User Logged In After Refresh**
+document.addEventListener("DOMContentLoaded", async function () {
+    console.log("🔄 Checking login status...");
 
-    if (cookies.includes("access_token")) {
-        console.log("✅ User already logged in! Redirecting...");
-        setTimeout(() => {
-            window.location.href = "dashboard.html"; // Redirect if token exists
-        }, 500);
-    } else {
-        console.log("⚠️ No token found in cookies.");
+    try {
+        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
+            method: "GET",
+            credentials: "include" // ✅ Send stored cookies automatically
+        });
+
+        if (response.ok) {
+            console.log("✅ User is authenticated! Redirecting...");
+            setTimeout(() => {
+                window.location.href = "dashboard.html";  
+            }, 500);
+        } else {
+            console.log("❌ User not authenticated. Stay on login page.");
+        }
+    } catch (error) {
+        console.error("⚠️ Error checking login status:", error);
     }
 });
