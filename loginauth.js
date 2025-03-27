@@ -28,11 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                // ✅ Store access_token from network response in application cookies
+                // ✅ Store access_token from network response in cookies manually
                 let token = result.access_token || (result.data && result.data.access_token);
                 if (response.ok && token) {
                     console.log("✅ Token received:", token);
-                    document.cookie = `access_token=${token}; path=/; Secure; SameSite=None`; // Stores token explicitly
+
+                    // Explicitly set cookie with secure attributes
+                    document.cookie = `access_token=${token}; path=/; Secure; SameSite=Lax; Max-Age=86400`;
 
                     console.log("🍪 Stored Cookies:", document.cookie);
 
@@ -57,12 +59,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // 🚀 Keep User Logged In After Refresh
-setTimeout(() => {
+document.addEventListener("DOMContentLoaded", function () {
     console.log("🔄 Checking stored cookies on page load...");
-    console.log("🍪 Current Cookies:", document.cookie);
+    
+    const cookies = document.cookie;
+    console.log("🍪 Current Cookies:", cookies);
 
-    if (document.cookie.includes("access_token")) {
+    if (cookies.includes("access_token")) {
         console.log("✅ User already logged in! Redirecting...");
-        window.location.href = "dashboard.html"; // Redirect if token exists
+        setTimeout(() => {
+            window.location.href = "dashboard.html"; // Redirect if token exists
+        }, 500);
+    } else {
+        console.log("⚠️ No token found in cookies.");
     }
-}, 500);
+});
