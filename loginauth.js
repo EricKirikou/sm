@@ -28,11 +28,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                if (response.ok && result.access_token) {
-                    console.log("✅ Login successful! Storing token...");
+                // ✅ Success condition: Either token in response OR backend sets HttpOnly cookie
+                if (response.ok && (result.access_token || result.message.toLowerCase().includes("success"))) {
+                    console.log("✅ Login successful!");
 
-                    // 🔥 Store token in localStorage for future use
-                    localStorage.setItem("access_token", result.access_token);
+                    // 🔥 Store token in localStorage (optional, since HttpOnly cookies are also used)
+                    if (result.access_token) {
+                        localStorage.setItem("access_token", result.access_token);
+                    }
 
                     // ✅ Redirect to dashboard
                     setTimeout(() => {
