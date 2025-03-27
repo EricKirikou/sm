@@ -25,28 +25,6 @@ function deleteCookie(name) {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
-// Store token persistently using localStorage
-function storeToken(token) {
-    localStorage.setItem("access_token", token);
-}
-
-// Get token from localStorage
-function getStoredToken() {
-    return localStorage.getItem("access_token");
-}
-
-// Authentication Check (No Restrictions After Login)
-(function checkAuth() {
-    const token = getStoredToken(); // Fetch token from localStorage
-
-    if (!token) {
-        console.log("⚠️ No token found. Redirecting to login...");
-        if (window.location.pathname !== "/index.html") {
-            window.location.replace("index.html");
-        }
-    }
-})();
-
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
     const loader = document.getElementById("loader"); // Ensure there's a loader in your HTML
@@ -85,7 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (response.ok && token) {
                     console.log("✅ Token received:", token);
-                    storeToken(token); // Store token in localStorage (Persistent)
+                    setCookie("access_token", token, 1); // Store token in cookie for 1 day
+                    sessionStorage.setItem("bypassAuth", "true"); // Allow access temporarily
                     window.location.replace("dashboard.html"); // Redirect to dashboard
                 } else {
                     console.error("❌ Login failed:", result.message);
@@ -106,8 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
-            localStorage.removeItem("access_token"); // Remove token from localStorage
-            deleteCookie("access_token"); // Remove authentication cookie (optional)
+            deleteCookie("access_token"); // Remove authentication cookie
             window.location.href = "login.html"; // Redirect to login page
         });
     }
