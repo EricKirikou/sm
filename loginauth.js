@@ -28,15 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Full Response:", result);
 
-                let token = result.access_token || (result.data && result.data.access_token);
-                if (response.ok && token) {
-                    console.log("✅ Token received:", token);
-
-                    // ❌ Don't store manually, let the browser handle it
-                    // document.cookie = `access_token=${token}; path=/; Secure; SameSite=None`;
-
-                    console.log("🍪 Checking stored cookies:", document.cookie);
-
+                if (response.ok) {
+                    console.log("✅ Login successful! Redirecting...");
+                    
                     // ✅ Redirect after successful login
                     setTimeout(() => {
                         window.location.href = "dashboard.html";  
@@ -57,9 +51,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// 🚀 **Keep User Logged In After Refresh**
+// 🚀 **Check User Login Status, Only on Login Page**
 document.addEventListener("DOMContentLoaded", async function () {
     console.log("🔄 Checking login status...");
+
+    if (window.location.pathname.includes("dashboard.html")) {
+        console.log("🛑 Already on dashboard, skipping login check.");
+        return; // Don't check login status on the dashboard
+    }
 
     try {
         const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
@@ -69,6 +68,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (response.ok) {
             console.log("✅ User is authenticated! Redirecting...");
+            
+            // ✅ Avoid instant redirection loop, give a small delay
             setTimeout(() => {
                 window.location.href = "dashboard.html";  
             }, 500);
