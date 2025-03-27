@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
-            event.preventDefault(); // Prevent form from submitting
+            event.preventDefault(); // Prevent default form submission
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -51,14 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// 🚀 **Check User Login Status, Only on Login Page**
+// 🚀 **Check User Login Status, But Do NOT Redirect Automatically**
 document.addEventListener("DOMContentLoaded", async function () {
     console.log("🔄 Checking login status...");
-
-    if (window.location.pathname.includes("dashboard.html")) {
-        console.log("🛑 Already on dashboard, skipping login check.");
-        return; // Don't check login status on the dashboard
-    }
 
     try {
         const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
@@ -67,12 +62,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         if (response.ok) {
-            console.log("✅ User is authenticated! Redirecting...");
-            
-            // ✅ Avoid instant redirection loop, give a small delay
-            setTimeout(() => {
-                window.location.href = "dashboard.html";  
-            }, 500);
+            console.log("✅ User is authenticated! Showing dashboard link.");
+
+            // ✅ Instead of redirecting, show a "Go to Dashboard" button
+            const dashboardLink = document.createElement("button");
+            dashboardLink.textContent = "Go to Dashboard";
+            dashboardLink.style.display = "block";
+            dashboardLink.style.marginTop = "10px";
+            dashboardLink.addEventListener("click", function () {
+                window.location.href = "dashboard.html";
+            });
+
+            document.body.appendChild(dashboardLink);
         } else {
             console.log("❌ User not authenticated. Stay on login page.");
         }
