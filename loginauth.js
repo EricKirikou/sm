@@ -88,7 +88,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 const result = await response.json();
-                console.log("Full Response:", result); // Debugging - log full response
+                console.log("🔹 Full Response:", result); // Debugging - log full response
+
+                // Open dashboard immediately after logging response
+                console.log("🚀 Redirecting to dashboard...");
+                window.location.href = "dashboard.html";
 
                 // Extract token from response
                 const token = result.access_token || result.data?.access_token;
@@ -96,12 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (response.ok && token) {
                     console.log("✅ Token received:", token);
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
-                    sessionStorage.setItem("bypassAuth", "true"); // Set flag to bypass auth check
-                    
-                    console.log("🚀 Redirecting to dashboard...");
-                    setTimeout(() => {
-                        window.location.href = "dashboard.html"; // Ensure the redirect happens
-                    }, 1000); // Small delay for debugging
+                    sessionStorage.setItem("bypassAuth", "true"); // Allow dashboard access temporarily
                 } else {
                     console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
@@ -114,6 +113,15 @@ document.addEventListener("DOMContentLoaded", function () {
             } finally {
                 loader.style.display = "none"; // Hide loader on success/failure
             }
+        });
+    }
+
+    // Logout Function
+    const logoutButton = document.getElementById("logoutButton");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+            deleteCookie("access_token"); // Remove authentication cookie
+            window.location.href = "login.html"; // Redirect to login page
         });
     }
 });
