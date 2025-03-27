@@ -1,27 +1,4 @@
 // ====================================
-// ✅ Cookie Management (No Deletion)
-// ====================================
-function getCookie(name) {
-    let nameEQ = name + "=";
-    let cookiesArray = document.cookie.split(";");
-    for (let i = 0; i < cookiesArray.length; i++) {
-        let cookie = cookiesArray[i].trim();
-        if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length);
-    }
-    return null;
-}
-
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        let date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax" + expires;
-}
-
-// ====================================
 // ✅ Authentication Check (Redirect Immediately if Unauthorized)
 // ====================================
 const restrictedPages = new Set([
@@ -35,17 +12,29 @@ const restrictedPages = new Set([
     "students.html", "timetable.html", "transport.html", "visitor.html"
 ]);
 
-(function checkAuth() {
-    const token = getCookie("access_token");
-    const currentPage = window.location.pathname.split("/").pop();
+(async function checkAuth() {
+    try {
+        // ✅ Check auth from the backend using credentials (Cookies are sent automatically)
+        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
+            method: "GET",
+            credentials: "include" // Browser sends stored cookies automatically
+        });
 
-    if (!token && restrictedPages.has(currentPage)) {
-        window.location.replace("index.html");
+        if (!response.ok) {
+            throw new Error("Not authenticated");
+        }
+
+        // ✅ User is authenticated, do nothing
+    } catch (error) {
+        const currentPage = window.location.pathname.split("/").pop();
+        if (restrictedPages.has(currentPage)) {
+            window.location.replace("index.html"); // Redirect immediately
+        }
     }
 })();
 
 // ====================================
-// ✅ Login Process (Keeping Network Request Visible)
+// ✅ Login Process (No Manual Token Storage)
 // ====================================
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
@@ -70,27 +59,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const loginData = { username, password };
 
             try {
-                // ✅ Login API Request (Visible in Network Tab)
+                // ✅ Login API Request (Browser stores token automatically)
                 const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(loginData),
-                    credentials: "include"
+                    credentials: "include" // Browser handles authentication
                 });
 
-                // ✅ Parse API Response
-                const result = await response.json();
-
                 if (response.ok) {
-                    // ✅ Store login token & user data in cookies (Persistent)
-                    setCookie("access_token", result.access_token, 7); 
-                    setCookie("user_data", JSON.stringify(result.data), 7); 
-
-                    // ✅ After login, redirect (BUT KEEP NETWORK REQUEST)
-                    setTimeout(() => {
-                        window.location.href = "dashboard.html";
-                    }, 500); // Small delay so Network request remains visible
+                    // ✅ Redirect to dashboard after login
+                    window.location.href = "dashboard.html";
                 } else {
+                    const result = await response.json();
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                     loader.style.display = "none";
@@ -105,15 +86,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ====================================
-    // ✅ Logout Function (DOES NOT DELETE COOKIES)
+    // ✅ Logout Function (No Cookie Deletion)
     // ====================================
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
-            // ✅ Logout without deleting cookies
-            setTimeout(() => {
-                window.location.href = "login.html"; // Redirect, but keep cookies intact
-            }, 500); // Small delay to keep Network request visible
+            // ✅ Backend handles session removal, but cookies remain
+            fetch("https://sukuu-backend.onrender.com/v1/api/auth/logout", {
+                method: "POST",
+                credentials: "include" // Let browser handle cookies
+            }).finally(() => {
+                window.location.href = "login.html"; // Redirect after logout
+            });
         });
     }
 });
