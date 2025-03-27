@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
-            event.preventDefault();
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
