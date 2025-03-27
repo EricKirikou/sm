@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // 🚀 Keep User Logged In After Refresh
-document.addEventListener("DOMContentLoaded", function () {
+setTimeout(() => {
     console.log("🔄 Checking stored cookies on page load...");
     console.log("🍪 Current Cookies:", document.cookie);
 
@@ -65,4 +65,4 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("✅ User already logged in! Redirecting...");
         window.location.href = "dashboard.html"; // Redirect if token exists
     }
-});
+}, 500);
