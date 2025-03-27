@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("🔹 Full Response:", result);
 
                 if (response.ok && result.message.toLowerCase().includes("success")) {
-                    console.log("✅ Login successful! Redirecting to dashboard...");
+                    alert("✅ Login successful! Redirecting to dashboard...");
 
                     // 🔹 Log stored cookies for debugging
                     console.log("🍪 Stored Cookies Before Redirect:", document.cookie);
