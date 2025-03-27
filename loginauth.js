@@ -20,19 +20,19 @@ function getCookie(name) {
     return null;
 }
 
-// Function to delete a cookie (Only used for logout)
+// Function to delete a cookie (Only for logout)
 function deleteCookie(name) {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
-// 🚀 **Ensure user stays logged in (Redirect to dashboard if already authenticated)**
+// 🚀 **Auto-redirect if already logged in**
 document.addEventListener("DOMContentLoaded", function () {
     const token = getCookie("access_token");
 
     if (token) {
         console.log("✅ Token found! Redirecting to dashboard...");
-        window.location.replace("dashboard.html"); // Redirect if token exists
-        return; // Prevent login logic from running
+        window.location.href = "dashboard.html"; // Redirect if token exists
+        return;
     }
 
     const loginButton = document.getElementById("loginButton");
@@ -75,10 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
                     sessionStorage.setItem("bypassAuth", "true"); // Allow access temporarily
 
-                    // Ensure all token data is stored before redirection
+                    // ✅ Ensure token is stored before redirecting
                     setTimeout(() => {
-                        window.location.replace("dashboard.html"); // Redirect to dashboard
-                    }, 500); // Short delay to ensure data storage
+                        console.log("🔄 Redirecting to dashboard...");
+                        window.location.href = "dashboard.html"; // Redirect to dashboard
+                    }, 1000); // 1-second delay to ensure data storage
                 } else {
                     console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
