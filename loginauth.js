@@ -1,8 +1,6 @@
 // ====================================
-// ✅ Authentication Check (Instant Redirect)
+// ✅ Authentication Check (Instant Redirect Before Load)
 // ====================================
-
-// Function to get a cookie value
 function getCookie(name) {
     let nameEQ = name + "=";
     let cookiesArray = document.cookie.split(";");
@@ -13,7 +11,6 @@ function getCookie(name) {
     return null;
 }
 
-// Function to set a cookie (Persistent Storage)
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -24,12 +21,11 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax" + expires;
 }
 
-// Function to delete a cookie
 function deleteCookie(name) {
     document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
 
-// Restricted Pages (Use Set for fast lookup)
+// Restricted Pages Set
 const restrictedPages = new Set([
     "dashboard.html", "account.html", "add-assets.html", "add-employee.html",
     "admissions.html", "ai-analytics.html", "applications.html", "attendance-list.html",
@@ -41,23 +37,21 @@ const restrictedPages = new Set([
     "students.html", "timetable.html", "transport.html", "visitor.html"
 ]);
 
-// Function to instantly check authentication **BEFORE** the page loads
 (function checkAuth() {
-    const token = getCookie("access_token"); // Get token from cookies
+    const token = getCookie("access_token"); 
     const currentPage = window.location.pathname.split("/").pop();
 
-    // Redirect IMMEDIATELY before the page loads if the user is unauthorized
     if (!token && restrictedPages.has(currentPage)) {
         window.location.replace("index.html");
     }
 })();
 
 // ====================================
-// ✅ Login Function (Stores Data in Cookies)
+// ✅ Login Function (Ensuring Network Visibility)
 // ====================================
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
-    const loader = document.getElementById("loader"); // Ensure a loader exists in your HTML
+    const loader = document.getElementById("loader");
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
@@ -71,13 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Disable login button and show loader
+            // Show loading state
             loginButton.disabled = true;
             loader.style.display = "block";
 
             const loginData = { username, password };
 
             try {
+                // ✅ Login API Request (Visible in Network Tab)
                 const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -85,15 +80,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     credentials: "include"
                 });
 
+                // ✅ Parse API Response
                 const result = await response.json();
 
                 if (response.ok) {
-                    // Store token and user info in **cookies**
-                    setCookie("access_token", result.access_token, 7); // Store token for 7 days
-                    setCookie("user_data", JSON.stringify(result.data), 7); // Store user info for 7 days
+                    // ✅ Store login token & user data in cookies
+                    setCookie("access_token", result.access_token, 7); 
+                    setCookie("user_data", JSON.stringify(result.data), 7); 
 
-                    // Redirect to dashboard immediately after login
-                    window.location.href = "dashboard.html";
+                    // ✅ After login, redirect (BUT KEEP NETWORK REQUEST)
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 500); // Small delay so Network request remains visible
                 } else {
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
@@ -109,13 +107,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ====================================
-    // ✅ Logout Function (Keeps Data Stored)
+    // ✅ Logout Function (Keeps Network Activity)
     // ====================================
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
-            deleteCookie("access_token"); // Remove only token (Keep user data)
-            window.location.href = "login.html"; // Redirect to login page
+            deleteCookie("access_token"); 
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 500); // Small delay to keep Network request visible
         });
     }
 });
