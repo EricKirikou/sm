@@ -27,7 +27,7 @@ function deleteCookie(name) {
 
 // Authentication Check (Restrict Pages)
 (function checkAuth() {
-    const token = getCookie("access_token"); // Get token from cookies
+    const token = getCookie("access_token");
     const restrictedPages = [
         "account.html", "add-assets.html", "add-employee.html", "admission_letter.html", "admissions.html",
         "ai-analytics.html", "ai-chatbot.html", "applications.html", "appointment_letter.html", "asset.html",
@@ -43,6 +43,13 @@ function deleteCookie(name) {
     ];
 
     const currentPage = window.location.pathname.split("/").pop();
+
+    // Check if user just logged in
+    const bypassAuth = sessionStorage.getItem("bypassAuth");
+    if (bypassAuth) {
+        sessionStorage.removeItem("bypassAuth"); // Remove flag after redirection
+        return; // Skip restriction check
+    }
 
     // Redirect if user is not authenticated and trying to access a restricted page
     if (!token && restrictedPages.includes(currentPage)) {
@@ -89,10 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (response.ok && token) {
                     setCookie("access_token", token, 1); // Store token in cookie for 1 day
-                    console.log("Login successful, redirecting to dashboard...");
+                    sessionStorage.setItem("bypassAuth", "true"); // Allow dashboard access temporarily
                     window.location.replace("dashboard.html"); // Redirect after login
-                }
-                 else {
+                } else {
                     alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
