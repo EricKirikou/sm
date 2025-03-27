@@ -46,8 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const password = document.getElementById("password").value.trim();
 
             if (!username || !password) {
-                alert("Please enter both username and password.");
-                return;
+                return; // Do nothing if fields are empty
             }
 
             // Disable login button and show loader
@@ -76,12 +75,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     }, 500); // Slight delay to prevent execution timing issues
                 } else {
                     console.error("❌ Login failed:", result.message);
-                    alert(result.message || "Login failed. Please try again.");
+                    // No alert, just re-enable the login button
                     loginButton.disabled = false;
                 }
             } catch (error) {
                 console.error("❌ Login error:", error);
-                alert("An error occurred. Please try again later.");
+                // No alert, just re-enable the login button
                 loginButton.disabled = false;
             } finally {
                 loader.style.display = "none"; // Hide loader on success/failure
