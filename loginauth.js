@@ -13,7 +13,7 @@ function getCookie(name) {
     return null;
 }
 
-// Function to set a cookie
+// Function to set a cookie (Persistent Storage)
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -21,7 +21,7 @@ function setCookie(name, value, days) {
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + value + "; path=/; SameSite=Lax" + expires;
+    document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax" + expires;
 }
 
 // Function to delete a cookie
@@ -53,7 +53,7 @@ const restrictedPages = new Set([
 })();
 
 // ====================================
-// ✅ Login Function
+// ✅ Login Function (Stores Data in Cookies)
 // ====================================
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
@@ -88,11 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
 
                 if (response.ok) {
-                    // Store the token in **cookies**
-                    setCookie("access_token", result.access_token, 1); // 1 day expiry
-
-                    // Store user data in sessionStorage
-                    sessionStorage.setItem("user", JSON.stringify(result.data));
+                    // Store token and user info in **cookies**
+                    setCookie("access_token", result.access_token, 7); // Store token for 7 days
+                    setCookie("user_data", JSON.stringify(result.data), 7); // Store user info for 7 days
 
                     // Redirect to dashboard immediately after login
                     window.location.href = "dashboard.html";
@@ -111,13 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ====================================
-    // ✅ Logout Function
+    // ✅ Logout Function (Keeps Data Stored)
     // ====================================
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
-            deleteCookie("access_token"); // Remove authentication cookie
-            sessionStorage.removeItem("user"); // Clear session storage
+            deleteCookie("access_token"); // Remove only token (Keep user data)
             window.location.href = "login.html"; // Redirect to login page
         });
     }
