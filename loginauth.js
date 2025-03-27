@@ -13,8 +13,8 @@ function setCookie(name, value, days) {
 function getCookie(name) {
     let nameEQ = name + "=";
     let cookiesArray = document.cookie.split(";");
-    for (let i = 0; i < cookiesArray.length; i++) {
-        let cookie = cookiesArray[i].trim();
+    for (let cookie of cookiesArray) {
+        cookie = cookie.trim();
         if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length, cookie.length);
     }
     return null;
@@ -44,11 +44,10 @@ function deleteCookie(name) {
 
     const currentPage = window.location.pathname.split("/").pop();
 
-    // Check if user just logged in
-    const bypassAuth = sessionStorage.getItem("bypassAuth");
-    if (bypassAuth) {
-        sessionStorage.removeItem("bypassAuth"); // Remove flag after redirection
-        return; // Skip restriction check
+    // Allow access if login just happened
+    if (sessionStorage.getItem("bypassAuth")) {
+        sessionStorage.removeItem("bypassAuth");
+        return;
     }
 
     // Redirect if user is not authenticated and trying to access a restricted page
@@ -91,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("Full Response:", result); // Debugging - log full response
 
-                // Check where the token is stored in response
+                // Extract token from response
                 const token = result.access_token || result.data?.access_token;
                 
                 if (response.ok && token) {
