@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault(); // Prevent form submission
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -22,32 +22,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ username, password }),
-                    credentials: "include"
+                    credentials: "include" // Allows cookies to be set
                 });
 
                 const result = await response.json();
-                console.log("🔹 Full Response:", result);
+                console.log("🔹 Backend Response:", result);
 
-                if (response.ok && result.token) {
-                    console.log("✅ Login successful! Storing token in cookies...");
+                if (response.ok && result.user) {
+                    console.log("✅ Login successful! Storing token...");
 
-                    // 🔥 Store token in cookies (Valid for 1 day)
-                    document.cookie = `access_token=${result.token}; Path=/; Secure; SameSite=Lax; Max-Age=86400`;
+                    // ✅ Store token in cookies (instead of localStorage)
+                    document.cookie = `access_token=${result.token}; Path=/; Secure; HttpOnly;`;
 
-                    // ✅ Redirect to dashboard based on correct password
-                    if (result.user) {
-                        console.log("🔓 Password correct. Redirecting...");
-                        setTimeout(() => {
-                            window.location.href = "dashboard.html";  
-                        }, 500);
-                    } else {
-                        console.error("❌ Incorrect password.");
-                        alert("❌ Incorrect password. Please try again.");
-                        loginButton.disabled = false;
-                    }
+                    // ✅ Redirect only if password is correct
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";  
+                    }, 500);
                 } else {
                     console.error("❌ Login failed:", result.message);
-                    alert("❌ Incorrect username or password. Please try again.");
+                    alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
@@ -60,3 +53,44 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// 🚀 **Check if User is Logged In**
+document.addEventListener("DOMContentLoaded", async function () {
+    console.log("🔄 Checking stored authentication token...");
+
+    const token = getCookie("access_token");
+
+    if (token) {
+        console.log("✅ Token found! Verifying session...");
+
+        try {
+            const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` },
+                credentials: "include"
+            });
+
+            if (response.ok) {
+                console.log("✅ User is authenticated! Redirecting...");
+                window.location.href = "dashboard.html";  
+            } else {
+                console.log("❌ Token invalid or expired. Clearing cookies...");
+                document.cookie = "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear cookie
+            }
+        } catch (error) {
+            console.error("⚠️ Error checking login status:", error);
+        }
+    } else {
+        console.log("❌ No stored token. User must log in.");
+    }
+});
+
+// 🔍 **Helper Function: Get Cookie**
+function getCookie(name) {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        let [key, value] = cookie.split("=");
+        if (key === name) return value;
+    }
+    return null;
+}
