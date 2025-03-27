@@ -20,12 +20,12 @@ function getCookie(name) {
     return null;
 }
 
-// Function to delete a cookie (Only for logout)
+// Function to delete a cookie (Only used for logout)
 function deleteCookie(name) {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
-// 🚀 **Auto-redirect if already logged in**
+// 🚀 **Auto-redirect to dashboard if already logged in**
 document.addEventListener("DOMContentLoaded", function () {
     const token = getCookie("access_token");
 
@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const loginButton = document.getElementById("loginButton");
-    const loader = document.getElementById("loader"); // Ensure there's a loader in your HTML
+    const loader = document.getElementById("loader");
 
     if (loginButton) {
-        loginButton.addEventListener("click", async function loginUser(event) {
+        loginButton.addEventListener("click", async function (event) {
             event.preventDefault(); // Prevent form submission reload
 
             const username = document.getElementById("username").value.trim();
@@ -54,32 +54,26 @@ document.addEventListener("DOMContentLoaded", function () {
             loginButton.disabled = true;
             loader.style.display = "block"; // Show loader
 
-            const loginData = { username, password };
-
             try {
                 const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(loginData),
+                    body: JSON.stringify({ username, password }),
                     credentials: "include"
                 });
 
                 const result = await response.json();
-                console.log("🔹 Full Response:", result); // Debugging - log full response
+                console.log("🔹 Full Response:", result);
 
-                // Extract token from response
-                const token = result.access_token || result.data?.access_token;
+                if (response.ok && result.access_token) {
+                    console.log("✅ Token received:", result.access_token);
+                    setCookie("access_token", result.access_token, 1); // Store token for 1 day
 
-                if (response.ok && token) {
-                    console.log("✅ Token received:", token);
-                    setCookie("access_token", token, 1); // Store token in cookie for 1 day
-                    sessionStorage.setItem("bypassAuth", "true"); // Allow access temporarily
-
-                    // ✅ Ensure token is stored before redirecting
+                    // Redirect to dashboard **only after** token is saved
                     setTimeout(() => {
                         console.log("🔄 Redirecting to dashboard...");
-                        window.location.href = "dashboard.html"; // Redirect to dashboard
-                    }, 1000); // 1-second delay to ensure data storage
+                        window.location.href = "dashboard.html";
+                    }, 500); // Slight delay to prevent execution timing issues
                 } else {
                     console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
