@@ -14,18 +14,13 @@ function getCookie(name) {
     return null;
 }
 
-// Function to delete a cookie (Only for logout)
-function deleteCookie(name) {
-    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-}
-
-// 🚀 **Auto-redirect to dashboard if already logged in**
+// 🚀 **Auto-redirect if already logged in**
 document.addEventListener("DOMContentLoaded", function () {
     const token = getCookie("access_token");
 
     if (token) {
         console.log("✅ Token found! Redirecting to dashboard...");
-        window.location.href = "dashboard.html"; // Redirect if token exists
+        window.location.href = "dashboard.html";
         return;
     }
 
@@ -34,16 +29,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (loginButton) {
         loginButton.addEventListener("click", async function (event) {
-            event.preventDefault(); // Prevent form submission reload
+            event.preventDefault();
 
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
 
             if (!username || !password) {
-                return; // Do nothing if fields are empty
+                alert("Please enter both username and password.");
+                return;
             }
 
-            // Disable login button and show loader
             loginButton.disabled = true;
             loader.style.display = "block";
 
@@ -62,30 +57,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("✅ Token received:", result.access_token);
                     setCookie("access_token", result.access_token); // Store token permanently
 
-                    // ✅ Redirect to dashboard **only after** token is stored
+                    // ✅ Redirect to dashboard after storing the token
                     setTimeout(() => {
                         console.log("🔄 Redirecting to dashboard...");
                         window.location.href = "dashboard.html";
-                    }, 500); // Short delay to ensure storage completion
+                    }, 500);
                 } else {
                     console.error("❌ Login failed:", result.message);
+                    alert(result.message || "Login failed. Please try again.");
                     loginButton.disabled = false;
                 }
             } catch (error) {
                 console.error("❌ Login error:", error);
+                alert("An error occurred. Please try again later.");
                 loginButton.disabled = false;
             } finally {
-                loader.style.display = "none"; // Hide loader
+                loader.style.display = "none";
             }
-        });
-    }
-
-    // Logout Function
-    const logoutButton = document.getElementById("logoutButton");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-            deleteCookie("access_token"); // Remove authentication cookie
-            window.location.href = "login.html"; // Redirect to login page
         });
     }
 });
