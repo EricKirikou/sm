@@ -1,5 +1,5 @@
 // ====================================
-// ✅ Authentication Check (Instant Redirect Before Load)
+// ✅ Cookie Management (No Deletion)
 // ====================================
 function getCookie(name) {
     let nameEQ = name + "=";
@@ -21,11 +21,9 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax" + expires;
 }
 
-function deleteCookie(name) {
-    document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-}
-
-// Restricted Pages Set
+// ====================================
+// ✅ Authentication Check (Redirect Immediately if Unauthorized)
+// ====================================
 const restrictedPages = new Set([
     "dashboard.html", "account.html", "add-assets.html", "add-employee.html",
     "admissions.html", "ai-analytics.html", "applications.html", "attendance-list.html",
@@ -38,7 +36,7 @@ const restrictedPages = new Set([
 ]);
 
 (function checkAuth() {
-    const token = getCookie("access_token"); 
+    const token = getCookie("access_token");
     const currentPage = window.location.pathname.split("/").pop();
 
     if (!token && restrictedPages.has(currentPage)) {
@@ -47,7 +45,7 @@ const restrictedPages = new Set([
 })();
 
 // ====================================
-// ✅ Login Function (Ensuring Network Visibility)
+// ✅ Login Process (Keeping Network Request Visible)
 // ====================================
 document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("loginButton");
@@ -84,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
 
                 if (response.ok) {
-                    // ✅ Store login token & user data in cookies
+                    // ✅ Store login token & user data in cookies (Persistent)
                     setCookie("access_token", result.access_token, 7); 
                     setCookie("user_data", JSON.stringify(result.data), 7); 
 
@@ -107,14 +105,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ====================================
-    // ✅ Logout Function (Keeps Network Activity)
+    // ✅ Logout Function (DOES NOT DELETE COOKIES)
     // ====================================
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
-            deleteCookie("access_token"); 
+            // ✅ Logout without deleting cookies
             setTimeout(() => {
-                window.location.href = "login.html";
+                window.location.href = "login.html"; // Redirect, but keep cookies intact
             }, 500); // Small delay to keep Network request visible
         });
     }
