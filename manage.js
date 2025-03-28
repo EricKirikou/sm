@@ -194,26 +194,94 @@ async function updateEmployee() {
         window.isUpdating = false;
     }
 }
-// 🗑️ Delete Employee
+// 🗑️ Delete Employee (Final Working Version)
 async function deleteEmployee(id) {
-    if (!confirm("Are you sure you want to delete this employee?")) return;
+    if (!id) {
+        console.error("No employee ID provided");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to permanently delete this employee?")) {
+        return;
+    }
+
+    const deleteBtn = document.querySelector(`button[onclick*="deleteEmployee('${id}')"]`);
+    const originalBtnText = deleteBtn?.innerHTML;
+    const loader = document.getElementById("loader");
 
     try {
-        const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/${id}`, { 
+        // UI Loading States
+        if (deleteBtn) {
+            deleteBtn.disabled = true;
+            deleteBtn.innerHTML = '<span class="animate-spin">⏳</span> Deleting...';
+        }
+        if (loader) loader.style.display = "flex";
+
+        // API Request - Note the updated endpoint with /delete/
+        const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/delete/${id}`, {
             method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token') || ''}`
+            },
             credentials: "include"
         });
+
+        // Debugging logs
+        console.log("DELETE Response Status:", response.status);
         
+        // Handle response
+        const result = await response.json().catch(() => ({}));
+        console.log("DELETE Response Data:", result);
+
         if (!response.ok) {
-            throw new Error("Failed to delete employee");
+            throw new Error(result.message || `Deletion failed with status ${response.status}`);
         }
-        
+
+        // Verify the message matches expected response
+        if (!result.message || !result.message.includes("successfully")) {
+            throw new Error("Unexpected response format from server");
+        }
+
+        // Refresh data and show success
         await fetchEmployees();
-        alert("Employee deleted successfully");
+        showToast(result.message || "Employee deleted successfully", "success");
+
     } catch (error) {
-        console.error("Error deleting employee:", error);
-        alert(`Error: ${error.message}`);
+        console.error("Delete error:", error);
+        showToast(`Failed to delete: ${error.message}`, "error");
+        
+        // Detailed error diagnostics
+        console.group("DELETE Error Diagnostics");
+        console.log("Employee ID:", id);
+        console.log("Auth Token Present:", !!localStorage.getItem('token'));
+        console.log("Endpoint:", `https://sukuu-backend.onrender.com/v1/api/employee/delete/${id}`);
+        console.groupEnd();
+        
+    } finally {
+        // Reset UI
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.innerHTML = originalBtnText || 'Delete';
+        }
+        if (loader) loader.style.display = "none";
     }
+}
+
+// 🍞 Toast Notification Helper (if not already implemented)
+function showToast(message, type = "info") {
+    const toast = document.createElement("div");
+    toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-md shadow-lg text-white ${
+        type === "error" ? "bg-red-500" : 
+        type === "success" ? "bg-green-500" : "bg-blue-500"
+    }`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add("opacity-0", "transition-opacity", "duration-300");
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 // 🏠 Modal Controls
