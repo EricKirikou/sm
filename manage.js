@@ -2,36 +2,51 @@
 // 🔄 Fetch Employees and Render Table
 async function fetchEmployees() {
     try {
-        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/employee");
-        const employees = await response.json();
+        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/employee/", {
+            method: "GET",
+            credentials: "include",
+        });
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json(); // Parse the JSON response
         const tableBody = document.querySelector("#employeeTable tbody");
         tableBody.innerHTML = ""; // Clear existing content
 
-        employees.data.forEach(emp => {
-            const row = `
-                <tr>
-                    <td class="p-2">${emp.nameOfEmployee}</td>
-                    <td class="p-2">${emp.idNumber}</td>
-                    <td class="p-2">${emp.email}</td>
-                    <td class="p-2">${new Date(emp.dateOfBirth).toLocaleDateString()}</td>
-                    <td class="p-2">${emp.role}</td>
-                    <td class="p-2">${emp.mobileNumber}</td>
-                    <td class="p-2">${emp.gender}</td>
-                    <td class="p-2">${emp.address}</td>
-                    <td class="p-2">${emp.education}</td>
-                    <td class="p-2">${emp.experience}</td>
-                    <td class="p-2">${emp.monthlySalary}</td>
-                    <td class="p-2">
-                        <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="editEmployee('${emp._id}')">Edit</button>
-                        <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteEmployee('${emp._id}')">Delete</button>
-                    </td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
+        // Check if data exists and has the expected structure
+        if (data && data.data && Array.isArray(data.data)) {
+            data.data.forEach(emp => {
+                const row = `
+                    <tr>
+                        <td class="p-2">${emp.nameOfEmployee || '-'}</td>
+                        <td class="p-2">${emp.idNumber || '-'}</td>
+                        <td class="p-2">${emp.email || '-'}</td>
+                        <td class="p-2">${emp.dateOfBirth ? new Date(emp.dateOfBirth).toLocaleDateString() : '-'}</td>
+                        <td class="p-2">${emp.role || '-'}</td>
+                        <td class="p-2">${emp.mobileNumber || '-'}</td>
+                        <td class="p-2">${emp.gender || '-'}</td>
+                        <td class="p-2">${emp.address || '-'}</td>
+                        <td class="p-2">${emp.education || '-'}</td>
+                        <td class="p-2">${emp.experience || '-'}</td>
+                        <td class="p-2">${emp.monthlySalary || '-'}</td>
+                        <td class="p-2">
+                            <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="editEmployee('${emp._id}')">Edit</button>
+                            <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteEmployee('${emp._id}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            console.error("Unexpected data structure:", data);
+            tableBody.innerHTML = `<tr><td colspan="12" class="text-center p-4">No employee data found or invalid data structure</td></tr>`;
+        }
     } catch (error) {
         console.error("Error fetching employees:", error);
+        const tableBody = document.querySelector("#employeeTable tbody");
+        tableBody.innerHTML = `<tr><td colspan="12" class="text-center p-4 text-red-500">Error loading employee data: ${error.message}</td></tr>`;
     }
 }
 
@@ -40,7 +55,8 @@ async function editEmployee(id) {
         console.log("Fetching employee with ID:", id); // Debugging
 
         const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/${id}`);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        
+        // if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const empData = await response.json();
         console.log("Fetched Employee Data:", empData); // Debugging
