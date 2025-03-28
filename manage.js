@@ -226,17 +226,25 @@ async function updateEmployee() {
     
     const submitBtn = document.getElementById("updateEmployeeBtn");
     if (!submitBtn) {
-        console.error("Submit button not found");
+        showNotification("Submit button not found", "error");
         window.isUpdating = false;
         return;
     }
 
-    const originalBtnText = submitBtn.innerHTML;
+    const originalBtnContent = submitBtn.innerHTML;
     
     try {
-        // Show loading state
+        // Show loading state with spinner
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="animate-spin">⏳</span> Updating...';
+        submitBtn.innerHTML = `
+            <span class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Updating...
+            </span>
+        `;
 
         // Get employee ID
         const id = document.getElementById("editEmployeeId")?.value;
@@ -262,8 +270,6 @@ async function updateEmployee() {
             throw new Error("Name, Email and Role are required");
         }
 
-        console.log("Sending update:", updatedData);
-
         // Send to backend
         const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/edit/${id}`, {
             method: "PUT",
@@ -275,56 +281,66 @@ async function updateEmployee() {
             credentials: "include"
         });
 
-        // Handle null response
-        const responseData = await response.json().catch(() => null);
-        console.log("Update response:", {
-            status: response.status,
-            data: responseData
-        });
+        const responseData = await response.json();
 
-        if (!response.ok || responseData === null) {
-            throw new Error(responseData?.message || 
-                          "Update failed - no data returned from server");
+        if (!response.ok) {
+            throw new Error(responseData?.message || "Update failed");
         }
 
-        // Success handling (don't require specific success flag since backend returns null)
-        alert("Employee updated successfully!");
+        // Show success notification
+        showNotification("Employee updated successfully!", "success");
+        
+        // Refresh data and close popup
         await fetchEmployees();
         closeEditPopup();
 
     } catch (error) {
         console.error("Update error:", error);
-        alert(`Error: ${error.message}\n\nPlease check backend logs.`);
+        showNotification(`Update failed: ${error.message}`, "error");
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
+        submitBtn.innerHTML = originalBtnContent;
         window.isUpdating = false;
     }
 }
-// 🗑️ Delete Employee (Final Working Version)
+
+
+// 🗑️ Enhanced Delete Employee Function with UI Notifications
 async function deleteEmployee(id) {
     if (!id) {
-        console.error("No employee ID provided");
+        showNotification("No employee ID provided", "error");
         return;
     }
 
-    if (!confirm("Are you sure you want to permanently delete this employee?")) {
-        return;
-    }
+    // Custom confirmation dialog
+    const confirmed = await showConfirmationDialog(
+        "Delete Employee",
+        "Are you sure you want to permanently delete this employee?",
+        "Delete",
+        "Cancel"
+    );
+    
+    if (!confirmed) return;
 
     const deleteBtn = document.querySelector(`button[onclick*="deleteEmployee('${id}')"]`);
-    const originalBtnText = deleteBtn?.innerHTML;
-    const loader = document.getElementById("loader");
+    const originalBtnContent = deleteBtn?.innerHTML;
 
     try {
-        // UI Loading States
+        // UI Loading State
         if (deleteBtn) {
             deleteBtn.disabled = true;
-            deleteBtn.innerHTML = '<span class="animate-spin">⏳</span> Deleting...';
+            deleteBtn.innerHTML = `
+                <span class="flex items-center">
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Deleting...
+                </span>
+            `;
         }
-        if (loader) loader.style.display = "flex";
 
-        // API Request - Note the updated endpoint with /delete/
+        // API Request
         const response = await fetch(`https://sukuu-backend.onrender.com/v1/api/employee/delete/${id}`, {
             method: "DELETE",
             headers: {
@@ -334,31 +350,26 @@ async function deleteEmployee(id) {
             credentials: "include"
         });
 
-        // Debugging logs
-        console.log("DELETE Response Status:", response.status);
-        
-        // Handle response
-        const result = await response.json().catch(() => ({}));
-        console.log("DELETE Response Data:", result);
+        const result = await response.json();
 
         if (!response.ok) {
             throw new Error(result.message || `Deletion failed with status ${response.status}`);
         }
 
-        // Verify the message matches expected response
-        if (!result.message || !result.message.includes("successfully")) {
+        // Verify successful deletion
+        if (!result.message?.includes("successfully")) {
             throw new Error("Unexpected response format from server");
         }
 
         // Refresh data and show success
         await fetchEmployees();
-        showToast(result.message || "Employee deleted successfully", "success");
+        showNotification(result.message || "Employee deleted successfully", "success");
 
     } catch (error) {
         console.error("Delete error:", error);
-        showToast(`Failed to delete: ${error.message}`, "error");
+        showNotification(`Failed to delete: ${error.message}`, "error");
         
-        // Detailed error diagnostics
+        // Error diagnostics
         console.group("DELETE Error Diagnostics");
         console.log("Employee ID:", id);
         console.log("Auth Token Present:", !!localStorage.getItem('token'));
@@ -369,26 +380,92 @@ async function deleteEmployee(id) {
         // Reset UI
         if (deleteBtn) {
             deleteBtn.disabled = false;
-            deleteBtn.innerHTML = originalBtnText || 'Delete';
+            deleteBtn.innerHTML = originalBtnContent || `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+            `;
         }
-        if (loader) loader.style.display = "none";
     }
 }
 
-// 🍞 Toast Notification Helper (if not already implemented)
-function showToast(message, type = "info") {
-    const toast = document.createElement("div");
-    toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-md shadow-lg text-white ${
-        type === "error" ? "bg-red-500" : 
-        type === "success" ? "bg-green-500" : "bg-blue-500"
-    }`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
+// 🎨 Custom Confirmation Dialog
+function showConfirmationDialog(title, message, confirmText, cancelText) {
+    return new Promise((resolve) => {
+        const dialog = document.createElement('div');
+        dialog.className = 'confirmation-dialog-overlay';
+        dialog.innerHTML = `
+            <div class="confirmation-dialog">
+                <div class="dialog-content">
+                    <div class="dialog-icon">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h3 class="dialog-title">${title}</h3>
+                    <div class="dialog-message">
+                        <p>${message}</p>
+                    </div>
+                </div>
+                <div class="dialog-actions">
+                    <button type="button" id="confirmBtn" class="confirm-button">
+                        ${confirmText}
+                    </button>
+                    <button type="button" id="cancelBtn" class="cancel-button">
+                        ${cancelText}
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        
+        document.getElementById('confirmBtn').addEventListener('click', () => {
+            document.body.removeChild(dialog);
+            resolve(true);
+        });
+        
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.body.removeChild(dialog);
+            resolve(false);
+        });
+    });
+}
+
+// 🔔 Enhanced Notification System
+function showNotification(message, type = "info") {
+    const notification = document.createElement("div");
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <div class="notification-icon">
+                ${type === "success" ? 
+                    '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' :
+                    '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>'
+                }
+            </div>
+            <div class="notification-message">
+                <p>${message}</p>
+            </div>
+        </div>
+    `;
     
+    const container = document.getElementById('notification-container') || createNotificationContainer();
+    container.appendChild(notification);
+    
+    // Auto-dismiss after 5 seconds
     setTimeout(() => {
-        toast.classList.add("opacity-0", "transition-opacity", "duration-300");
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+        notification.classList.add('notification-exit');
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
+}
+
+function createNotificationContainer() {
+    const container = document.createElement('div');
+    container.id = 'notification-container';
+    container.className = 'notification-container';
+    document.body.appendChild(container);
+    return container;
 }
 
 // 🏠 Modal Controls

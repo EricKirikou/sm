@@ -19,7 +19,7 @@ document.getElementById("employeeForm").addEventListener("submit", async functio
 
     // Simple validation
     if (!data.nameOfEmployee || !data.email || !data.role) {
-        alert("Please fill in all required fields (Name, Email, Role)");
+        showMessage("Please fill in all required fields (Name, Email, Role)", "error");
         return;
     }
 
@@ -45,14 +45,14 @@ document.getElementById("employeeForm").addEventListener("submit", async functio
         }
 
         const result = await response.json();
-        alert(result.message || "Employee added successfully!");
+        showMessage(result.message || "Employee added successfully!", "success");
         
         // Reset form after successful submission
         document.getElementById("employeeForm").reset();
         
     } catch (error) {
         console.error("Error adding employee:", error);
-        alert(`Error: ${error.message}`);
+        showMessage(`Error: ${error.message}`, "error");
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "Add Employee";
@@ -63,4 +63,35 @@ document.getElementById("employeeForm").addEventListener("submit", async functio
 document.addEventListener('DOMContentLoaded', function() {
     // Reset form when page loads
     document.getElementById("employeeForm").reset();
+    
+    // Add the message container to the DOM if it doesn't exist
+    if (!document.getElementById('message-container')) {
+        const messageContainer = document.createElement('div');
+        messageContainer.id = 'message-container';
+        document.body.appendChild(messageContainer);
+    }
 });
+
+// Function to show styled messages
+function showMessage(message, type) {
+    const messageContainer = document.getElementById('message-container') || createMessageContainer();
+    
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${type}`;
+    messageElement.textContent = message;
+    
+    messageContainer.appendChild(messageElement);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        messageElement.classList.add('fade-out');
+        setTimeout(() => messageElement.remove(), 500);
+    }, 5000);
+}
+
+function createMessageContainer() {
+    const container = document.createElement('div');
+    container.id = 'message-container';
+    document.body.appendChild(container);
+    return container;
+}
