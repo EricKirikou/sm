@@ -9,11 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            if (!username || !password) {
-                alert("⚠️ Please enter both username and password.");
-                return;
-            }
-
             loginButton.disabled = true;
             loader.style.display = "block";
 
@@ -28,16 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
                 console.log("🔹 Backend Response:", result);
 
-                if (response.ok && result.user) {
-                    console.log("✅ Login successful! Storing token...");
+                if (result.data) {
+                    // console.log("✅ Login successful! Storing token...");
 
-                    // ✅ Store token in cookies (instead of localStorage)
-                    document.cookie = `access_token=${result.token}; Path=/; Secure; HttpOnly;`;
+                    // // ✅ Store token in cookies (instead of localStorage)
+                    // document.cookie = `access_token=${result.token}; Path=/; Secure; HttpOnly;`;
 
                     // ✅ Redirect only if password is correct
-                    setTimeout(() => {
-                        window.location.href = "dashboard.html";  
-                    }, 500);
+                        window.location.href = "dashboard.html";
                 } else {
                     console.error("❌ Login failed:", result.message);
                     alert(result.message || "Login failed. Please try again.");
@@ -55,42 +48,42 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // 🚀 **Check if User is Logged In**
-document.addEventListener("DOMContentLoaded", async function () {
-    console.log("🔄 Checking stored authentication token...");
+// document.addEventListener("DOMContentLoaded", async function () {
+//     console.log("🔄 Checking stored authentication token...");
 
-    const token = getCookie("access_token");
+//     const token = getCookie("access_token");
 
-    if (token) {
-        console.log("✅ Token found! Verifying session...");
+//     if (token) {
+//         console.log("✅ Token found! Verifying session...");
 
-        try {
-            const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
-                method: "GET",
-                headers: { "Authorization": `Bearer ${token}` },
-                credentials: "include"
-            });
+//         try {
+//             const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/me", {
+//                 method: "GET",
+//                 headers: { "Authorization": `Bearer ${token}` },
+//                 credentials: "include"
+//             });
 
-            if (response.ok) {
-                console.log("✅ User is authenticated! Redirecting...");
-                window.location.href = "dashboard.html";  
-            } else {
-                console.log("❌ Token invalid or expired. Clearing cookies...");
-                document.cookie = "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear cookie
-            }
-        } catch (error) {
-            console.error("⚠️ Error checking login status:", error);
-        }
-    } else {
-        console.log("❌ No stored token. User must log in.");
-    }
-});
+//             if (response.ok) {
+//                 console.log("✅ User is authenticated! Redirecting...");
+//                 window.location.href = "dashboard.html";  
+//             } else {
+//                 console.log("❌ Token invalid or expired. Clearing cookies...");
+//                 document.cookie = "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;"; // Clear cookie
+//             }
+//         } catch (error) {
+//             console.error("⚠️ Error checking login status:", error);
+//         }
+//     } else {
+//         console.log("❌ No stored token. User must log in.");
+//     }
+// });
 
 // 🔍 **Helper Function: Get Cookie**
-function getCookie(name) {
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-        let [key, value] = cookie.split("=");
-        if (key === name) return value;
-    }
-    return null;
-}
+// function getCookie(name) {
+//     const cookies = document.cookie.split("; ");
+//     for (let cookie of cookies) {
+//         let [key, value] = cookie.split("=");
+//         if (key === name) return value;
+//     }
+//     return null;
+// }

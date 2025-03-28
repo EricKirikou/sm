@@ -3,8 +3,11 @@ document.addEventListener("DOMContentLoaded", fetchEmployees);
 // 📌 Fetch and Display Employees
 async function fetchEmployees() {
     try {
-        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/employee/");
-        if (!response.ok) throw new Error("Failed to fetch employees.");
+        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/employee/", {
+            method: "GET",
+            credentials: "include",
+        });
+        // if (!response.ok) throw new Error("Failed to fetch employees.");
 
         const employeeData = await response.json();
         const employees = employeeData.data || [];
