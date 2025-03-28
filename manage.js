@@ -1,6 +1,19 @@
 // 🔄 Fetch Employees and Render Table
 async function fetchEmployees() {
     try {
+        // Show loading state
+        const tableBody = document.querySelector("#employeeTable tbody");
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="12" class="py-8 text-center">
+                    <div class="flex justify-center">
+                        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+                    </div>
+                    <p class="mt-2 text-gray-600">Loading employees...</p>
+                </td>
+            </tr>
+        `;
+
         const response = await fetch("https://sukuu-backend.onrender.com/v1/api/employee/", {
             method: "GET",
             credentials: "include",
@@ -11,39 +24,113 @@ async function fetchEmployees() {
         }
 
         const data = await response.json();
-        const tableBody = document.querySelector("#employeeTable tbody");
         tableBody.innerHTML = "";
 
         if (data && data.data && Array.isArray(data.data)) {
             data.data.forEach(emp => {
-                const row = `
-                    <tr>
-                        <td class="p-2">${emp.nameOfEmployee || '-'}</td>
-                        <td class="p-2">${emp.idNumber || '-'}</td>
-                        <td class="p-2">${emp.email || '-'}</td>
-                        <td class="p-2">${emp.dateOfBirth ? new Date(emp.dateOfBirth).toLocaleDateString() : '-'}</td>
-                        <td class="p-2">${emp.role || '-'}</td>
-                        <td class="p-2">${emp.mobileNumber || '-'}</td>
-                        <td class="p-2">${emp.gender || '-'}</td>
-                        <td class="p-2">${emp.address || '-'}</td>
-                        <td class="p-2">${emp.education || '-'}</td>
-                        <td class="p-2">${emp.experience || '-'}</td>
-                        <td class="p-2">${emp.monthlySalary || '-'}</td>
-                        <td class="p-2">
-                            <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="editEmployee('${emp._id}')">Edit</button>
-                            <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteEmployee('${emp._id}')">Delete</button>
-                        </td>
-                    </tr>
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors duration-150';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 font-medium">${emp.nameOfEmployee?.charAt(0) || '?'}</span>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${emp.nameOfEmployee || '-'}</div>
+                                <div class="text-sm text-gray-500">${emp.email || '-'}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            ${emp.idNumber || 'N/A'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${emp.dateOfBirth ? new Date(emp.dateOfBirth).toLocaleDateString() : '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleColorClass(emp.role)}">
+                            ${emp.role || 'Unassigned'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${emp.mobileNumber || '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${emp.gender || '-'}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                        ${emp.address || '-'}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        ${emp.education || '-'}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        ${emp.experience || '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ${emp.monthlySalary ? `$${emp.monthlySalary}` : '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="editEmployee('${emp._id}')" class="text-blue-600 hover:text-blue-900 p-1 rounded-md hover:bg-blue-50 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                            </button>
+                            <button onclick="deleteEmployee('${emp._id}')" class="text-red-600 hover:text-red-900 p-1 rounded-md hover:bg-red-50 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
                 `;
-                tableBody.innerHTML += row;
+                tableBody.appendChild(row);
             });
         } else {
-            tableBody.innerHTML = `<tr><td colspan="12" class="text-center p-4">No employee data found</td></tr>`;
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="12" class="px-6 py-8 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No employees found</h3>
+                        <p class="mt-1 text-sm text-gray-500">Get started by adding a new employee.</p>
+                    </td>
+                </tr>
+            `;
         }
     } catch (error) {
         console.error("Error fetching employees:", error);
         const tableBody = document.querySelector("#employeeTable tbody");
-        tableBody.innerHTML = `<tr><td colspan="12" class="text-center p-4 text-red-500">Error loading data</td></tr>`;
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="12" class="px-6 py-8 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">Error loading data</h3>
+                    <p class="mt-1 text-sm text-gray-500">${error.message}</p>
+                    <button onclick="fetchEmployees()" class="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Retry
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// Helper function for role badge colors
+function getRoleColorClass(role) {
+    switch(role) {
+        case 'Accountant': return 'bg-purple-100 text-purple-800';
+        case 'Teacher': return 'bg-blue-100 text-blue-800';
+        case 'Librarian': return 'bg-yellow-100 text-yellow-800';
+        case 'Head Master': return 'bg-indigo-100 text-indigo-800';
+        default: return 'bg-gray-100 text-gray-800';
     }
 }
 
