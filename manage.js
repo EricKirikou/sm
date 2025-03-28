@@ -71,7 +71,7 @@ async function fetchEmployees() {
                         ${emp.experience || '-'}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        ${emp.monthlySalary ? `$${emp.monthlySalary}` : '-'}
+                        ${emp.monthlySalary ? formatGhanaCedis(emp.monthlySalary) : '-'}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex space-x-2">
@@ -120,6 +120,26 @@ async function fetchEmployees() {
                 </td>
             </tr>
         `;
+    }
+}
+
+// Helper function to format Ghana Cedis
+function formatGhanaCedis(amount) {
+    return new Intl.NumberFormat('en-GH', {
+        style: 'currency',
+        currency: 'GHS',
+        minimumFractionDigits: 2
+    }).format(amount);
+}
+
+// Helper function for role badge colors
+function getRoleColorClass(role) {
+    switch(role) {
+        case 'Accountant': return 'bg-purple-100 text-purple-800';
+        case 'Teacher': return 'bg-blue-100 text-blue-800';
+        case 'Librarian': return 'bg-yellow-100 text-yellow-800';
+        case 'Head Master': return 'bg-indigo-100 text-indigo-800';
+        default: return 'bg-gray-100 text-gray-800';
     }
 }
 
