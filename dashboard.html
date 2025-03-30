@@ -94,49 +94,47 @@
             </svg>
         </button>
 
-        <!-- Sidebar -->
         <nav id="sidebar"
         class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40"
         x-data="{ 
-            isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true', 
-            toggleSidebar() { 
-                this.isCollapsed = !this.isCollapsed; 
-                localStorage.setItem('sidebarCollapsed', this.isCollapsed); 
-            } 
+            isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
         }"
         x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }"
     >
-          <!-- Sidebar Header with Toggle -->
-<div class="flex justify-between items-center mb-4">
-    <h4 class="text-1xl font-bold flex items-center w-full">
-        <img src="favicon.png" 
-             class="transition-all duration-300 sidebar-logo"
-             :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" 
-             alt="Logo">
-    </h4>
-    <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
-        class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
-            :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-    </button>
-</div>
 
+        <!-- Sidebar Header with Logo & Toggle -->
+        <div class="flex justify-between items-center mb-4">
+            <h4 class="text-1xl font-bold flex items-center w-full">
+                <img src="favicon.png" 
+                     class="transition-all duration-300 sidebar-logo"
+                     :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" 
+                     alt="Logo">
+            </h4>
+            <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
+                class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
+                    :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+        </div>
 
-<!-- Admin Profile -->
+    <!-- Admin Profile -->
 <div class="text-center mb-6 flex items-center transition-all duration-300"
-    :class="isCollapsed ? 'justify-center' : 'justify-start'">
-    <img src="profile.png" 
-        class="rounded-full border-2 border-gray-700 transition-all duration-300"
-        :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" 
-        alt="Admin">
-    
-    <div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
-        <p class="text-lg font-semibold">Mr. Admin</p>
-        <p class="text-gray-400 text-sm">Admin</p>
-    </div>
+:class="isCollapsed ? 'justify-center' : 'justify-start'">
+<img id="sidebarProfileImage" 
+    src="default-profile.png" 
+    class="rounded-full border-2 border-gray-700 transition-all duration-300"
+    :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" 
+    alt="Admin">
+
+<div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
+    <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
+    <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
 </div>
+</div>
+
+
 
 
             <!-- Sidebar Navigation -->
@@ -824,7 +822,10 @@
             });
         </script>
         
-
+        <script>
+            // Ensure sidebar updates after page loads
+            updateSidebar();
+        </script>
         <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
             <button id="chat-sukuu-btn"
                 class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
@@ -881,7 +882,7 @@
                         <div class="dashboard-card bg-info">
                             <div>
                                 <h3 class="font-bold text-4xl">12</h3>
-                                <p class="text-lg">Teachers</p>
+                                <p class="text-lg">Employees</p>
                             </div>
                             <img src="image3.png" alt="Teachers" width="60" class="rounded-circle">
                         </div>
