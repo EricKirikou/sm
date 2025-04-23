@@ -3,7 +3,13 @@ document.addEventListener("DOMContentLoaded", fetchStudents);
 // 📌 Fetch and Display Students
 async function fetchStudents(searchQuery = "") {
     try {
-        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/student/");
+        const response = await fetch("https://sukuu-backend.onrender.com/v1/api/student/", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+        });
         if (!response.ok) throw new Error("Failed to fetch students.");
 
         const studentData = await response.json();
@@ -22,9 +28,9 @@ async function fetchStudents(searchQuery = "") {
 
         // Generate Students Cards
         students.forEach(emp => {
-            if (searchQuery && !emp.firstName.toLowerCase().includes(searchQuery.toLowerCase())) {
-                return;
-            }
+            // if (searchQuery && !emp.firstName.toLowerCase().includes(searchQuery.toLowerCase())) {
+            //     return;
+            // }
 
             const card = document.createElement("div");
             card.className = "bg-white rounded-lg p-4 flex flex-col items-center text-center border";
