@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> School Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="loginauth.js"></script>
+
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background-color: #10B981;
+        }
+
+        .toast.error {
+            background-color: #EF4444;
+        }
+
+        .toast.warning {
+            background-color: #F59E0B;
+        }
+
+        .toast.info {
+            background-color: #3B82F6;
+        }
+
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirmation-dialog.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .confirmation-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .confirmation-dialog.show .confirmation-content {
+            transform: translateY(0);
+        }
+
+        .highlight-row {
+            animation: highlight 2s ease-out;
+        }
+
+        @keyframes highlight {
+            0% {
+                background-color: rgba(16, 185, 129, 0.3);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+    </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: #222;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-container {
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-box {
+            float: right;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <!-- Sidebar Toggle Button -->
+        <button id="sidebarToggle"
+            class="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg md:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <nav id="sidebar"
+            class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40" x-data="{ 
+          isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+      }" x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }">
+
+            <!-- Sidebar Header with Logo & Toggle -->
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-1xl font-bold flex items-center w-full">
+                    <img src="favicon.png" class="transition-all duration-300 sidebar-logo"
+                        :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" alt="Logo">
+                </h4>
+                <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
+                    class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
+                        :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center transition-all duration-300"
+                :class="isCollapsed ? 'justify-center' : 'justify-start'">
+                <img id="sidebarProfileImage" src="default-profile.png"
+                    class="rounded-full border-2 border-gray-700 transition-all duration-300"
+                    :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" alt="Admin">
+
+                <div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
+                    <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
+                    <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
+                </div>
+            </div>
+
+
+
+
+            <!-- Sidebar Navigation -->
+            <ul class="space-y-2">
+                <!-- Dashboard -->
+                <li>
+                    <a href="dashboard.html"
+                        class="block p-2 hover:bg-gray-800 rounded font-semibold flex items-center">
+                        <i class="bi bi-speedometer2 sidebar-icon"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-person-workspace"></i> <span
+                                class="sidebar-text ml-3" x-show="!isCollapsed">Employees</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="add-employee.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Add New Employee</span></a>
+                        </li>
+                        <li><a href="employee.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">All Employees</span></a></li>
+                        <li><a href="manage.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Manage Employees</span> </a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active /
+                                        Inactive</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Appointment
+                                    Letter</span> </a><i class="fas fa-lock ml-auto text-red-300"></i></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Staff ID Card</span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Students Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-people-fill"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Students</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Add Student</span> </a></li>
+                        <li><a href="students.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">All Students</span></a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active /
+                                        Inactive</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Admission Letter</span>
+                            </a>
+                        </li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Students ID
+                                        Cards</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Manage Login</span> </a></li>
+                        <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Promote
+                                    Students</span> </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-hearts"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Parent</span></a></li>
+
+
+                <!-- Classes Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-house"></i><span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Class</span> </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="classes.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">All Classes</span></a></li>
+                        <li><a href="class.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Add Class</span></a></li>
+                    </ul>
+                </li>
+
+                </li>
+
+                </li> <!-- Attendance Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-clock-history"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Attendance</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Staffs
+                                    Attendance</span> </a>
+                        </li>
+                        <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Students
+                                    Attendance</span> </a>
+                        </li>
+                        <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Attendance List</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Exams Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i><span
+                                class="sidebar-text ml-3" x-show="!isCollapsed">Exams</span> </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Result Card</span></a></li>
+                        <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Master Sheet</span></a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Blank Award List</span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <!-- Accounts Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i><span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Accounts</span> </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="account.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Account Details</span></a></li>
+                        <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Pay Fees</span> </a></li>
+                        <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Receipts</span></a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Global
+                                        Payment</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Expenditure</span></a></li>
+                        <li><a href="petty-cash.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Petty Cash</span> </a></li>
+                        <li><a href="income.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Income</span></a></li>
+                        <li><a href="statement.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Account Statement</span></a></li>
+                    </ul>
+                </li>
+
+                <!-- Payroll Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cash-coin"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Payroll</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Pay Salary</span></a></li>
+                        <li><a href="payslip.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Pay Slip</span></a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Manage
+                                        Salary</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <!-- Library Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-journal-text"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Library</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="books.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Books</span></a></li>
+                        <li><a href="issued.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Issued Out</span> </a></li>
+                        <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"> <span class="sidebar-text ml-3"
+                                        x-show="!isCollapsed">E-books</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--Requisition Section with standalone style-->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-pc-display"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Requisition</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="requistion.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Requisition Form</span> </a>
+                        </li>
+                        <li><a href="review.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">View Requisitions</span></a></li>
+                        <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Respond
+                                    Requisitions</span> </a></li>
+                    </ul>
+
+
+                <li>
+                    <a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-chat-dots-fill"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Message</span></a>
+                </li>
+                <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-collection-play-fill"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Media</span></a></li>
+                <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-envelope-at"></i><span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Mail</span></a>
+                </li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="ml-2"><i class="bi bi-router-fill"></i><span x-show="!isCollapsed">Online
+                                Exams</span> </span>
+                        <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-cassette"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Asset
+                            Management</span></a></li>
+                <!-- Inventory Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-cart-check-fill"></i> <span
+                                class="sidebar-text ml-3" x-show="!isCollapsed">Shop</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Books &
+                                    Stationaries</span></a></li>
+                        <li><a href="shop-uniform.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Uniform & Clothing</span> </a>
+                        </li>
+                        <li><a href="purchase.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Purchase</span></a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Sale</span></a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Orders</span> </a></li>
+                    </ul>
+                </li>
+
+                <!----Inventory Section with Standalone Style------->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-window-fullscreen"></i> <span
+                                class="sidebar-text ml-3" x-show="!isCollapsed">Leave Application</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="leave.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Apply for Leave</span></a></li>
+                        <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Applications</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-camera-video-fill"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Gmeet Live Class</span></a>
+                </li>
+                <li><a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-bus-front"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Transport</span></a>
+                </li>
+                <li><a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-house-door"></i><span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Hostel</span> </a></li>
+                <!-- Announcement Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-megaphone"></i><span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Announcement</span> </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="notice.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Notice</span> </a></li>
+                        <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Timetable</span> </a></li>
+                        <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Academic Calendar</span></a></li>
+                    </ul>
+                </li>
+
+                <!-- Announcement Section with Standalone Style -->
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="ml-2"><i class="bi bi-router-fill"></i><span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Online Admission</span> </span>
+                        <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-walking"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Visitor Info</span></a>
+                </li>
+                <!-- Settings Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-gear-wide-connected"></i> <span
+                                class="sidebar-text ml-3" x-show="!isCollapsed">Settings</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="institution-info.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Institution
+                                    Profile</span></a></li>
+                        <li><a href="fees-particulars.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Fees
+                                    Particulars</span> </a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Fees
+                                        Structure</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Discount
+                                        Type</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="rules-regulations.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Rules and
+                                    Regulations</span></a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Audit Trail</span></a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Manage Account</span> </a></li>
+                        <li><a href="login.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Log Out</span></a></li>
+                    </ul>
+                </li>
+                <!-- AI Integration Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-robot"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">AI Integration</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="ai-chatbot.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI Chatbot</span></a></li>
+                        <li><a href="ai-analytics.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI-Powered Manager</span> </a>
+                        </li>
+                        <li><a href="ai-automation.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI Automation</span></a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">AI
+                                        Personalized Learning</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="404-error.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI-Generated Reports</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+        <style>
+            /* Collapsed state */
+            .sidebar-collapsed {
+                width: 4.5rem !important;
+            }
+        
+            .sidebar-collapsed .sidebar-text,
+            .sidebar-collapsed .sidebar-arrow,
+            .sidebar-collapsed .sidebar-logo-text {
+                display: none !important;
+            }
+        
+            .sidebar-collapsed .sidebar-icon {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                font-size: 1.25rem !important;
+            }
+        
+            .sidebar-collapsed [x-data]>button {
+                justify-content: center !important;
+                padding: 0.75rem 0.5rem !important;
+            }
+        
+            .sidebar-collapsed .sidebar-subicon {
+                margin-left: 0 !important;
+            }
+        
+            /* Active state */
+            .active-menu-item {
+                background-color: #3B82F6;
+            }
+        
+            /* Responsive */
+            @media (max-width: 768px) {
+                #sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.3s ease-in-out;
+                }
+        
+                #sidebar.sidebar-open {
+                    transform: translateX(0);
+                }
+            }
+        </style>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                const collapseToggle = document.getElementById('collapseToggle'); // Button to toggle collapse state
+        
+                // Initialize sidebar state from localStorage
+                if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                    sidebar.classList.add('sidebar-collapsed');
+                }
+        
+                // Toggle sidebar collapse
+                if (collapseToggle) {
+                    collapseToggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('sidebar-collapsed');
+                        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('sidebar-collapsed'));
+                    });
+                }
+        
+                // Mobile sidebar toggle
+                if (sidebarToggle) {
+                    sidebarToggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('sidebar-open');
+                    });
+                }
+        
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', function (event) {
+                    if (window.innerWidth <= 768 &&
+                        !sidebar.contains(event.target) &&
+                        !sidebarToggle.contains(event.target) &&
+                        sidebar.classList.contains('sidebar-open')) {
+                        sidebar.classList.remove('sidebar-open');
+                    }
+                });
+            });
+        </script>
+        
+        <script>
+            // Ensure sidebar updates after page loads
+            updateSidebar();
+        </script>
+        <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
+            <button id="chat-sukuu-btn"
+                class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
+                <i class="bi bi-chat-dots text-2xl"></i>
+                <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
+            </button>
+        </div>
+        
+        <script>
+            document.getElementById("chat-sukuu-btn").addEventListener("click", function () {
+                window.location.href = "ai-chatbot.html";
+            });
+        </script>
+        
+        <!-- Main Content -->
+        <div class="flex-grow">
+            <!-- Toast Notification Container -->
+            <div id="toastContainer"></div>
+        
+            <!-- Confirmation Dialog -->
+            <div id="confirmationDialog" class="confirmation-dialog">
+                <div class="confirmation-content">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4" id="dialogTitle">Confirm Action</h3>
+                    <p class="text-gray-600 mb-6" id="dialogMessage">Are you sure you want to perform this action?</p>
+                    <div class="flex justify-end gap-3">
+                        <button id="dialogCancel"
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                            Cancel
+                        </button>
+                        <button id="dialogConfirm"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Sales Dashboard Container -->
+            <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        
+                <!-- Header Section -->
+                <div class="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="mb-4 md:mb-0">
+                        <h1 class="text-2xl font-bold text-gray-800">Sales Dashboard</h1>
+                        <p class="text-gray-600">Track and manage your sales performance</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="openAddSaleModal()"
+                            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="bi bi-plus-lg"></i> Add Sale
+                        </button>
+                        <select id="timeFilter"
+                            class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="today">Today</option>
+                            <option value="week" selected>This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <!-- Metrics Section -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6" id="metricsContainer">
+                    <!-- Metrics will be populated by JavaScript -->
+                </div>
+        
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-6 pb-6">
+                    <!-- Revenue Chart -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-semibold text-gray-800 mb-4">Revenue Trend</h3>
+                        <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+        
+                    <!-- Top Products -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                        <h3 class="font-semibold text-gray-800 mb-4">Top Selling Products</h3>
+                        <div id="topProductsList" class="space-y-4">
+                            <!-- Top products will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Recent Transactions -->
+                <div class="px-6 pb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                        <h3 class="font-semibold text-gray-800 mb-2 sm:mb-0">Recent Transactions</h3>
+                        <div class="flex gap-2">
+                            <button onclick="exportTransactions()"
+                                class="flex items-center gap-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm hover:bg-gray-50">
+                                <i class="bi bi-download"></i> Export
+                            </button>
+                            <button onclick="openFilterModal()"
+                                class="flex items-center gap-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm hover:bg-gray-50">
+                                <i class="bi bi-funnel"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+        
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Order ID</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Customer</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Amount</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTable" class="bg-white divide-y divide-gray-200">
+                                <!-- Transactions will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Add Sale Modal -->
+            <div id="addSaleModal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 animate-fade-in">
+                    <div class="flex justify-between items-center border-b border-gray-200 p-5">
+                        <h3 class="text-lg font-semibold text-gray-800">Add New Sale</h3>
+                        <button onclick="closeAddSaleModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <form id="saleForm">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-medium mb-2" for="customer">Customer
+                                    Name</label>
+                                <input type="text" id="customer"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter customer name" required>
+                            </div>
+        
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-medium mb-2"
+                                    for="product">Product</label>
+                                <select id="product"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required>
+                                    <option value="">Select product</option>
+                                    <option value="Premium Widget">Premium Widget</option>
+                                    <option value="Deluxe Gadget">Deluxe Gadget</option>
+                                    <option value="Basic Tool">Basic Tool</option>
+                                </select>
+                            </div>
+        
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2"
+                                        for="quantity">Quantity</label>
+                                    <input type="number" id="quantity" min="1" value="1"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2" for="price">Unit Price
+                                        (₵)</label>
+                                    <input type="number" id="price" step="0.01" min="0"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="0.00" required>
+                                </div>
+                            </div>
+        
+                            <div class="mb-6">
+                                <label class="block text-gray-700 text-sm font-medium mb-2" for="total">Total Amount
+                                    (₵)</label>
+                                <input type="text" id="total"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" value="0.00"
+                                    readonly>
+                            </div>
+        
+                            <div class="flex justify-end gap-3">
+                                <button type="button" onclick="closeAddSaleModal()"
+                                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                                    Cancel
+                                </button>
+                                <button type="submit"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                    Record Sale
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Filter Modal -->
+            <div id="filterModal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 animate-fade-in">
+                    <div class="flex justify-between items-center border-b border-gray-200 p-5">
+                        <h3 class="text-lg font-semibold text-gray-800">Filter Transactions</h3>
+                        <button onclick="closeFilterModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <form id="filterForm">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Date Range</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-500 text-xs mb-1">From</label>
+                                        <input type="date" id="dateFrom"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-500 text-xs mb-1">To</label>
+                                        <input type="date" id="dateTo"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Status</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="status" value="completed"
+                                            class="rounded text-blue-600 focus:ring-blue-500" checked>
+                                        <span class="ml-2 text-gray-700">Completed</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="status" value="processing"
+                                            class="rounded text-blue-600 focus:ring-blue-500" checked>
+                                        <span class="ml-2 text-gray-700">Processing</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="status" value="shipped"
+                                            class="rounded text-blue-600 focus:ring-blue-500" checked>
+                                        <span class="ml-2 text-gray-700">Shipped</span>
+                                    </label>
+                                </div>
+                            </div>
+        
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Minimum Amount (₵)</label>
+                                <input type="number" id="minAmount" min="0" step="0.01"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="0.00">
+                            </div>
+        
+                            <div class="flex justify-end gap-3">
+                                <button type="button" onclick="resetFilters()"
+                                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                                    Reset
+                                </button>
+                                <button type="button" onclick="applyFilters()"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                    Apply Filters
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- View Transaction Modal -->
+            <div id="viewTransactionModal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 animate-fade-in">
+                    <div class="flex justify-between items-center border-b border-gray-200 p-5">
+                        <h3 class="text-lg font-semibold text-gray-800">Transaction Details</h3>
+                        <button onclick="closeViewTransactionModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Order ID</h4>
+                                <p id="viewOrderId" class="mt-1 text-gray-900"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Customer</h4>
+                                <p id="viewCustomer" class="mt-1 text-gray-900"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Date</h4>
+                                <p id="viewDate" class="mt-1 text-gray-900"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Product</h4>
+                                <p id="viewProduct" class="mt-1 text-gray-900"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Quantity</h4>
+                                <p id="viewQuantity" class="mt-1 text-gray-900"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Unit Price</h4>
+                                <p id="viewUnitPrice" class="mt-1 text-gray-900"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Total Amount</h4>
+                                <p id="viewTotalAmount" class="mt-1 text-gray-900 font-semibold"></p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Status</h4>
+                                <p id="viewStatus"
+                                    class="mt-1 inline-block px-2 py-1 rounded-full text-xs font-semibold"></p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end">
+                            <button onclick="closeViewTransactionModal()"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Sample data
+                let transactions = [
+                    {
+                        id: 'ORD-7841',
+                        customer: 'John Smith',
+                        date: new Date(),
+                        product: 'Premium Widget',
+                        quantity: 2,
+                        price: 122.50,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'ORD-7840',
+                        customer: 'Sarah Johnson',
+                        date: new Date(),
+                        product: 'Deluxe Gadget',
+                        quantity: 1,
+                        price: 189.50,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'ORD-7839',
+                        customer: 'Michael Brown',
+                        date: new Date(),
+                        product: 'Basic Tool',
+                        quantity: 3,
+                        price: 140.25,
+                        status: 'processing'
+                    },
+                    {
+                        id: 'ORD-7838',
+                        customer: 'Emily Davis',
+                        date: new Date(Date.now() - 86400000),
+                        product: 'Premium Widget',
+                        quantity: 1,
+                        price: 315.20,
+                        status: 'shipped'
+                    },
+                    {
+                        id: 'ORD-7837',
+                        customer: 'David Wilson',
+                        date: new Date(Date.now() - 2 * 86400000),
+                        product: 'Deluxe Gadget',
+                        quantity: 2,
+                        price: 189.50,
+                        status: 'completed'
+                    },
+                    {
+                        id: 'ORD-7836',
+                        customer: 'Jessica Lee',
+                        date: new Date(Date.now() - 3 * 86400000),
+                        product: 'Basic Tool',
+                        quantity: 5,
+                        price: 140.25,
+                        status: 'completed'
+                    }
+                ];
+        
+                // Initialize dashboard
+                document.addEventListener('DOMContentLoaded', function () {
+                    renderMetrics();
+                    renderTopProducts();
+                    renderTransactions();
+                    initRevenueChart();
+        
+                    // Set up event listeners
+                    document.getElementById('timeFilter').addEventListener('change', function () {
+                        renderMetrics();
+                        renderTopProducts();
+                        renderTransactions();
+                    });
+        
+                    const quantityInput = document.getElementById('quantity');
+                    const priceInput = document.getElementById('price');
+                    const totalInput = document.getElementById('total');
+        
+                    function calculateTotal() {
+                        const quantity = parseFloat(quantityInput.value) || 0;
+                        const price = parseFloat(priceInput.value) || 0;
+                        totalInput.value = (quantity * price).toFixed(2);
+                    }
+        
+                    quantityInput.addEventListener('input', calculateTotal);
+                    priceInput.addEventListener('input', calculateTotal);
+        
+                    document.getElementById('saleForm').addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        addNewSale();
+                    });
+                });
+        
+                // Toast notification function
+                function showToast(message, type = 'success') {
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type}`;
+                    toast.innerHTML = `
+                        <i class="bi ${type === 'success' ? 'bi-check-circle' : type === 'error' ? 'bi-x-circle' : type === 'warning' ? 'bi-exclamation-triangle' : 'bi-info-circle'}"></i>
+                        <span>${message}</span>
+                    `;
+        
+                    document.getElementById('toastContainer').appendChild(toast);
+        
+                    // Show toast
+                    setTimeout(() => toast.classList.add('show'), 10);
+        
+                    // Hide after 3 seconds
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }
+        
+                // Confirmation dialog functions
+                function showConfirmationDialog(title, message, confirmCallback) {
+                    const dialog = document.getElementById('confirmationDialog');
+                    document.getElementById('dialogTitle').textContent = title;
+                    document.getElementById('dialogMessage').textContent = message;
+        
+                    const confirmBtn = document.getElementById('dialogConfirm');
+                    const cancelBtn = document.getElementById('dialogCancel');
+        
+                    // Remove previous event listeners
+                    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+                    cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+        
+                    // Add new event listeners
+                    document.getElementById('dialogConfirm').onclick = function () {
+                        confirmCallback();
+                        dialog.classList.remove('show');
+                    };
+        
+                    document.getElementById('dialogCancel').onclick = function () {
+                        dialog.classList.remove('show');
+                    };
+        
+                    dialog.classList.add('show');
+                }
+        
+                // Modal functions
+                function openAddSaleModal() {
+                    document.getElementById('addSaleModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+        
+                function closeAddSaleModal() {
+                    document.getElementById('addSaleModal').classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                    document.getElementById('saleForm').reset();
+                    document.getElementById('total').value = '0.00';
+                }
+        
+                function openFilterModal() {
+                    document.getElementById('filterModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+        
+                function closeFilterModal() {
+                    document.getElementById('filterModal').classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+        
+                function openViewTransactionModal(transactionId) {
+                    const transaction = transactions.find(t => t.id === transactionId);
+                    if (transaction) {
+                        document.getElementById('viewOrderId').textContent = `#${transaction.id}`;
+                        document.getElementById('viewCustomer').textContent = transaction.customer;
+                        document.getElementById('viewDate').textContent = formatDate(transaction.date);
+                        document.getElementById('viewProduct').textContent = transaction.product;
+                        document.getElementById('viewQuantity').textContent = transaction.quantity;
+                        document.getElementById('viewUnitPrice').textContent = `₵${transaction.price.toFixed(2)}`;
+                        document.getElementById('viewTotalAmount').textContent = `₵${(transaction.quantity * transaction.price).toFixed(2)}`;
+        
+                        const statusElement = document.getElementById('viewStatus');
+                        statusElement.textContent = transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1);
+                        statusElement.className = 'mt-1 inline-block px-2 py-1 rounded-full text-xs font-semibold ';
+        
+                        if (transaction.status === 'completed') {
+                            statusElement.className += 'bg-green-100 text-green-800';
+                        } else if (transaction.status === 'processing') {
+                            statusElement.className += 'bg-yellow-100 text-yellow-800';
+                        } else if (transaction.status === 'shipped') {
+                            statusElement.className += 'bg-blue-100 text-blue-800';
+                        }
+        
+                        document.getElementById('viewTransactionModal').classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+                    }
+                }
+        
+                function closeViewTransactionModal() {
+                    document.getElementById('viewTransactionModal').classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+        
+                // Close modals when clicking outside
+                document.getElementById('addSaleModal').addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closeAddSaleModal();
+                    }
+                });
+        
+                document.getElementById('filterModal').addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closeFilterModal();
+                    }
+                });
+        
+                document.getElementById('viewTransactionModal').addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closeViewTransactionModal();
+                    }
+                });
+        
+                // Data functions
+                function renderMetrics() {
+                    const timeFilter = document.getElementById('timeFilter').value;
+                    let filteredTransactions = filterTransactionsByTime(timeFilter);
+        
+                    const totalRevenue = filteredTransactions.reduce((sum, t) => sum + (t.price * t.quantity), 0);
+                    const orderCount = filteredTransactions.length;
+                    const avgOrder = orderCount > 0 ? totalRevenue / orderCount : 0;
+                    const conversionRate = 78; // This would normally come from your data
+        
+                    const metrics = [
+                        {
+                            value: `₵${totalRevenue.toFixed(2)}`,
+                            label: 'Total Revenue',
+                            change: 12.5,
+                            icon: 'bi-currency-dollar'
+                        },
+                        {
+                            value: orderCount,
+                            label: 'New Orders',
+                            change: 8.3,
+                            icon: 'bi-cart'
+                        },
+                        {
+                            value: `₵${avgOrder.toFixed(2)}`,
+                            label: 'Average Order',
+                            change: -3.2,
+                            icon: 'bi-graph-up'
+                        },
+                        {
+                            value: `${conversionRate}%`,
+                            label: 'Conversion Rate',
+                            change: 2.1,
+                            icon: 'bi-arrow-repeat'
+                        }
+                    ];
+        
+                    const metricsContainer = document.getElementById('metricsContainer');
+                    metricsContainer.innerHTML = '';
+        
+                    metrics.forEach(metric => {
+                        const isPositive = metric.change >= 0;
+        
+                        metricsContainer.innerHTML += `
+                            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm relative overflow-hidden">
+                                <div class="text-3xl font-bold text-gray-800">${metric.value}</div>
+                                <div class="text-gray-500 text-sm mt-1">${metric.label}</div>
+                                <div class="${isPositive ? 'text-green-600' : 'text-red-600'} text-sm font-medium mt-2 flex items-center">
+                                    <i class="bi bi-arrow-${isPositive ? 'up' : 'down'} mr-1"></i> ${Math.abs(metric.change)}% from last period
+                                </div>
+                                <div class="absolute top-5 right-5 text-3xl text-blue-100">
+                                    <i class="bi ${metric.icon}"></i>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+        
+                function renderTopProducts() {
+                    const timeFilter = document.getElementById('timeFilter').value;
+                    let filteredTransactions = filterTransactionsByTime(timeFilter);
+        
+                    // Group by product and calculate total sales
+                    const productSales = {};
+                    filteredTransactions.forEach(t => {
+                        if (!productSales[t.product]) {
+                            productSales[t.product] = 0;
+                        }
+                        productSales[t.product] += t.price * t.quantity;
+                    });
+        
+                    // Convert to array and sort
+                    const topProducts = Object.entries(productSales)
+                        .map(([product, sales]) => ({ product, sales }))
+                        .sort((a, b) => b.sales - a.sales)
+                        .slice(0, 4);
+        
+                    const topProductsList = document.getElementById('topProductsList');
+                    topProductsList.innerHTML = '';
+        
+                    topProducts.forEach((item, index) => {
+                        topProductsList.innerHTML += `
+                            <div class="flex items-center justify-between pb-3 ${index < topProducts.length - 1 ? 'border-b border-gray-100' : ''}">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-xs font-bold mr-3">${index + 1}</div>
+                                    <span class="font-medium">${item.product}</span>
+                                </div>
+                                <span class="font-semibold">₵${item.sales.toFixed(2)}</span>
+                            </div>
+                        `;
+                    });
+        
+                    if (topProducts.length === 0) {
+                        topProductsList.innerHTML = '<p class="text-gray-500 text-center py-4">No sales data available</p>';
+                    }
+                }
+        
+                function renderTransactions(filter = {}) {
+                    const timeFilter = document.getElementById('timeFilter').value;
+                    let filteredTransactions = filterTransactionsByTime(timeFilter);
+        
+                    // Apply additional filters
+                    if (filter.dateFrom) {
+                        const dateFrom = new Date(filter.dateFrom);
+                        filteredTransactions = filteredTransactions.filter(t => new Date(t.date) >= dateFrom);
+                    }
+        
+                    if (filter.dateTo) {
+                        const dateTo = new Date(filter.dateTo);
+                        filteredTransactions = filteredTransactions.filter(t => new Date(t.date) <= dateTo);
+                    }
+        
+                    if (filter.statuses && filter.statuses.length > 0) {
+                        filteredTransactions = filteredTransactions.filter(t => filter.statuses.includes(t.status));
+                    }
+        
+                    if (filter.minAmount) {
+                        filteredTransactions = filteredTransactions.filter(t => (t.price * t.quantity) >= filter.minAmount);
+                    }
+        
+                    const transactionsTable = document.getElementById('transactionsTable');
+                    transactionsTable.innerHTML = '';
+        
+                    filteredTransactions.forEach(transaction => {
+                        const totalAmount = transaction.price * transaction.quantity;
+                        let statusBadgeClass = '';
+                        let statusText = '';
+        
+                        if (transaction.status === 'completed') {
+                            statusBadgeClass = 'bg-green-100 text-green-800';
+                            statusText = 'Completed';
+                        } else if (transaction.status === 'processing') {
+                            statusBadgeClass = 'bg-yellow-100 text-yellow-800';
+                            statusText = 'Processing';
+                        } else if (transaction.status === 'shipped') {
+                            statusBadgeClass = 'bg-blue-100 text-blue-800';
+                            statusText = 'Shipped';
+                        }
+        
+                        transactionsTable.innerHTML += `
+                            <tr data-transaction-id="${transaction.id}" class="transaction-row">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#${transaction.id}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${transaction.customer}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(transaction.date)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₵${totalAmount.toFixed(2)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusBadgeClass}">${statusText}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
+                                    <button onclick="openViewTransactionModal('${transaction.id}')" class="text-blue-600 hover:text-blue-900">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button onclick="editTransaction('${transaction.id}')" class="text-yellow-600 hover:text-yellow-900">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button onclick="deleteTransaction('${transaction.id}')" class="text-red-600 hover:text-red-900">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+        
+                    if (filteredTransactions.length === 0) {
+                        transactionsTable.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">No transactions found</td>
+                            </tr>
+                        `;
+                    }
+                }
+        
+                function filterTransactionsByTime(timeRange) {
+                    const now = new Date();
+                    let startDate;
+        
+                    switch (timeRange) {
+                        case 'today':
+                            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                            break;
+                        case 'week':
+                            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+                            break;
+                        case 'month':
+                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                            break;
+                        case 'quarter':
+                            const quarter = Math.floor(now.getMonth() / 3);
+                            startDate = new Date(now.getFullYear(), quarter * 3, 1);
+                            break;
+                        case 'year':
+                            startDate = new Date(now.getFullYear(), 0, 1);
+                            break;
+                        default:
+                            return transactions;
+                    }
+        
+                    return transactions.filter(t => new Date(t.date) >= startDate);
+                }
+        
+                function formatDate(date) {
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+        
+                    const transactionDate = new Date(date);
+                    const transactionDay = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate());
+        
+                    if (transactionDay.getTime() === today.getTime()) {
+                        return 'Today, ' + transactionDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    } else if (transactionDay.getTime() === yesterday.getTime()) {
+                        return 'Yesterday';
+                    } else {
+                        return transactionDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                    }
+                }
+        
+                function initRevenueChart() {
+                    const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+                    // Sample data for the chart
+                    const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                    const data = [5000, 8000, 12000, 9000, 15000, 18000];
+        
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Revenue',
+                                data: data,
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 2,
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.05)'
+                                    },
+                                    ticks: {
+                                        callback: function (value) {
+                                            return '₵' + value.toLocaleString();
+                                        }
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+        
+                // Transaction CRUD operations
+                function addNewSale() {
+                    const customer = document.getElementById('customer').value;
+                    const product = document.getElementById('product').value;
+                    const quantity = parseInt(document.getElementById('quantity').value);
+                    const price = parseFloat(document.getElementById('price').value);
+        
+                    const newTransaction = {
+                        id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+                        customer,
+                        date: new Date(),
+                        product,
+                        quantity,
+                        price,
+                        status: 'completed'
+                    };
+        
+                    transactions.unshift(newTransaction);
+        
+                    // Update UI
+                    renderMetrics();
+                    renderTopProducts();
+                    renderTransactions();
+        
+                    // Close modal and reset form
+                    closeAddSaleModal();
+        
+                    // Show success toast
+                    showToast('Sale recorded successfully!', 'success');
+        
+                    // Highlight the new row
+                    const newRow = document.querySelector(`[data-transaction-id="${newTransaction.id}"]`);
+                    if (newRow) {
+                        newRow.classList.add('highlight-row');
+                    }
+                }
+        
+                function editTransaction(transactionId) {
+                    const transaction = transactions.find(t => t.id === transactionId);
+                    if (transaction) {
+                        // In a real app, you would open an edit modal with the transaction data
+                        showToast('Edit functionality would open a form here', 'info');
+                    }
+                }
+        
+                function deleteTransaction(transactionId) {
+                    showConfirmationDialog(
+                        'Delete Transaction',
+                        'Are you sure you want to delete this transaction? This action cannot be undone.',
+                        function () {
+                            const transaction = transactions.find(t => t.id === transactionId);
+                            if (transaction) {
+                                // Store the transaction for possible undo
+                                const deletedTransaction = { ...transaction };
+        
+                                // Remove from array
+                                transactions = transactions.filter(t => t.id !== transactionId);
+        
+                                // Update UI
+                                renderMetrics();
+                                renderTopProducts();
+                                renderTransactions();
+        
+                                // Show success toast
+                                showToast('Transaction deleted successfully!', 'success');
+        
+                                // Add undo option
+                                const undoToast = document.createElement('div');
+                                undoToast.className = 'toast warning';
+                                undoToast.innerHTML = `
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <span>Transaction deleted</span>
+                                    <button onclick="undoDelete('${deletedTransaction.id}', ${JSON.stringify(deletedTransaction)})" 
+                                        class="ml-4 font-medium underline">Undo</button>
+                                `;
+        
+                                document.getElementById('toastContainer').appendChild(undoToast);
+                                setTimeout(() => undoToast.classList.add('show'), 10);
+                                setTimeout(() => {
+                                    undoToast.classList.remove('show');
+                                    setTimeout(() => undoToast.remove(), 300);
+                                }, 5000);
+                            }
+                        }
+                    );
+                }
+        
+                function undoDelete(transactionId, transaction) {
+                    if (!transactions.some(t => t.id === transactionId)) {
+                        transactions.unshift(transaction);
+                        renderMetrics();
+                        renderTopProducts();
+                        renderTransactions();
+                        showToast('Transaction restored successfully!', 'success');
+                    }
+                }
+        
+                // Filter functions
+                function applyFilters() {
+                    const dateFrom = document.getElementById('dateFrom').value;
+                    const dateTo = document.getElementById('dateTo').value;
+        
+                    const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
+                    const statuses = Array.from(statusCheckboxes).map(cb => cb.value);
+        
+                    const minAmount = parseFloat(document.getElementById('minAmount').value) || 0;
+        
+                    renderTransactions({
+                        dateFrom,
+                        dateTo,
+                        statuses,
+                        minAmount
+                    });
+        
+                    closeFilterModal();
+                    showToast('Filters applied successfully', 'success');
+                }
+        
+                function resetFilters() {
+                    document.getElementById('filterForm').reset();
+                    renderTransactions();
+                    showToast('Filters reset', 'info');
+                }
+        
+                // Export function
+                function exportTransactions() {
+                    // Show preparing toast
+                    const preparingToast = document.createElement('div');
+                    preparingToast.className = 'toast info';
+                    preparingToast.innerHTML = `
+                        <i class="bi bi-info-circle"></i>
+                        <span>Preparing your export...</span>
+                    `;
+                    document.getElementById('toastContainer').appendChild(preparingToast);
+                    setTimeout(() => preparingToast.classList.add('show'), 10);
+        
+                    // Simulate export process
+                    setTimeout(() => {
+                        preparingToast.classList.remove('show');
+                        setTimeout(() => preparingToast.remove(), 300);
+        
+                        // Show completion toast
+                        showToast('Export completed successfully!', 'success');
+                    }, 2000);
+                }
+            </script>
+        </div>
+</body>
+
+</html>

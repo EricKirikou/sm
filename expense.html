@@ -784,106 +784,558 @@
 
         <!-- Main Content -->
         <div class="flex-grow">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+            <!-- Modern Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light sticky-top">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><i class="bi bi-wallet2"></i> Expenditure</span>
-                    <div>
-                        <span class="me-3">🔔</span>
-                        <span class="me-3">⚙️</span>
-                        <span>🌍</span>
+                    <span class="navbar-brand d-flex align-items-center">
+                        <i class="bi bi-pie-chart-fill me-2"></i>
+                        <span>ExpenseFlow</span>
+                    </span>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown me-3">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="periodDropdown" data-bs-toggle="dropdown">
+                                <i class="bi bi-calendar-week me-1"></i> This Month
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                <li><a class="dropdown-item" href="#">This Week</a></li>
+                                <li><a class="dropdown-item active" href="#">This Month</a></li>
+                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Custom Range</a></li>
+                            </ul>
+                        </div>
+                        
+                        <button class="btn btn-link text-dark me-2 position-relative p-1" id="notificationBtn">
+                            <i class="bi bi-bell-fill fs-5"></i>
+                            <span class="notification-badge badge rounded-pill">3</span>
+                        </button>
+                        
+                        <div class="dropdown">
+                            <button class="btn btn-link text-dark dropdown-toggle d-flex align-items-center p-1" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                                <div class="avatar me-2">AD</div>
+                                <span class="d-none d-md-inline">Admin</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
-            <div class="container mt-4">
-                <div class="card p-4">
-                    <div class="card-header bg-gray-800 text-white d-flex justify-content-between align-items-center">
-                        <h5></h5>
-                        <nav>
+    
+            <!-- Main Content -->
+            <div class="container py-4">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="card-title text-muted mb-0">TOTAL EXPENSES</h6>
+                                    <i class="bi bi-currency-dollar text-primary"></i>
+                                </div>
+                                <h3 class="mb-0">$12,450</h3>
+                                <p class="text-success small mb-0"><i class="bi bi-arrow-up"></i> 12% from last month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="card-title text-muted mb-0">CATEGORIES</h6>
+                                    <i class="bi bi-tags text-warning"></i>
+                                </div>
+                                <h3 class="mb-0">8</h3>
+                                <p class="text-muted small mb-0">Most used: Office Supplies</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="card-title text-muted mb-0">RECEIPTS</h6>
+                                    <i class="bi bi-receipt text-success"></i>
+                                </div>
+                                <h3 class="mb-0">42</h3>
+                                <p class="text-danger small mb-0"><i class="bi bi-exclamation-circle"></i> 3 missing</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="card">
+                    <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                        <h5 class="mb-2 mb-md-0 text-white">
+                            <i class="bi bi-wallet2 me-2"></i>
+                            Recent Expenditures
+                        </h5>
+                        <nav class="breadcrumb-nav">
                             <a href="#" class="text-white">Dashboard</a> /
-                            <a href="#" class="text-warning">Expenditure</a>
+                            <a href="#" class="text-warning">Expenses</a>
                         </nav>
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-success mb-3"><i class="bi bi-plus-lg"></i> Add Expenditure</button>
-                        <div class="d-flex gap-2 mb-3">
-                            <button class="btn btn-outline-secondary">Copy</button>
-                            <button class="btn btn-outline-secondary">Excel</button>
-                            <button class="btn btn-outline-secondary">CSV</button>
-                            <button class="btn btn-outline-secondary">PDF</button>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+                            <button class="btn btn-primary" id="addExpenseBtn">
+                                <i class="bi bi-plus-circle me-2"></i> Add Expense
+                            </button>
+                            <div class="d-flex gap-2">
+                                <div class="input-group" style="width: 250px;">
+                                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search expenses..." id="searchInput">
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown">
+                                        <i class="bi bi-download me-2"></i> Export
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                                        <li><a class="dropdown-item" href="#" id="copyBtn"><i class="bi bi-clipboard me-2"></i>Copy</a></li>
+                                        <li><a class="dropdown-item" href="#" id="excelBtn"><i class="bi bi-file-earmark-excel me-2"></i>Excel</a></li>
+                                        <li><a class="dropdown-item" href="#" id="csvBtn"><i class="bi bi-filetype-csv me-2"></i>CSV</a></li>
+                                        <li><a class="dropdown-item" href="#" id="pdfBtn"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <table class="table table-hover table-bordered">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Date</th>
-                                    <th>User</th>
-                                    <th>Amount</th>
-                                    <th>Note</th>
-                                    <th>File</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Book Purses</td>
-                                    <td>08 Jan 2025</td>
-                                    <td>Mr. Admin</td>
-                                    <td>$50,000</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>
-                                        <button class="btn btn-info btn-sm"><i class="bi bi-eye"></i></button>
-                                        <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Ball</td>
-                                    <td>08 Jan 2025</td>
-                                    <td>Mr. Admin</td>
-                                    <td>$50,000</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>
-                                        <button class="btn btn-info btn-sm"><i class="bi bi-eye"></i></button>
-                                        <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <nav>
+    
+                        <div class="table-responsive">
+                            <table id="expensesTable" class="table table-hover mb-4">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Receipt</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#EXP-001</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar me-2">OS</div>
+                                                <div>
+                                                    <div class="fw-semibold">Office Supplies</div>
+                                                    <small class="text-muted">Pens, papers, etc.</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary bg-opacity-10 text-primary">Supplies</span></td>
+                                        <td>08 Jan 2025</td>
+                                        <td class="amount-cell">$250.00</td>
+                                        <td><span class="status-badge bg-success bg-opacity-10 text-success">Approved</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-paperclip"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-info action-btn" title="View Details">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning action-btn" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#EXP-002</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar me-2">SW</div>
+                                                <div>
+                                                    <div class="fw-semibold">Software License</div>
+                                                    <small class="text-muted">Annual subscription</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-info bg-opacity-10 text-info">Software</span></td>
+                                        <td>05 Jan 2025</td>
+                                        <td class="amount-cell">$1,200.00</td>
+                                        <td><span class="status-badge bg-success bg-opacity-10 text-success">Approved</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-paperclip"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-info action-btn" title="View Details">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning action-btn" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#EXP-003</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar me-2">TR</div>
+                                                <div>
+                                                    <div class="fw-semibold">Team Retreat</div>
+                                                    <small class="text-muted">Annual company retreat</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-warning bg-opacity-10 text-warning">Events</span></td>
+                                        <td>15 Dec 2024</td>
+                                        <td class="amount-cell">$8,500.00</td>
+                                        <td><span class="status-badge bg-secondary bg-opacity-10 text-secondary">Pending</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-paperclip"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-info action-btn" title="View Details">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning action-btn" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+    
+                        <nav aria-label="Expenses pagination">
                             <ul class="pagination justify-content-end">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
                                 <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
                 </div>
             </div>
-            <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
-                });
-            </script>
-
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
-                }
-            </style>
         </div>
+    
+        <!-- Required Scripts -->
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- DataTables -->
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable
+                const table = $('#expensesTable').DataTable({
+                    responsive: true,
+                    paging: false,
+                    info: false,
+                    searching: true,
+                    ordering: true,
+                    dom: '<"top">rt<"bottom">',
+                    language: {
+                        emptyTable: "No expenses found"
+                    },
+                    initComplete: function() {
+                        $('.dataTables_filter').hide();
+                    }
+                });
+    
+                // Custom search input
+                $('#searchInput').on('keyup', function() {
+                    table.search(this.value).draw();
+                });
+    
+                // Notification button
+                $('#notificationBtn').click(function() {
+                    Swal.fire({
+                        title: 'Notifications',
+                        html: `
+                            <div class="text-start">
+                                <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded" style="background-color: #f1f5f9;">
+                                    <div>
+                                        <div class="fw-semibold">New expense approved</div>
+                                        <small class="text-muted">Office supplies purchase</small>
+                                    </div>
+                                    <small class="text-muted">2 mins ago</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded" style="background-color: #f1f5f9;">
+                                    <div>
+                                        <div class="fw-semibold">Receipt uploaded</div>
+                                        <small class="text-muted">Software license renewal</small>
+                                    </div>
+                                    <small class="text-muted">1 hour ago</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background-color: #f1f5f9;">
+                                    <div>
+                                        <div class="fw-semibold">Budget alert</div>
+                                        <small class="text-muted">Team retreat expenses</small>
+                                    </div>
+                                    <small class="text-muted">3 hours ago</small>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Mark all as read',
+                        confirmButtonColor: '#6366f1',
+                        width: '450px'
+                    }).then(() => {
+                        $('.notification-badge').text('0');
+                    });
+                });
+    
+                // Export buttons
+                $('#copyBtn').click(function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Copied to Clipboard',
+                        text: 'Expense data has been copied to clipboard',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                });
+    
+                $('#excelBtn, #csvBtn, #pdfBtn').click(function(e) {
+                    e.preventDefault();
+                    const format = $(this).find('i').attr('class').split('-').pop();
+                    Swal.fire({
+                        title: `Export as ${format.toUpperCase()}`,
+                        text: `Expense data will be exported as ${format.toUpperCase()} file`,
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#6366f1'
+                    });
+                });
+    
+                // Add Expense button
+                $('#addExpenseBtn').click(function() {
+                    Swal.fire({
+                        title: 'Add New Expense',
+                        html: `
+                            <div class="text-start">
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-control" placeholder="What was this expense for?">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Amount</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Date</label>
+                                        <input type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select">
+                                        <option>Office Supplies</option>
+                                        <option>Software</option>
+                                        <option>Travel</option>
+                                        <option>Events</option>
+                                        <option>Utilities</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Receipt (optional)</label>
+                                    <input type="file" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Notes</label>
+                                    <textarea class="form-control" rows="2" placeholder="Additional details"></textarea>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Save Expense',
+                        confirmButtonColor: '#6366f1',
+                        showCancelButton: true,
+                        width: '700px'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Expense Added!',
+                                text: 'Your new expense has been recorded',
+                                icon: 'success',
+                                confirmButtonColor: '#6366f1'
+                            });
+                        }
+                    });
+                });
+    
+                // Action buttons for each row
+                $(document).on('click', '.action-btn', function() {
+                    const action = $(this).attr('title');
+                    const expenseDesc = $(this).closest('tr').find('.fw-semibold').first().text();
+                    
+                    if (action === 'Delete') {
+                        Swal.fire({
+                            title: `Delete ${expenseDesc}?`,
+                            text: "This expense record will be permanently deleted",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#ef4444',
+                            cancelButtonColor: '#94a3b8',
+                            confirmButtonText: 'Delete',
+                            cancelButtonText: 'Cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'The expense has been removed.',
+                                    'success'
+                                );
+                                $(this).closest('tr').fadeOut(300, function() {
+                                    $(this).remove();
+                                });
+                            }
+                        });
+                    } else if (action === 'Edit') {
+                        Swal.fire({
+                            title: `Edit ${expenseDesc}`,
+                            html: `
+                                <div class="text-start">
+                                    <div class="mb-3">
+                                        <label class="form-label">Description</label>
+                                        <input type="text" class="form-control" value="${expenseDesc}">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Amount</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input type="number" class="form-control" value="250.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Date</label>
+                                            <input type="date" class="form-control" value="2025-01-08">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Category</label>
+                                        <select class="form-select">
+                                            <option>Office Supplies</option>
+                                            <option selected>Software</option>
+                                            <option>Travel</option>
+                                            <option>Events</option>
+                                            <option>Utilities</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            `,
+                            confirmButtonText: 'Save Changes',
+                            confirmButtonColor: '#6366f1',
+                            showCancelButton: true,
+                            width: '700px'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire(
+                                    'Updated!',
+                                    'The expense has been modified.',
+                                    'success'
+                                );
+                            }
+                        });
+                    } else if (action === 'View Details') {
+                        Swal.fire({
+                            title: expenseDesc,
+                            html: `
+                                <div class="text-start">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Expense ID:</span>
+                                        <span class="fw-semibold">#EXP-001</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Amount:</span>
+                                        <span class="fw-semibold">$250.00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Date:</span>
+                                        <span class="fw-semibold">08 Jan 2025</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Category:</span>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary">Office Supplies</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Status:</span>
+                                        <span class="badge bg-success bg-opacity-10 text-success">Approved</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="text-muted">Notes:</span>
+                                        <p class="mt-2">Monthly purchase of office supplies including pens, notebooks, and printer paper.</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted">Receipt:</span>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-download me-1"></i> Download
+                                        </button>
+                                    </div>
+                                </div>
+                            `,
+                            confirmButtonText: 'Close',
+                            confirmButtonColor: '#6366f1',
+                            width: '600px'
+                        });
+                    }
+                });
+    
+                // Period dropdown
+                $('.dropdown-item').click(function(e) {
+                    e.preventDefault();
+                    const period = $(this).text();
+                    $('#periodDropdown').html(`<i class="bi bi-calendar-week me-1"></i> ${period}`);
+                    
+                    Swal.fire({
+                        title: 'Period Changed',
+                        text: `Showing expenses for ${period.toLowerCase()}`,
+                        icon: 'info',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                });
+            });
+        </script>
 </body>
 
 </html>

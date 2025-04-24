@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> School Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="loginauth.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #calendar-container {
+            width: 100%;
+            max-width: 2000px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .fc-toolbar-title {
+            font-size: 22px !important;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .fc-daygrid-day:hover {
+            background: rgba(255, 99, 132, 0.1);
+            transition: 0.3s;
+        }
+
+        .fc-day-today {
+            background: rgba(54, 162, 235, 0.2) !important;
+        }
+
+        .fc-event {
+            border-radius: 8px !important;
+            font-size: 14px !important;
+        }
+
+        .dashboard-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+
+        .chart-container {
+            width: 100%;
+            /* Full width */
+            height: 400px;
+            /* Adjust height as needed */
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-container canvas {
+            height: 300px !important;
+            /* Reduce chart height */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="d-flex">
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+
+        <!-- Sidebar Toggle Button -->
+        <button id="sidebarToggle"
+            class="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg md:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <nav id="sidebar"
+            class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40" x-data="{
+          isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+        }" x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }">
+            <!-- Sidebar Header with Logo & Toggle -->
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-1xl font-bold flex items-center w-full">
+                    <img src="favicon.png" class="transition-all duration-300 sidebar-logo"
+                        :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" alt="Logo">
+                </h4>
+                <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
+                    class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
+                        :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center transition-all duration-300"
+                :class="isCollapsed ? 'justify-center' : 'justify-start'">
+                <img id="sidebarProfileImage" src="default-profile.png"
+                    class="rounded-full border-2 border-gray-700 transition-all duration-300"
+                    :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" alt="Admin">
+
+                <div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
+                    <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
+                    <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <ul class="space-y-2">
+                <!-- Dashboard -->
+                <li>
+                    <a href="dashboard.html"
+                        class="block p-2 hover:bg-gray-800 rounded font-semibold flex items-center">
+                        <i class="bi bi-speedometer2 sidebar-icon"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Teacher Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-person-workspace"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Employees</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="add-employee.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Add New Employee</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="employee.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">All Employees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="manage.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Manage Employees</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">
+                                    <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active / Inactive</span>
+                                </span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="appointment_letter.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Appointment Letter</span>
+                            </a>
+                            <i class="fas fa-lock ml-auto text-red-300"></i>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Staff ID Card</span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Students Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-people-fill"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Students</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="admissions.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Add Student</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="students.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">All Students</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">
+                                    <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active / Inactive</span>
+                                </span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="admission_letter.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Admission Letter</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">
+                                    <span class="sidebar-text ml-3" x-show="!isCollapsed">Students ID Cards</span>
+                                </span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="promote_students.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Promote Students</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-person-hearts"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Parent</span>
+                    </a>
+                </li>
+
+                <!-- Classes Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-house"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Class</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="class.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Add Class</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="classes.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">All Classes</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!-- Subjects Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-houses-fill"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Subject</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="subject.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Add Subject</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="subjects.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">All Subjects</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!-- Attendance Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-clock-history"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Attendance</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="staff-attendance.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Staffs Attendance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="stud-attendance.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Students Attendance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="attendance-list.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Attendance List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Exams Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-file-earmark-ppt-fill"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Exams</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="result-card.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Result Card</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="master-list.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Master Sheet</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Blank Award List</span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Accounts Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-cash-coin"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Accounts</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="account.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Account Details</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="fees.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Pay Fees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="invoices.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Receipts</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">
+                                    <span class="sidebar-text ml-3" x-show="!isCollapsed">Global Payment</span>
+                                </span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="expense.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Expenditure</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="petty-cash.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Petty Cash</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="income.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Income</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="statement.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Account Statement</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Payroll Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-cash-coin"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Payroll</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="pay-salary.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Pay Salary</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payslip.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Pay Slip</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">
+                                    <span class="sidebar-text ml-3" x-show="!isCollapsed">Manage Salary</span>
+                                </span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Library Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-journal-text"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Library</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="books.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Books</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="issued.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Issued Out</span>
+                            </a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2">
+                                    <span class="sidebar-text ml-3" x-show="!isCollapsed">E-books</span>
+                                </span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--Requisition Section with standalone style-->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-pc-display"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Requisition</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="requistion.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Requisition Form</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="review.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">View Requisitions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="requisition-admin.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Respond Requisitions</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-chat-dots-fill"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Message</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-collection-play-fill"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Media</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-envelope-at"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Mail</span>
+                    </a>
+                </li>
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="ml-2">
+                            <i class="bi bi-router-fill"></i>
+                            <span x-show="!isCollapsed">Online Exams</span>
+                        </span>
+                        <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-cassette"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Asset Management</span>
+                    </a>
+                </li>
+
+                <!-- Inventory Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-cart-check-fill"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Shop</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Books & Stationaries</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="shop-uniform.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Uniform & Clothing</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="purchase.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Purchase</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Sale</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Orders</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!----Inventory Section with Standalone Style------->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-window-fullscreen"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Leave Application</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="leave.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Apply for Leave</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="applications.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Applications</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-camera-video-fill"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Gmeet Live Class</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-bus-front"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Transport</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold">
+                        <i class="bi bi-house-door"></i>
+                        <span class="sidebar-text ml-3" x-show="!isCollapsed">Hostel</span>
+                    </a>
+                </li>
+
+                <!-- Announcement Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold">
+                            <i class="bi bi-megaphone"></i>
+                            <span class="sidebar-text ml-3" x-show="!isCollapsed">Announcement</span>
+                        </span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">
+                            ▼
+                        </span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li>
+                            <a href="notice.html" class="block py-2 hover:bg-gray-700">
+                                <span class="sidebar-text ml-3" x-show="!isCollapsed">Notice</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="timetable.html" class="block py-2 hover:bg-gray-700">
+                                <span></span></a>
+                        </li>
+                        <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Timetable</span> </a></li>
+                        <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Academic Calendar</span></a></li>
+                    </ul>
+                </li>
+
+                <!-- Announcement Section with Standalone Style -->
+                <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                    <a href="#" class="flex items-center">
+                        <span class="ml-2"><i class="bi bi-router-fill"></i><span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">Online Admission</span> </span>
+                        <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                    </a>
+
+                    <!-- Tooltip -->
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                        This option is available in <br>
+                        premium Version only.
+                        <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+                            class="bi bi-person-walking"></i> <span class="sidebar-text ml-3"
+                            x-show="!isCollapsed">Visitor Info</span></a>
+                </li>
+                <!-- Settings Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-gear-wide-connected"></i> <span
+                                class="sidebar-text ml-3" x-show="!isCollapsed">Settings</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="institution-info.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Institution
+                                    Profile</span></a></li>
+                        <li><a href="fees-particulars.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Fees
+                                    Particulars</span> </a></li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Fees
+                                        Structure</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Discount
+                                        Type</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="rules-regulations.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">Rules and
+                                    Regulations</span></a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Audit Trail</span></a></li>
+                        <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Manage Account</span> </a></li>
+                        <li><a href="login.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                                    x-show="!isCollapsed">Log Out</span></a></li>
+                    </ul>
+                </li>
+                <!-- AI Integration Section with Standalone Style -->
+                <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+                    class="rounded p-2 transition-colors duration-300">
+
+                    <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+                        <span class="font-semibold"><i class="bi bi-robot"></i> <span class="sidebar-text ml-3"
+                                x-show="!isCollapsed">AI Integration</span></span>
+                        <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+                            x-show="!isCollapsed">▼</span>
+                    </button>
+
+                    <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+                        <li><a href="ai-chatbot.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI Chatbot</span></a></li>
+                        <li><a href="ai-analytics.html" class="block py-2 hover:bg-gray-700"><span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI-Powered Manager</span> </a>
+                        </li>
+                        <li><a href="ai-automation.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI Automation</span></a>
+                        </li>
+                        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+                            <a href="#" class="flex items-center">
+                                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">AI
+                                        Personalized Learning</span></span>
+                                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+                            </a>
+
+                            <!-- Tooltip -->
+                            <div
+                                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                                This option is available in <br>
+                                premium Version only.
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="404-error.html" class="block py-2 hover:bg-gray-700"> <span
+                                    class="sidebar-text ml-3" x-show="!isCollapsed">AI-Generated Reports</span></a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
+        <style>
+            /* Hide sidebar before JavaScript applies correct class */
+            .sidebar {
+                visibility: hidden;
+            }
+
+            .sidebar-loaded {
+                visibility: visible;
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* Sidebar Swipe for Mobile */
+            @media (max-width: 768px) {
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: -250px;
+                    /* Start off-screen */
+                    width: 250px;
+                    height: 100vh;
+                    background: #111;
+                    transition: transform 0.3s ease-in-out;
+                }
+
+                .sidebar-open {
+                    transform: translateX(250px);
+                    /* Slide in */
+                }
+            }
+
+            /* Collapsed state */
+            .sidebar-collapsed {
+                width: 4.5rem !important;
+            }
+
+            .sidebar-collapsed .sidebar-text,
+            .sidebar-collapsed .sidebar-arrow,
+            .sidebar-collapsed .sidebar-logo-text {
+                display: none !important;
+            }
+
+            .sidebar-collapsed .sidebar-icon {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                font-size: 1.25rem !important;
+            }
+
+            .sidebar-collapsed [x-data]>button {
+                justify-content: center !important;
+                padding: 0.75rem 0.5rem !important;
+            }
+
+            .sidebar-collapsed .sidebar-subicon {
+                margin-left: 0 !important;
+            }
+
+            /* Active state */
+            .active-menu-item {
+                background-color: #3B82F6;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                #sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.3s ease-in-out;
+                }
+
+                #sidebar.sidebar-open {
+                    transform: translateX(0);
+                }
+            }
+        </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                const collapseToggle = document.getElementById('collapseToggle'); // Button to toggle collapse state
+
+                // Initialize sidebar state from localStorage
+                if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                    sidebar.classList.add('sidebar-collapsed');
+                }
+
+                // Toggle sidebar collapse
+                if (collapseToggle) {
+                    collapseToggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('sidebar-collapsed');
+                        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('sidebar-collapsed'));
+                    });
+                }
+
+                // Mobile sidebar toggle
+                if (sidebarToggle) {
+                    sidebarToggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('sidebar-open');
+                    });
+                }
+
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', function (event) {
+                    if (window.innerWidth <= 768 &&
+                        !sidebar.contains(event.target) &&
+                        !sidebarToggle.contains(event.target) &&
+                        sidebar.classList.contains('sidebar-open')) {
+                        sidebar.classList.remove('sidebar-open');
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            // Ensure sidebar updates after page loads
+            updateSidebar();
+        </script>
+        <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
+            <button id="chat-sukuu-btn"
+                class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
+                <i class="bi bi-chat-dots text-2xl"></i>
+                <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
+            </button>
+        </div>
+
+        <script>
+            document.getElementById("chat-sukuu-btn").addEventListener("click", function () {
+                window.location.href = "ai-chatbot.html";
+            });
+        </script>
+
+        <div class="flex-grow min-h-screen bg-gray-50">
+            <!-- Modern Navbar -->
+            <nav class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 flex items-center">
+                                <i class="fas fa-book text-indigo-600 text-xl mr-3"></i>
+                                <h2 class="text-lg font-semibold text-gray-900">Subject Management</h2>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button
+                                class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Notifications</span>
+                                <i class="far fa-bell text-xl"></i>
+                            </button>
+                            <button
+                                class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Settings</span>
+                                <i class="fas fa-cog text-xl"></i>
+                            </button>
+                            <button
+                                class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Language</span>
+                                <i class="fas fa-globe text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="flex-grow">
+                <!-- Navbar -->
+
+                <!-- Display Subjects Section -->
+                <div id="subjectList" class="max-w-6xl mx-auto bg-white p-12 rounded-xl shadow-md mt-12">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Subject List</h2>
+                        <button onclick="loadSubjects()"
+                            class="flex items-center text-indigo-600 hover:text-indigo-800">
+                            <i class="fas fa-sync-alt mr-2"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="subjectContainer" class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+
+                <script>
+                    async function loadSubjects() {
+                        try {
+                            const response = await fetch("http://localhost:5000/api/subjects");
+                            if (!response.ok) {
+                                throw new Error("Failed to fetch subjects");
+                            }
+
+                            const subjects = await response.json();
+                            const subjectContainer = document.getElementById("subjectContainer");
+
+                            subjectContainer.innerHTML = ""; // Clear previous content
+
+                            if (subjects.length === 0) {
+                                subjectContainer.innerHTML = `
+                                    <div class="col-span-full text-center py-8">
+                                        <i class="fas fa-book-open text-4xl text-gray-300 mb-4"></i>
+                                        <h3 class="text-lg font-medium text-gray-500">No subjects found</h3>
+                                        <p class="text-gray-400">Add subjects to get started</p>
+                                    </div>
+                                `;
+                                return;
+                            }
+
+                            subjects.forEach(subject => {
+                                const subjectCard = document.createElement("div");
+                                subjectCard.className = "border p-4 rounded-lg shadow-sm hover:shadow-md transition bg-white";
+
+                                subjectCard.innerHTML = `
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="text-lg font-semibold">${subject.subjectName}</h3>
+                                        <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
+                                            ${subject.subjectCode || "No Code"}
+                                        </span>
+                                    </div>
+                                    <div class="space-y-2 text-sm">
+                                        <p class="flex items-center">
+                                            <i class="fas fa-user-tie text-gray-400 mr-2"></i>
+                                            <span>${subject.subjectTeacher || "No teacher assigned"}</span>
+                                        </p>
+                                        <p class="flex items-center">
+                                            <i class="fas fa-clock text-gray-400 mr-2"></i>
+                                            <span>${subject.creditHours || "0"} credit hours</span>
+                                        </p>
+                                    </div>
+                                    <div class="mt-4 flex space-x-3 border-t pt-3">
+                                        <button onclick="editSubject('${subject._id}')" 
+                                                class="text-indigo-600 hover:text-indigo-800 text-sm">
+                                            <i class="fas fa-edit mr-1"></i> Edit
+                                        </button>
+                                        <button onclick="confirmDeleteSubject('${subject._id}', '${subject.subjectName}')" 
+                                                class="text-red-600 hover:text-red-800 text-sm">
+                                            <i class="fas fa-trash-alt mr-1"></i> Delete
+                                        </button>
+                                    </div>
+                                `;
+
+                                subjectContainer.appendChild(subjectCard);
+                            });
+
+                        } catch (error) {
+                            console.error("Error loading subjects:", error);
+                            subjectContainer.innerHTML = `
+                                <div class="col-span-full text-center py-8">
+                                    <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-4"></i>
+                                    <h3 class="text-lg font-medium text-gray-700">Error loading subjects</h3>
+                                    <p class="text-gray-500">Please try again later</p>
+                                    <button onclick="loadSubjects()" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-sync-alt mr-2"></i> Retry
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    async function editSubject(subjectId) {
+                        try {
+                            const response = await fetch(`http://localhost:5000/api/subjects/${subjectId}`);
+                            if (!response.ok) throw new Error("Failed to fetch subject details");
+
+                            const subjectData = await response.json();
+                            alert(`Editing subject: ${subjectData.subjectName}`);
+                            // Here you would typically open a modal or form to edit the subject
+
+                        } catch (error) {
+                            console.error("Error editing subject:", error);
+                            alert("Failed to load subject details");
+                        }
+                    }
+
+                    async function confirmDeleteSubject(subjectId, subjectName) {
+                        if (confirm(`Are you sure you want to delete "${subjectName}"?`)) {
+                            try {
+                                const response = await fetch(`http://localhost:5000/api/subjects/${subjectId}`, {
+                                    method: "DELETE"
+                                });
+
+                                if (!response.ok) throw new Error("Failed to delete subject");
+
+                                alert(`Subject "${subjectName}" deleted successfully`);
+                                loadSubjects();
+                            } catch (error) {
+                                console.error("Error deleting subject:", error);
+                                alert("Failed to delete subject");
+                            }
+                        }
+                    }
+
+                    // Load subjects when the page loads
+                    document.addEventListener("DOMContentLoaded", loadSubjects);
+                </script>
+
+                <script>
+                    document.getElementById("menuToggle").addEventListener("click", function (event) {
+                        event.preventDefault();
+                        let submenu = document.getElementById("submenu");
+                        let arrow = document.getElementById("arrow");
+
+                        submenu.classList.toggle("hidden"); // Toggle submenu
+                        arrow.classList.toggle("rotate-90"); // Rotate arrow
+                    });
+                </script>
+
+                <style>
+                    .rotate-90 {
+                        transform: rotate(90deg);
+                    }
+
+                    .transition {
+                        transition: all 0.2s ease-in-out;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -783,107 +783,439 @@
         
         <!-- Main Content -->
         <div class="flex-grow">
-            <!-- Navbar -->
+            <!-- Modern Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand">📝 Account Statement</span>
-                    <div>
-                        <span class="me-3">🔔</span>
-                        <span class="me-3">⚙️</span>
-                        <span>🌍</span>
+                    <span class="navbar-brand d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text text-primary me-2 fs-5"></i>
+                        <span class="fw-semibold">Account Statement</span>
+                    </span>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-link text-dark me-2 position-relative p-1" id="notificationBtn">
+                            <i class="bi bi-bell-fill fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                2
+                            </span>
+                        </button>
+                        <button class="btn btn-link text-dark me-2 p-1" id="settingsBtn">
+                            <i class="bi bi-gear-fill fs-5"></i>
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-dark dropdown-toggle p-1" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                                <i class="bi bi-globe fs-5"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">French</a></li>
+                                <li><a class="dropdown-item" href="#">Spanish</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
-            <div class="container mt-4">
-                <div class="card shadow-lg p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="d-flex align-items-center bg-primary text-white px-3 py-2 rounded w-100" style="max-width: 320px;">
-                            <i class="bi bi-calendar me-2"></i>
-                            <span class="text-truncate flex-grow-1">Feb 1, 2025 - Feb 23, 2025</span>
-                            <i class="bi bi-chevron-down ms-auto"></i>
-                          </div>
-                        <div class="d-flex gap-2">
-                            <div class="form-check form-switch pt-2">
-                                <input class="form-check-input" type="checkbox" id="showReferences">
+        
+            <!-- Main Content -->
+            <div class="container py-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                        <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                            <!-- Date Range Picker -->
+                            <div class="input-group" style="width: 280px;">
+                                <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                                <input type="text" class="form-control" id="dateRangePicker" placeholder="Select date range">
+                            </div>
+                            
+                            <!-- Quick Date Filters -->
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="quickDateFilters" data-bs-toggle="dropdown">
+                                    Quick Filters
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="today">Today</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="yesterday">Yesterday</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="thisWeek">This Week</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="lastWeek">Last Week</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="thisMonth">This Month</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="lastMonth">Last Month</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="thisQuarter">This Quarter</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="lastQuarter">Last Quarter</a></li>
+                                    <li><a class="dropdown-item date-filter" href="#" data-range="thisYear">This Year</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" id="customRangeBtn">Custom Range</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="showReferences" checked>
                                 <label class="form-check-label" for="showReferences">Show References</label>
                             </div>
-                            <button class="btn btn-outline-primary"><i class="bi bi-arrow-clockwise"></i> Reset Profit</button>
-                            <button class="btn btn-outline-danger"><i class="bi bi-trash"></i> Delete</button>
+                            <button class="btn btn-outline-danger" id="resetProfitBtn">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                            </button>
+                            <button class="btn btn-outline-secondary" id="deleteBtn">
+                                <i class="bi bi-trash me-1"></i> Delete
+                            </button>
                         </div>
                     </div>
-                    <div class="d-flex gap-2 mb-3">
-                        <button class="btn btn-outline-secondary">Copy</button>
-                        <button class="btn btn-outline-secondary">CSV</button>
-                        <button class="btn btn-outline-secondary">Excel</button>
-                        <button class="btn btn-outline-secondary">PDF</button>
-                        <button class="btn btn-outline-secondary">Print</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Debt</th>
-                                    <th>Credit</th>
-                                    <th>Net Balance</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>18-02-2025</td>
-                                    <td>Fee Submission for Feb 25 of Student ID:- 1232323</td>
-                                    <td>-</td>
-                                    <td class="text-primary">+ $8,000</td>
-                                    <td class="text-success">$8,000</td>
-                                </tr>
-                                <tr class="table-light">
-                                    <td>18-02-2025</td>
-                                    <td>Employee Salary Payment ID:- 149117</td>
-                                    <td class="text-warning">- $9,000</td>
-                                    <td>-</td>
-                                    <td class="text-danger">- $1,000</td>
-                                </tr>
-                                <tr>
-                                    <td>18-02-2025</td>
-                                    <td>Food</td>
-                                    <td class="text-warning">- $2,000</td>
-                                    <td>-</td>
-                                    <td class="text-danger">- $3,000</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="2" class="text-end">Total</th>
-                                    <th>$11,000</th>
-                                    <th>$8,000</th>
-                                    <th>$-3,000</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p>Showing 1 to 3 of 3 entries</p>
-                        <input type="text" class="form-control w-25" placeholder="Search">
+                    <div class="card-body">
+                        <!-- Rest of your content remains the same -->
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+                            <div class="input-group" style="width: 300px;">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search transactions..." id="searchInput">
+                            </div>
+                            <div class="d-flex gap-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown">
+                                        <i class="bi bi-download me-1"></i> Export
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                                        <li><a class="dropdown-item" href="#" id="copyBtn"><i class="bi bi-clipboard me-1"></i> Copy</a></li>
+                                        <li><a class="dropdown-item" href="#" id="csvBtn"><i class="bi bi-filetype-csv me-1"></i> CSV</a></li>
+                                        <li><a class="dropdown-item" href="#" id="excelBtn"><i class="bi bi-file-earmark-excel me-1"></i> Excel</a></li>
+                                        <li><a class="dropdown-item" href="#" id="pdfBtn"><i class="bi bi-file-earmark-pdf me-1"></i> PDF</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" id="printBtn"><i class="bi bi-printer me-1"></i> Print</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="table-responsive">
+                            <table id="statementTable" class="table table-hover align-middle mb-4">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-nowrap">Date</th>
+                                        <th>Description</th>
+                                        <th class="text-end">Debit</th>
+                                        <th class="text-end">Credit</th>
+                                        <th class="text-end">Balance</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-nowrap">18-02-2025</td>
+                                        <td>
+                                            <div>
+                                                <div class="fw-semibold">Fee Submission</div>
+                                                <small class="text-muted">Student ID: 1232323 (Feb 2025)</small>
+                                            </div>
+                                        </td>
+                                        <td class="text-end">-</td>
+                                        <td class="text-end text-success fw-semibold">+ $8,000.00</td>
+                                        <td class="text-end text-success fw-semibold">$8,000.00</td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-receipt"></i> Receipt
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <td class="text-nowrap">18-02-2025</td>
+                                        <td>
+                                            <div>
+                                                <div class="fw-semibold">Employee Salary Payment</div>
+                                                <small class="text-muted">Payment ID: 149117</small>
+                                            </div>
+                                        </td>
+                                        <td class="text-end text-danger fw-semibold">- $9,000.00</td>
+                                        <td class="text-end">-</td>
+                                        <td class="text-end text-danger fw-semibold">- $1,000.00</td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-receipt"></i> Payslip
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap">18-02-2025</td>
+                                        <td>
+                                            <div>
+                                                <div class="fw-semibold">Food Expenses</div>
+                                                <small class="text-muted">Office catering</small>
+                                            </div>
+                                        </td>
+                                        <td class="text-end text-danger fw-semibold">- $2,000.00</td>
+                                        <td class="text-end">-</td>
+                                        <td class="text-end text-danger fw-semibold">- $3,000.00</td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-receipt"></i> Invoice
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="table-group-divider">
+                                    <tr>
+                                        <th colspan="2" class="text-end">Totals</th>
+                                        <th class="text-end text-danger">$11,000.00</th>
+                                        <th class="text-end text-success">$8,000.00</th>
+                                        <th class="text-end text-danger">- $3,000.00</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+        
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                            <div class="mb-3 mb-md-0">
+                                <p class="text-muted mb-0">Showing <span class="fw-semibold">1</span> to <span class="fw-semibold">3</span> of <span class="fw-semibold">3</span> entries</p>
+                            </div>
+                            <nav aria-label="Statement pagination">
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         
+            <!-- Required Scripts -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <!-- Date Range Picker -->
+            <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css">
+            
             <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+                $(document).ready(function() {
+                    // Initialize Date Range Picker
+                    const startDate = moment().subtract(1, 'month').startOf('month');
+                    const endDate = moment().endOf('month');
+                    
+                    $('#dateRangePicker').daterangepicker({
+                        startDate: startDate,
+                        endDate: endDate,
+                        ranges: {
+                            'Today': [moment(), moment()],
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        },
+                        locale: {
+                            format: 'MMM D, YYYY',
+                            applyLabel: 'Apply',
+                            cancelLabel: 'Cancel',
+                            fromLabel: 'From',
+                            toLabel: 'To',
+                            customRangeLabel: 'Custom Range',
+                            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                            firstDay: 1
+                        },
+                        opens: 'right',
+                        alwaysShowCalendars: true
+                    }, function(start, end, label) {
+                        loadStatementData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    });
+        
+                    // Quick date filter handlers
+                    $('.date-filter').click(function(e) {
+                        e.preventDefault();
+                        const range = $(this).data('range');
+                        let startDate, endDate;
+                        
+                        switch(range) {
+                            case 'today':
+                                startDate = moment();
+                                endDate = moment();
+                                break;
+                            case 'yesterday':
+                                startDate = moment().subtract(1, 'days');
+                                endDate = moment().subtract(1, 'days');
+                                break;
+                            case 'thisWeek':
+                                startDate = moment().startOf('week');
+                                endDate = moment().endOf('week');
+                                break;
+                            case 'lastWeek':
+                                startDate = moment().subtract(1, 'week').startOf('week');
+                                endDate = moment().subtract(1, 'week').endOf('week');
+                                break;
+                            case 'thisMonth':
+                                startDate = moment().startOf('month');
+                                endDate = moment().endOf('month');
+                                break;
+                            case 'lastMonth':
+                                startDate = moment().subtract(1, 'month').startOf('month');
+                                endDate = moment().subtract(1, 'month').endOf('month');
+                                break;
+                            case 'thisQuarter':
+                                startDate = moment().startOf('quarter');
+                                endDate = moment().endOf('quarter');
+                                break;
+                            case 'lastQuarter':
+                                startDate = moment().subtract(1, 'quarter').startOf('quarter');
+                                endDate = moment().subtract(1, 'quarter').endOf('quarter');
+                                break;
+                            case 'thisYear':
+                                startDate = moment().startOf('year');
+                                endDate = moment().endOf('year');
+                                break;
+                        }
+                        
+                        $('#dateRangePicker').data('daterangepicker').setStartDate(startDate);
+                        $('#dateRangePicker').data('daterangepicker').setEndDate(endDate);
+                        loadStatementData(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
+                    });
+        
+                    // Custom range button
+                    $('#customRangeBtn').click(function(e) {
+                        e.preventDefault();
+                        $('#dateRangePicker').data('daterangepicker').show();
+                    });
+        
+                    // Function to load statement data (mock implementation)
+                    function loadStatementData(startDate, endDate) {
+                        // Show loading state
+                        const table = $('#statementTable').DataTable();
+                        table.clear().draw();
+                        
+                        $('#statementTable tbody').html(`
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2">Loading transactions from ${moment(startDate).format('MMM D, YYYY')} to ${moment(endDate).format('MMM D, YYYY')}</p>
+                                </td>
+                            </tr>
+                        `);
+                        
+                        // Simulate API call
+                        setTimeout(function() {
+                            // In a real app, you would make an AJAX call here to fetch data for the selected period
+                            // For demo purposes, we'll just reload the same data
+                            table.clear();
+                            
+                            // Sample data - in a real app this would come from your API
+                            const sampleData = [
+                                {
+                                    date: '18-02-2025',
+                                    description: 'Fee Submission<br><small class="text-muted">Student ID: 1232323 (Feb 2025)</small>',
+                                    debit: '-',
+                                    credit: '+ $8,000.00',
+                                    balance: '$8,000.00',
+                                    action: '<button class="btn btn-sm btn-outline-primary"><i class="bi bi-receipt"></i> Receipt</button>'
+                                },
+                                {
+                                    date: '18-02-2025',
+                                    description: 'Employee Salary Payment<br><small class="text-muted">Payment ID: 149117</small>',
+                                    debit: '- $9,000.00',
+                                    credit: '-',
+                                    balance: '- $1,000.00',
+                                    action: '<button class="btn btn-sm btn-outline-primary"><i class="bi bi-receipt"></i> Payslip</button>'
+                                },
+                                {
+                                    date: '18-02-2025',
+                                    description: 'Food Expenses<br><small class="text-muted">Office catering</small>',
+                                    debit: '- $2,000.00',
+                                    credit: '-',
+                                    balance: '- $3,000.00',
+                                    action: '<button class="btn btn-sm btn-outline-primary"><i class="bi bi-receipt"></i> Invoice</button>'
+                                }
+                            ];
+                            
+                            // Add the data to the table
+                            sampleData.forEach(item => {
+                                table.row.add([
+                                    item.date,
+                                    item.description,
+                                    `<span class="text-end">${item.debit}</span>`,
+                                    `<span class="text-end ${item.credit.includes('+') ? 'text-success fw-semibold' : ''}">${item.credit}</span>`,
+                                    `<span class="text-end ${item.balance.includes('-') ? 'text-danger fw-semibold' : 'text-success fw-semibold'}">${item.balance}</span>`,
+                                    `<span class="text-end">${item.action}</span>`
+                                ]).draw();
+                            });
+                            
+                            // Update the "showing X to Y of Z" text
+                            $('.text-muted .fw-semibold').first().text('1');
+                            $('.text-muted .fw-semibold').eq(1).text(sampleData.length);
+                            $('.text-muted .fw-semibold').last().text(sampleData.length);
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Statement Updated',
+                                text: `Showing transactions from ${moment(startDate).format('MMM D, YYYY')} to ${moment(endDate).format('MMM D, YYYY')}`,
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }, 1500);
+                    }
+        
+                    // Initialize DataTable
+                    const table = $('#statementTable').DataTable({
+                        responsive: true,
+                        paging: false,
+                        info: false,
+                        searching: true,
+                        ordering: true,
+                        dom: '<"top">rt<"bottom">',
+                        language: {
+                            emptyTable: "No transactions found in this period"
+                        },
+                        initComplete: function() {
+                            $('.dataTables_filter').hide();
+                        }
+                    });
+        
+                    // Custom search input
+                    $('#searchInput').on('keyup', function() {
+                        table.search(this.value).draw();
+                    });
+        
+                    // Initial load
+                    loadStatementData(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
+        
+                    // Rest of your existing JavaScript code...
+                    // (Notification, Settings, Export buttons, etc.)
                 });
             </script>
-
+        
             <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
+                .daterangepicker {
+                    border-radius: 10px;
+                    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                    border: none;
+                    font-family: 'Inter', sans-serif;
                 }
+                
+                .daterangepicker td.active, .daterangepicker td.active:hover {
+                    background-color: #0d6efd;
+                }
+                
+                .daterangepicker .ranges li.active {
+                    background-color: #0d6efd;
+                    color: white;
+                }
+                
+                .daterangepicker .drp-buttons .btn {
+                    border-radius: 6px;
+                    padding: 0.375rem 0.75rem;
+                }
+                
+                /* Rest of your existing CSS... */
             </style>
         </div>
 </body>

@@ -782,53 +782,81 @@
         </script>
         <!-- Main Content -->
         <div class="flex-grow">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
-                <div class="container-fluid">
-                    <span class="navbar-brand">
-                        <h2 class="text-lg font-semibold"><i class="bi bi-person-workspace"></i> Students <span
-                                class="text-gray-500">- All Students</span></h2>
-                    </span>
-                    <div>
-                        <span class="me-3">🔔</span>
-                        <span class="me-3">⚙️</span>
-                        <span>🌍</span>
-                    </div>
-                </div>
-            </nav>
-            <div class="max-w-7xl mx-auto p-6">
-                <!-- Students Cards Grid -->
-                <div id="studentGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- Students Cards will be inserted dynamically -->
-                    <div onclick="openAddStudentModal()"
-                        class="border-2 border-dashed border-blue-400 flex flex-col items-center justify-center p-6 rounded-lg cursor-pointer hover:bg-blue-50 transition">
-                        <span class="text-blue-600 text-3xl">➕</span>
-                        <p class="text-blue-600 font-semibold mt-2">Add New</p>
-                    </div>
+           <!-- Navbar -->
+           <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+            <div class="container-fluid">
+                <span class="navbar-brand">
+                    <h2 class="text-lg font-semibold">
+                        <i class="bi bi-people-fill"></i> Students 
+                        <span class="text-gray-500">- All Students</span>
+                    </h2>
+                </span>
+                <div>
+                    <span class="me-3">🔔</span>
+                    <span class="me-3">⚙️</span>
+                    <span>🌍</span>
                 </div>
             </div>
-            
+        </nav>
 
-            
-            <script src="student.js"></script>
-
-            <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
-                });
-            </script>
-
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
-                }
-            </style>
+        <div class="max-w-7xl mx-auto p-6">
+            <!-- Student Cards Grid -->
+            <div id="studentGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Student Cards will be dynamically injected here -->
+                <div onclick="openAddStudentModal()"
+                    class="border-2 border-dashed border-blue-400 flex flex-col items-center justify-center p-6 rounded-lg cursor-pointer hover:bg-blue-50 transition">
+                    <span class="text-blue-600 text-3xl">➕</span>
+                    <p class="text-blue-600 font-semibold mt-2">Add New Student</p>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <script src="student.js"></script>
+
+<script>
+    // Menu toggle functionality
+    document.getElementById("menuToggle")?.addEventListener("click", function(event) {
+        event.preventDefault();
+        let submenu = document.getElementById("submenu");
+        let arrow = document.getElementById("arrow");
+        
+        if (submenu && arrow) {
+            submenu.classList.toggle("hidden");
+            arrow.classList.toggle("rotate-90");
+        }
+    });
+
+    // Function to open add student modal
+    function openAddStudentModal() {
+        // Modal implementation would go here
+        console.log("Add student modal opened");
+    }
+</script>
+
+<style>
+    .rotate-90 {
+        transform: rotate(90deg);
+        transition: transform 0.2s ease;
+    }
+    
+    /* Custom styles for the navbar icons */
+    .fa-bell, .fa-cog, .fa-globe {
+        transition: color 0.2s ease;
+    }
+    
+    /* Hover effect for student cards */
+    .hover\:shadow-md:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Transition for the add student card */
+    .transition-colors {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
+</style>
 </body>
 
 </html>

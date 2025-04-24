@@ -2,920 +2,1284 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> School Management Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <script src="loginauth.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> School Management Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <script src="loginauth.js"></script>
 
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .header {
-            background: #222;
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .table-container {
-            padding: 20px;
-            background: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-        .action-btn {
-            background: #17a2b8;
-            color: white;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .search-box {
-            float: right;
-            margin-bottom: 10px;
-        }
-    </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background: #222;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-container {
+      padding: 20px;
+      background: white;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .action-btn {
+      background: #17a2b8;
+      color: white;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .search-box {
+      float: right;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100">
-    <div class="d-flex">
-         <!-- Sidebar -->
-          <!-- Sidebar Toggle Button -->
-          <button id="sidebarToggle"
-          class="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg md:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-      </button>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebarToggle"
+      class="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg md:hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
 
-      <nav id="sidebar"
-      class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40"
+    <nav id="sidebar" class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40"
       x-data="{ 
           isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
-      }"
-      x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }"
-  >
+      }" x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }">
 
       <!-- Sidebar Header with Logo & Toggle -->
       <div class="flex justify-between items-center mb-4">
-          <h4 class="text-1xl font-bold flex items-center w-full">
-              <img src="favicon.png" 
-                   class="transition-all duration-300 sidebar-logo"
-                   :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" 
-                   alt="Logo">
-          </h4>
-          <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
-              class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
-                  :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-          </button>
+        <h4 class="text-1xl font-bold flex items-center w-full">
+          <img src="favicon.png" class="transition-all duration-300 sidebar-logo"
+            :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" alt="Logo">
+        </h4>
+        <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
+          class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform" :class="isCollapsed ? 'rotate-180' : ''"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
       </div>
 
-  <!-- Admin Profile -->
-<div class="text-center mb-6 flex items-center transition-all duration-300"
-:class="isCollapsed ? 'justify-center' : 'justify-start'">
-<img id="sidebarProfileImage" 
-  src="default-profile.png" 
-  class="rounded-full border-2 border-gray-700 transition-all duration-300"
-  :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" 
-  alt="Admin">
-
-<div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
-  <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
-  <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
-</div>
-</div>
-
-
-
-
-          <!-- Sidebar Navigation -->
-          <ul class="space-y-2">
-              <!-- Dashboard -->
-              <li>
-                  <a href="dashboard.html"
-                      class="block p-2 hover:bg-gray-800 rounded font-semibold flex items-center">
-                      <i class="bi bi-speedometer2 sidebar-icon"></i>
-                      <span class="sidebar-text ml-3" x-show="!isCollapsed">Dashboard</span>
-                  </a>
-              </li>
-
-              <!-- Teacher Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-person-workspace"></i> <span
-                              class="sidebar-text ml-3" x-show="!isCollapsed">Employees</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="add-employee.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Add New Employee</span></a>
-                      </li>
-                      <li><a href="employee.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">All Employees</span></a></li>
-                      <li><a href="manage.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Manage Employees</span> </a></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active /
-                                      Inactive</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                      <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Appointment
-                                  Letter</span> </a><i class="fas fa-lock ml-auto text-red-300"></i></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="sidebar-text ml-3" x-show="!isCollapsed">Staff ID Card</span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-              <!-- Students Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-people-fill"></i> <span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Students</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Add Student</span> </a></li>
-                      <li><a href="students.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">All Students</span></a></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active /
-                                      Inactive</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                      <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Admission Letter</span>
-                          </a>
-                      </li>
-                      <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Students ID
-                                      Cards</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                      <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Manage Login</span> </a></li>
-                      <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Promote
-                                  Students</span> </a>
-                      </li>
-                  </ul>
-              </li>
-
-
-              <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-person-hearts"></i> <span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Parent</span></a></li>
-
-
-              <!-- Classes Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-house"></i><span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Class</span> </span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="classes.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">All Classes</span></a></li>
-                      <li><a href="class.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Add Class</span></a></li>
-                  </ul>
-              </li>
-
-              </li>
-
-              </li> <!-- Attendance Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-clock-history"></i> <span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Attendance</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Staffs
-                                  Attendance</span> </a>
-                      </li>
-                      <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Students
-                                  Attendance</span> </a>
-                      </li>
-                      <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Attendance List</span></a>
-                      </li>
-                  </ul>
-              </li>
-
-              <!-- Exams Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i><span
-                              class="sidebar-text ml-3" x-show="!isCollapsed">Exams</span> </span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Result Card</span></a></li>
-                      <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Master Sheet</span></a></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="sidebar-text ml-3" x-show="!isCollapsed">Blank Award List</span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-
-
-              <!-- Accounts Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-cash-coin"></i><span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Accounts</span> </span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="account.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Account Details</span></a></li>
-                      <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Pay Fees</span> </a></li>
-                      <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Receipts</span></a></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Global
-                                      Payment</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                      <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Expenditure</span></a></li>
-                      <li><a href="petty-cash.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Petty Cash</span> </a></li>
-                      <li><a href="income.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Income</span></a></li>
-                      <li><a href="statement.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Account Statement</span></a></li>
-                  </ul>
-              </li>
-
-              <!-- Payroll Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-cash-coin"></i> <span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Payroll</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Pay Salary</span></a></li>
-                      <li><a href="payslip.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Pay Slip</span></a></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Manage
-                                      Salary</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-
-
-              <!-- Library Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-journal-text"></i> <span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Library</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="books.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Books</span></a></li>
-                      <li><a href="issued.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Issued Out</span> </a></li>
-                      <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"> <span class="sidebar-text ml-3"
-                                      x-show="!isCollapsed">E-books</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-
-              <!--Requisition Section with standalone style-->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-pc-display"></i> <span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Requisition</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="requistion.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Requisition Form</span> </a>
-                      </li>
-                      <li><a href="review.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">View Requisitions</span></a></li>
-                      <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Respond
-                                  Requisitions</span> </a></li>
-                  </ul>
-
-
-              <li>
-                  <a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-chat-dots-fill"></i> <span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Message</span></a>
-              </li>
-              <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-collection-play-fill"></i> <span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Media</span></a></li>
-              <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-envelope-at"></i><span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Mail</span></a>
-              </li>
-              <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                  <a href="#" class="flex items-center">
-                      <span class="ml-2"><i class="bi bi-router-fill"></i><span x-show="!isCollapsed">Online
-                              Exams</span> </span>
-                      <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                  </a>
-
-                  <!-- Tooltip -->
-                  <div
-                      class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                      This option is available in <br>
-                      premium Version only.
-                      <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                      </div>
-                  </div>
-              </li>
-
-              <li><a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-cassette"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Asset
-                          Management</span></a></li>
-              <!-- Inventory Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-cart-check-fill"></i> <span
-                              class="sidebar-text ml-3" x-show="!isCollapsed">Shop</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Books &
-                                  Stationaries</span></a></li>
-                      <li><a href="shop-uniform.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Uniform & Clothing</span> </a>
-                      </li>
-                      <li><a href="purchase.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Purchase</span></a></li>
-                      <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Sale</span></a></li>
-                      <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Orders</span> </a></li>
-                  </ul>
-              </li>
-
-              <!----Inventory Section with Standalone Style------->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-window-fullscreen"></i> <span
-                              class="sidebar-text ml-3" x-show="!isCollapsed">Leave Application</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="leave.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Apply for Leave</span></a></li>
-                      <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Applications</span></a></li>
-                  </ul>
-              </li>
-              <li><a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-camera-video-fill"></i> <span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Gmeet Live Class</span></a>
-              </li>
-              <li><a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-bus-front"></i> <span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Transport</span></a>
-              </li>
-              <li><a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-house-door"></i><span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Hostel</span> </a></li>
-              <!-- Announcement Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-megaphone"></i><span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Announcement</span> </span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="notice.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Notice</span> </a></li>
-                      <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Timetable</span> </a></li>
-                      <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Academic Calendar</span></a></li>
-                  </ul>
-              </li>
-
-              <!-- Announcement Section with Standalone Style -->
-              <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                  <a href="#" class="flex items-center">
-                      <span class="ml-2"><i class="bi bi-router-fill"></i><span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">Online Admission</span> </span>
-                      <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                  </a>
-
-                  <!-- Tooltip -->
-                  <div
-                      class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                      This option is available in <br>
-                      premium Version only.
-                      <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                      </div>
-                  </div>
-              </li>
-              <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
-                          class="bi bi-person-walking"></i> <span class="sidebar-text ml-3"
-                          x-show="!isCollapsed">Visitor Info</span></a>
-              </li>
-              <!-- Settings Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-gear-wide-connected"></i> <span
-                              class="sidebar-text ml-3" x-show="!isCollapsed">Settings</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="institution-info.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Institution
-                                  Profile</span></a></li>
-                      <li><a href="fees-particulars.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Fees
-                                  Particulars</span> </a></li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Fees
-                                      Structure</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Discount
-                                      Type</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                      <li><a href="rules-regulations.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">Rules and
-                                  Regulations</span></a></li>
-                      <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Audit Trail</span></a></li>
-                      <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Manage Account</span> </a></li>
-                      <li><a href="login.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
-                                  x-show="!isCollapsed">Log Out</span></a></li>
-                  </ul>
-              </li>
-              <!-- AI Integration Section with Standalone Style -->
-              <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
-                  class="rounded p-2 transition-colors duration-300">
-
-                  <button @click="open = !open" class="flex items-center justify-between w-full text-white">
-                      <span class="font-semibold"><i class="bi bi-robot"></i> <span class="sidebar-text ml-3"
-                              x-show="!isCollapsed">AI Integration</span></span>
-                      <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
-                          x-show="!isCollapsed">▼</span>
-                  </button>
-
-                  <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
-                      <li><a href="ai-chatbot.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">AI Chatbot</span></a></li>
-                      <li><a href="ai-analytics.html" class="block py-2 hover:bg-gray-700"><span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">AI-Powered Manager</span> </a>
-                      </li>
-                      <li><a href="ai-automation.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">AI Automation</span></a>
-                      </li>
-                      <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
-                          <a href="#" class="flex items-center">
-                              <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">AI
-                                      Personalized Learning</span></span>
-                              <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
-                          </a>
-
-                          <!-- Tooltip -->
-                          <div
-                              class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
-                              This option is available in <br>
-                              premium Version only.
-                              <div
-                                  class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
-                              </div>
-                          </div>
-                      </li>
-                      <li><a href="404-error.html" class="block py-2 hover:bg-gray-700"> <span
-                                  class="sidebar-text ml-3" x-show="!isCollapsed">AI-Generated Reports</span></a>
-                      </li>
-                  </ul>
-              </li>
-
+      <!-- Admin Profile -->
+      <div class="text-center mb-6 flex items-center transition-all duration-300"
+        :class="isCollapsed ? 'justify-center' : 'justify-start'">
+        <img id="sidebarProfileImage" src="default-profile.png"
+          class="rounded-full border-2 border-gray-700 transition-all duration-300"
+          :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" alt="Admin">
+
+        <div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
+          <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
+          <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
+        </div>
+      </div>
+
+
+
+
+      <!-- Sidebar Navigation -->
+      <ul class="space-y-2">
+        <!-- Dashboard -->
+        <li>
+          <a href="dashboard.html" class="block p-2 hover:bg-gray-800 rounded font-semibold flex items-center">
+            <i class="bi bi-speedometer2 sidebar-icon"></i>
+            <span class="sidebar-text ml-3" x-show="!isCollapsed">Dashboard</span>
+          </a>
+        </li>
+
+        <!-- Teacher Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-person-workspace"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Employees</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="add-employee.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Add New Employee</span></a>
+            </li>
+            <li><a href="employee.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">All Employees</span></a></li>
+            <li><a href="manage.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Manage Employees</span> </a></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active /
+                    Inactive</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+            <li><a href="appointment_letter.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Appointment
+                  Letter</span> </a><i class="fas fa-lock ml-auto text-red-300"></i></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="sidebar-text ml-3" x-show="!isCollapsed">Staff ID Card</span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
           </ul>
-      </nav>
+        </li>
+        <!-- Students Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-people-fill"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Students</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="admissions.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Add Student</span> </a></li>
+            <li><a href="students.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">All Students</span></a></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">⚖ Active /
+                    Inactive</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+            <li><a href="admission_letter.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Admission Letter</span>
+              </a>
+            </li>
+            <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Students ID
+                    Cards</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+            <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Manage Login</span> </a></li>
+            <li><a href="promote_students.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Promote
+                  Students</span> </a>
+            </li>
+          </ul>
+        </li>
+
+
+        <li><a href="parents.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-person-hearts"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Parent</span></a>
+        </li>
+
+
+        <!-- Classes Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-house"></i><span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Class</span> </span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="classes.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">All Classes</span></a></li>
+            <li><a href="class.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Add Class</span></a></li>
+          </ul>
+        </li>
+
+        </li>
+
+        </li> <!-- Attendance Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-clock-history"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Attendance</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="staff-attendance.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Staffs
+                  Attendance</span> </a>
+            </li>
+            <li><a href="stud-attendance.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Students
+                  Attendance</span> </a>
+            </li>
+            <li><a href="attendance-list.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Attendance List</span></a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Exams Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-file-earmark-ppt-fill"></i><span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Exams</span> </span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="result-card.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Result Card</span></a></li>
+            <li><a href="master-list.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Master Sheet</span></a></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="sidebar-text ml-3" x-show="!isCollapsed">Blank Award List</span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- Accounts Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-cash-coin"></i><span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Accounts</span> </span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="account.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Account Details</span></a></li>
+            <li><a href="fees.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Pay Fees</span> </a></li>
+            <li><a href="invoices.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Receipts</span></a></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Global
+                    Payment</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+            <li><a href="expense.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Expenditure</span></a></li>
+            <li><a href="petty-cash.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Petty Cash</span> </a></li>
+            <li><a href="income.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Income</span></a></li>
+            <li><a href="statement.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Account Statement</span></a></li>
+          </ul>
+        </li>
+
+        <!-- Payroll Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-cash-coin"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Payroll</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="pay-salary.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Pay Salary</span></a></li>
+            <li><a href="payslip.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Pay Slip</span></a></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Manage
+                    Salary</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- Library Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-journal-text"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Library</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="books.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Books</span></a></li>
+            <li><a href="issued.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Issued Out</span> </a></li>
+            <!---------<li><a href="student_id.html" class="block py-2 hover:bg-gray-700"> Student ID Cards</a></li>-------->
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">E-books</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+
+        <!--Requisition Section with standalone style-->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-pc-display"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Requisition</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="requistion.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Requisition Form</span> </a>
+            </li>
+            <li><a href="review.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">View Requisitions</span></a></li>
+            <li><a href="requisition-admin.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Respond
+                  Requisitions</span> </a></li>
+          </ul>
+
+
+        <li>
+          <a href="message.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-chat-dots-fill"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Message</span></a>
+        </li>
+        <li><a href="media.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-collection-play-fill"></i> <span class="sidebar-text ml-3"
+              x-show="!isCollapsed">Media</span></a></li>
+        <li><a href="mail-sms.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-envelope-at"></i><span class="sidebar-text ml-3" x-show="!isCollapsed">Mail</span></a>
+        </li>
+        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+          <a href="#" class="flex items-center">
+            <span class="ml-2"><i class="bi bi-router-fill"></i><span x-show="!isCollapsed">Online
+                Exams</span> </span>
+            <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+          </a>
+
+          <!-- Tooltip -->
+          <div
+            class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+            This option is available in <br>
+            premium Version only.
+            <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+            </div>
+          </div>
+        </li>
+
+        <li><a href="asset.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-cassette"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Asset
+              Management</span></a></li>
+        <!-- Inventory Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-cart-check-fill"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Shop</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="shop-bookstation.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Books &
+                  Stationaries</span></a></li>
+            <li><a href="shop-uniform.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Uniform & Clothing</span> </a>
+            </li>
+            <li><a href="purchase.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Purchase</span></a></li>
+            <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Sale</span></a></li>
+            <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Orders</span> </a></li>
+          </ul>
+        </li>
+
+        <!----Inventory Section with Standalone Style------->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-window-fullscreen"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Leave Application</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="leave.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Apply for Leave</span></a></li>
+            <li><a href="applications.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Applications</span></a></li>
+          </ul>
+        </li>
+        <li><a href="gmeet.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-camera-video-fill"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Gmeet Live
+              Class</span></a>
+        </li>
+        <li><a href="transport.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-bus-front"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Transport</span></a>
+        </li>
+        <li><a href="hostel.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-house-door"></i><span class="sidebar-text ml-3" x-show="!isCollapsed">Hostel</span> </a></li>
+        <!-- Announcement Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-megaphone"></i><span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Announcement</span> </span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="notice.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Notice</span> </a></li>
+            <li><a href="timetable.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Timetable</span> </a></li>
+            <li><a href="calendar.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Academic Calendar</span></a></li>
+          </ul>
+        </li>
+
+        <!-- Announcement Section with Standalone Style -->
+        <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+          <a href="#" class="flex items-center">
+            <span class="ml-2"><i class="bi bi-router-fill"></i><span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Online Admission</span> </span>
+            <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+          </a>
+
+          <!-- Tooltip -->
+          <div
+            class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+            This option is available in <br>
+            premium Version only.
+            <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+            </div>
+          </div>
+        </li>
+        <li><a href="visitor.html" class="block p-2 hover:bg-gray-800 rounded font-semibold"><i
+              class="bi bi-person-walking"></i> <span class="sidebar-text ml-3" x-show="!isCollapsed">Visitor
+              Info</span></a>
+        </li>
+        <!-- Settings Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-gear-wide-connected"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">Settings</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="institution-info.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Institution
+                  Profile</span></a></li>
+            <li><a href="fees-particulars.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Fees
+                  Particulars</span> </a></li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Fees
+                    Structure</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"><span class="sidebar-text ml-3" x-show="!isCollapsed">Discount
+                    Type</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+            <li><a href="rules-regulations.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Rules and
+                  Regulations</span></a></li>
+            <li><a href="#" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Audit Trail</span></a></li>
+            <li><a href="#" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Manage Account</span> </a></li>
+            <li><a href="login.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">Log Out</span></a></li>
+          </ul>
+        </li>
+        <!-- AI Integration Section with Standalone Style -->
+        <li x-data="{ open: false }" :class="open ? 'bg-gray-800' : 'bg-gray-900'"
+          class="rounded p-2 transition-colors duration-300">
+
+          <button @click="open = !open" class="flex items-center justify-between w-full text-white">
+            <span class="font-semibold"><i class="bi bi-robot"></i> <span class="sidebar-text ml-3"
+                x-show="!isCollapsed">AI Integration</span></span>
+            <span class="transition-transform duration-300" :class="open ? 'rotate-180' : ''"
+              x-show="!isCollapsed">▼</span>
+          </button>
+
+          <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
+            <li><a href="ai-chatbot.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">AI Chatbot</span></a></li>
+            <li><a href="ai-analytics.html" class="block py-2 hover:bg-gray-700"><span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">AI-Powered Manager</span> </a>
+            </li>
+            <li><a href="ai-automation.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">AI Automation</span></a>
+            </li>
+            <li class="text-gray-400 flex items-center py-2 relative group cursor-not-allowed">
+              <a href="#" class="flex items-center">
+                <span class="mr-2"> <span class="sidebar-text ml-3" x-show="!isCollapsed">AI
+                    Personalized Learning</span></span>
+                <i class="bi bi-lock ml-auto text-red-300" x-show="!isCollapsed"></i>
+              </a>
+
+              <!-- Tooltip -->
+              <div
+                class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs px-3 py-2 rounded-md whitespace-nowrap">
+                This option is available in <br>
+                premium Version only.
+                <div class="absolute left-1/2 transform -translate-x-1/2 top-full w-2 h-2 bg-black rotate-45">
+                </div>
+              </div>
+            </li>
+            <li><a href="404-error.html" class="block py-2 hover:bg-gray-700"> <span class="sidebar-text ml-3"
+                  x-show="!isCollapsed">AI-Generated Reports</span></a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </nav>
+
+    <style>
+      /* Collapsed state */
+      .sidebar-collapsed {
+        width: 4.5rem !important;
+      }
+
+      .sidebar-collapsed .sidebar-text,
+      .sidebar-collapsed .sidebar-arrow,
+      .sidebar-collapsed .sidebar-logo-text {
+        display: none !important;
+      }
+
+      .sidebar-collapsed .sidebar-icon {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        font-size: 1.25rem !important;
+      }
+
+      .sidebar-collapsed [x-data]>button {
+        justify-content: center !important;
+        padding: 0.75rem 0.5rem !important;
+      }
+
+      .sidebar-collapsed .sidebar-subicon {
+        margin-left: 0 !important;
+      }
+
+      /* Active state */
+      .active-menu-item {
+        background-color: #3B82F6;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        #sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease-in-out;
+        }
+
+        #sidebar.sidebar-open {
+          transform: translateX(0);
+        }
+      }
+    </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const collapseToggle = document.getElementById('collapseToggle'); // Button to toggle collapse state
+
+        // Initialize sidebar state from localStorage
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+          sidebar.classList.add('sidebar-collapsed');
+        }
+
+        // Toggle sidebar collapse
+        if (collapseToggle) {
+          collapseToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('sidebar-collapsed');
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('sidebar-collapsed'));
+          });
+        }
+
+        // Mobile sidebar toggle
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('sidebar-open');
+          });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+          if (window.innerWidth <= 768 &&
+            !sidebar.contains(event.target) &&
+            !sidebarToggle.contains(event.target) &&
+            sidebar.classList.contains('sidebar-open')) {
+            sidebar.classList.remove('sidebar-open');
+          }
+        });
+      });
+    </script>
+
+    <script>
+      // Ensure sidebar updates after page loads
+      updateSidebar();
+    </script>
+    <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
+      <button id="chat-sukuu-btn"
+        class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
+        <i class="bi bi-chat-dots text-2xl"></i>
+        <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
+      </button>
+    </div>
+
+    <script>
+      document.getElementById("chat-sukuu-btn").addEventListener("click", function () {
+        window.location.href = "ai-chatbot.html";
+      });
+    </script>
+
+    <!-- Main Content -->
+    <div class="flex-grow">
+
+      <div class="chat-wrapper">
+        <div class="chat-app">
+          <!-- Navbar -->
+          <div class="navbar">
+            <div class="navbar-brand">💬 Messenger Pro</div>
+            <div class="navbar-controls">
+              <div class="control-icon">🔔<span class="badge">3</span></div>
+              <div class="control-icon">⚙️</div>
+              <div class="control-icon">🌍</div>
+            </div>
+          </div>
+
+          <!-- Main Content -->
+          <div class="chat-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+              <div class="sidebar-header">Chats</div>
+              <div class="chat-list">
+                <div class="chat-item active" onclick="selectChat('John Doe', 'Hey! How are you?')">
+                  <div class="chat-avatar" style="background-color: #4e79a7;">JD</div>
+                  <div class="chat-info">
+                    <div class="chat-name">John Doe</div>
+                    <div class="chat-preview">Hey! How are you?</div>
+                  </div>
+                  <div class="chat-time">10:30 AM</div>
+                  <div class="unread-count">3</div>
+                </div>
+                <div class="chat-item" onclick="selectChat('Alice Smith', 'Let’s meet up!')">
+                  <div class="chat-avatar" style="background-color: #e15759;">AS</div>
+                  <div class="chat-info">
+                    <div class="chat-name">Alice Smith</div>
+                    <div class="chat-preview">Let's meet up!</div>
+                  </div>
+                  <div class="chat-time">Yesterday</div>
+                </div>
+                <div class="chat-item" onclick="selectChat('Robert Johnson', 'About the project...')">
+                  <div class="chat-avatar" style="background-color: #76b7b2;">RJ</div>
+                  <div class="chat-info">
+                    <div class="chat-name">Robert Johnson</div>
+                    <div class="chat-preview">About the project...</div>
+                  </div>
+                  <div class="chat-time">Tuesday</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+              <div class="chat-header">
+                <div class="chat-avatar" style="background-color: #4e79a7;">JD</div>
+                <div class="chat-title">
+                  <div class="chat-name">John Doe</div>
+                  <div class="chat-status online">Online</div>
+                </div>
+                <div class="chat-actions">
+                  <div class="action-btn">📞</div>
+                  <div class="action-btn">⋮</div>
+                </div>
+              </div>
+
+              <div class="message-area" id="message-area">
+                <div class="message received">
+                  <div class="message-content">Hey! How are you?</div>
+                  <div class="message-time">10:30 AM</div>
+                </div>
+              </div>
+
+              <div class="message-input">
+                <div class="emoji-btn">😊</div>
+                <input type="text" placeholder="Type a message..." id="message-input">
+                <div class="send-btn" onclick="sendMessage()">➤</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <style>
-          /* Collapsed state */
-          .sidebar-collapsed {
-              width: 4.5rem !important;
+        .chat-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          padding: 20px;
+          background-color: #f0f2f5;
+        }
+
+        .chat-app {
+          font-family: 'Segoe UI', sans-serif;
+          width: 100%;
+          max-width: 1200px;
+          height: 90vh;
+          display: flex;
+          flex-direction: column;
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+        }
+
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 25px;
+          background: white;
+          border-bottom: 1px solid #e0e6ed;
+        }
+
+        .navbar-brand {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: #333;
+        }
+
+        .navbar-controls {
+          display: flex;
+          gap: 20px;
+        }
+
+        .control-icon {
+          position: relative;
+          cursor: pointer;
+          font-size: 1.2rem;
+        }
+
+        .badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: #ff4757;
+          color: white;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          font-size: 0.7rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .app-header {
+          background: #2f3542;
+          color: white;
+          padding: 12px 25px;
+        }
+
+        .breadcrumb {
+          font-size: 0.9rem;
+        }
+
+        .breadcrumb .active {
+          color: #7bed9f;
+        }
+
+        .chat-container {
+          display: flex;
+          flex: 1;
+          overflow: hidden;
+        }
+
+        .sidebar {
+          width: 300px;
+          background: white;
+          border-right: 1px solid #e0e6ed;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .sidebar-header {
+          padding: 15px 25px;
+          font-weight: 600;
+          border-bottom: 1px solid #e0e6ed;
+        }
+
+        .chat-list {
+          flex: 1;
+          overflow-y: auto;
+        }
+
+        .chat-item {
+          display: flex;
+          padding: 12px 20px;
+          cursor: pointer;
+          position: relative;
+          border-bottom: 1px solid #f1f2f6;
+        }
+
+        .chat-item:hover {
+          background: #f8f9fa;
+        }
+
+        .chat-item.active {
+          background: #e8f4fd;
+        }
+
+        .chat-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+          margin-right: 12px;
+          flex-shrink: 0;
+        }
+
+        .chat-info {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .chat-name {
+          font-weight: 600;
+          margin-bottom: 2px;
+        }
+
+        .chat-preview {
+          font-size: 0.85rem;
+          color: #666;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .chat-time {
+          font-size: 0.75rem;
+          color: #999;
+          margin-left: 10px;
+        }
+
+        .unread-count {
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: #1e90ff;
+          color: white;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.7rem;
+        }
+
+        .chat-area {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          background: #f5f7fa;
+        }
+
+        .chat-header {
+          display: flex;
+          align-items: center;
+          padding: 15px 25px;
+          background: white;
+          border-bottom: 1px solid #e0e6ed;
+        }
+
+        .chat-title {
+          flex: 1;
+          margin-left: 12px;
+        }
+
+        .chat-status {
+          font-size: 0.8rem;
+          margin-top: 2px;
+        }
+
+        .chat-status.online {
+          color: #2ed573;
+        }
+
+        .chat-actions {
+          display: flex;
+          gap: 15px;
+        }
+
+        .action-btn {
+          cursor: pointer;
+          font-size: 1.1rem;
+        }
+
+        .message-area {
+          flex: 1;
+          padding: 25px;
+          overflow-y: auto;
+          background: #f5f7fa;
+        }
+
+        .message {
+          max-width: 70%;
+          margin-bottom: 15px;
+          position: relative;
+        }
+
+        .message.received {
+          margin-right: auto;
+        }
+
+        .message.sent {
+          margin-left: auto;
+        }
+
+        .message-content {
+          padding: 12px 16px;
+          border-radius: 18px;
+          position: relative;
+          word-wrap: break-word;
+        }
+
+        .message.received .message-content {
+          background: white;
+          border-top-left-radius: 5px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.sent .message-content {
+          background: #1e90ff;
+          color: white;
+          border-top-right-radius: 5px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-time {
+          font-size: 0.7rem;
+          color: #999;
+          margin-top: 5px;
+          text-align: right;
+        }
+
+        .message-input {
+          display: flex;
+          align-items: center;
+          padding: 15px 25px;
+          background: white;
+          border-top: 1px solid #e0e6ed;
+        }
+
+        .emoji-btn {
+          font-size: 1.2rem;
+          margin-right: 15px;
+          cursor: pointer;
+        }
+
+        #message-input {
+          flex: 1;
+          padding: 12px 18px;
+          border: 1px solid #e0e6ed;
+          border-radius: 24px;
+          outline: none;
+          font-size: 0.95rem;
+          transition: border-color 0.2s;
+        }
+
+        #message-input:focus {
+          border-color: #1e90ff;
+        }
+
+        .send-btn {
+          margin-left: 15px;
+          background: #1e90ff;
+          color: white;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          font-size: 1rem;
+          transition: transform 0.2s, background 0.2s;
+        }
+
+        .send-btn:hover {
+          transform: scale(1.05);
+          background: #1a7fdf;
+        }
+
+        /* Animations */
+        .chat-item {
+          transition: background 0.2s ease;
+        }
+
+        .message-content {
+          animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(5px);
           }
-      
-          .sidebar-collapsed .sidebar-text,
-          .sidebar-collapsed .sidebar-arrow,
-          .sidebar-collapsed .sidebar-logo-text {
-              display: none !important;
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
-      
-          .sidebar-collapsed .sidebar-icon {
-              margin-left: 0 !important;
-              margin-right: 0 !important;
-              font-size: 1.25rem !important;
-          }
-      
-          .sidebar-collapsed [x-data]>button {
-              justify-content: center !important;
-              padding: 0.75rem 0.5rem !important;
-          }
-      
-          .sidebar-collapsed .sidebar-subicon {
-              margin-left: 0 !important;
-          }
-      
-          /* Active state */
-          .active-menu-item {
-              background-color: #3B82F6;
-          }
-      
-          /* Responsive */
-          @media (max-width: 768px) {
-              #sidebar {
-                  transform: translateX(-100%);
-                  transition: transform 0.3s ease-in-out;
-              }
-      
-              #sidebar.sidebar-open {
-                  transform: translateX(0);
-              }
-          }
+        }
       </style>
-      
+
       <script>
-          document.addEventListener('DOMContentLoaded', function () {
-              const sidebar = document.getElementById('sidebar');
-              const sidebarToggle = document.getElementById('sidebarToggle');
-              const collapseToggle = document.getElementById('collapseToggle'); // Button to toggle collapse state
-      
-              // Initialize sidebar state from localStorage
-              if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                  sidebar.classList.add('sidebar-collapsed');
-              }
-      
-              // Toggle sidebar collapse
-              if (collapseToggle) {
-                  collapseToggle.addEventListener('click', function () {
-                      sidebar.classList.toggle('sidebar-collapsed');
-                      localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('sidebar-collapsed'));
-                  });
-              }
-      
-              // Mobile sidebar toggle
-              if (sidebarToggle) {
-                  sidebarToggle.addEventListener('click', function () {
-                      sidebar.classList.toggle('sidebar-open');
-                  });
-              }
-      
-              // Close sidebar when clicking outside on mobile
-              document.addEventListener('click', function (event) {
-                  if (window.innerWidth <= 768 &&
-                      !sidebar.contains(event.target) &&
-                      !sidebarToggle.contains(event.target) &&
-                      sidebar.classList.contains('sidebar-open')) {
-                      sidebar.classList.remove('sidebar-open');
-                  }
-              });
+        let currentChat = 'John Doe';
+
+        function selectChat(name, lastMessage) {
+          // Update active chat in sidebar
+          document.querySelectorAll('.chat-item').forEach(item => {
+            item.classList.remove('active');
           });
+          event.currentTarget.classList.add('active');
+
+          // Update chat header
+          currentChat = name;
+          document.querySelector('.chat-name').textContent = name;
+          document.querySelector('.chat-preview').textContent = lastMessage;
+
+          // Clear and update chat messages
+          const messageArea = document.getElementById('message-area');
+          messageArea.innerHTML = `
+              <div class="message received">
+                <div class="message-content">${lastMessage}</div>
+                <div class="message-time">Just now</div>
+              </div>
+            `;
+
+          // Mark as read (remove unread badge)
+          const unreadBadge = event.currentTarget.querySelector('.unread-count');
+          if (unreadBadge) {
+            unreadBadge.remove();
+          }
+        }
+
+        function sendMessage() {
+          const input = document.getElementById('message-input');
+          const message = input.value.trim();
+
+          if (message) {
+            const messageArea = document.getElementById('message-area');
+
+            // Add user's message
+            messageArea.innerHTML += `
+                <div class="message sent">
+                  <div class="message-content">${message}</div>
+                  <div class="message-time">Just now</div>
+                </div>
+              `;
+
+            // Clear input
+            input.value = '';
+
+            // Scroll to bottom
+            messageArea.scrollTop = messageArea.scrollHeight;
+
+            // Simulate reply after 1-3 seconds
+            setTimeout(() => {
+              const replies = [
+                "Thanks for your message!",
+                "I'll get back to you soon.",
+                "Interesting point!",
+                "Let me think about that...",
+                "Can we discuss this later?"
+              ];
+              const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+              messageArea.innerHTML += `
+                  <div class="message received">
+                    <div class="message-content">${randomReply}</div>
+                    <div class="message-time">Just now</div>
+                  </div>
+                `;
+
+              // Scroll to bottom again
+              messageArea.scrollTop = messageArea.scrollHeight;
+            }, 1000 + Math.random() * 2000);
+          }
+        }
+
+        // Allow sending message with Enter key
+        document.getElementById('message-input').addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+            sendMessage();
+          }
+        });
       </script>
-      
-      <script>
-          // Ensure sidebar updates after page loads
-          updateSidebar();
-      </script>
-        <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
-            <button id="chat-sukuu-btn" 
-                class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
-                <i class="bi bi-chat-dots text-2xl"></i>
-                <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
-            </button>
-        </div>
-        
-        <script>
-            document.getElementById("chat-sukuu-btn").addEventListener("click", function() {
-                window.location.href = "ai-chatbot.html";
-            });
-        </script>
-
-        <!-- Main Content -->
-        <div class="flex-grow">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
-                <div class="container-fluid">
-                    <span class="navbar-brand">💬 Message</span>
-                    <div>
-                        <span class="me-3">🔔</span>
-                        <span class="me-3">⚙️</span>
-                        <span>🌍</span>
-                    </div>
-                </div>
-            </nav>
-            <div class="header">
-                <h5></h5>
-                <a href="#" style="color: white; text-decoration: none;">📂 Dashboard / <span style="color: lightgreen;">Mail / SMS</span></a>
-            </div>
-        
-            <div class="flex h-screen">
-                <!-- Sidebar -->
-                <div class="w-1/3 bg-white p-4 border-r">
-                    <h2 class="text-xl font-bold mb-4">Chats</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer" onclick="selectChat('John Doe', 'Hey! How are you?')">
-                            <img src="https://via.placeholder.com/40" class="rounded-full mr-3" alt="User">
-                            <div>
-                                <h3 class="font-semibold">John Doe</h3>
-                                <p class="text-sm text-gray-500">Hey! How are you?</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer" onclick="selectChat('Alice', 'Let’s meet up!')">
-                            <img src="https://via.placeholder.com/40" class="rounded-full mr-3" alt="User">
-                            <div>
-                                <h3 class="font-semibold">Alice</h3>
-                                <p class="text-sm text-gray-500">Let’s meet up!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Chat Window -->
-                <div class="w-2/3 flex flex-col">
-                    <div class="bg-white p-4 flex items-center border-b">
-                        <img id="chat-avatar" src="https://via.placeholder.com/40" class="rounded-full mr-3" alt="User">
-                        <h3 id="chat-name" class="font-semibold">John Doe</h3>
-                    </div>
-                    <div id="chat-box" class="flex-1 p-4 overflow-y-auto bg-gray-100">
-                    </div>
-                    <div class="bg-white p-4 flex items-center border-t">
-                        <button class="text-gray-500 mr-2"><i class="bi bi-emoji-smile text-xl"></i></button>
-                        <input id="message-input" type="text" placeholder="Type a message..." class="flex-1 p-2 border rounded-lg">
-                        <button id="send-btn" class="ml-2 text-blue-500"><i class="bi bi-send-fill text-xl"></i></button>
-                    </div>
-                </div>
-            </div>
-        
-            <script>
-                let currentChat = 'John Doe';
-        
-                function selectChat(name, lastMessage) {
-                    currentChat = name;
-                    document.getElementById('chat-name').textContent = name;
-                    let chatBox = document.getElementById('chat-box');
-                    chatBox.innerHTML = `<div class='text-left mb-2'><div class='bg-gray-300 p-2 rounded-lg inline-block'>${lastMessage}</div></div>`;
-                }
-        
-                document.getElementById('send-btn').addEventListener('click', function() {
-                    let messageInput = document.getElementById('message-input');
-                    let message = messageInput.value.trim();
-                    if (message) {
-                        let chatBox = document.getElementById('chat-box');
-                        let msgDiv = document.createElement('div');
-                        msgDiv.className = 'text-right mb-2';
-                        msgDiv.innerHTML = `<div class='bg-green-500 text-white p-2 rounded-lg inline-block'>${message}</div>`;
-                        chatBox.appendChild(msgDiv);
-                        messageInput.value = '';
-                        chatBox.scrollTop = chatBox.scrollHeight;
-        
-                        setTimeout(() => {
-                            let replyDiv = document.createElement('div');
-                            replyDiv.className = 'text-left mb-2';
-                            replyDiv.innerHTML = `<div class='bg-gray-300 p-2 rounded-lg inline-block'>${currentChat} is replying...</div>`;
-                            chatBox.appendChild(replyDiv);
-                            chatBox.scrollTop = chatBox.scrollHeight;
-        
-                            setTimeout(() => {
-                                replyDiv.innerHTML = `<div class='bg-gray-300 p-2 rounded-lg inline-block'>Hello! This is an auto-reply from ${currentChat}.</div>`;
-                            }, 5000);
-                        }, 2000);
-                    }
-                });
-            </script>
-            <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
-                });
-            </script>
-
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
-                }
-            </style>
-        </div>
+    </div>
+  </div>
 </body>
 
 </html>

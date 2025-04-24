@@ -439,10 +439,10 @@
               </span>
             </button>
       
-            <ul x-show="open" x-collapse class="pl-1 mt-2 space-y-1">
+            <ul x-show="open" x-collapse class="pl-4 mt-2 space-y-1">
               <li>
                 <a href="staff-attendance.html" class="block py-2 hover:bg-gray-700">
-                  <span class="sidebar-text ml-3" x-show="!isCollapsed">Employees Attendance</span>
+                  <span class="sidebar-text ml-3" x-show="!isCollapsed">Staffs Attendance</span>
                 </a>
               </li>
               <li>
@@ -843,12 +843,12 @@
                 </a>
               </li>
               <li>
-                <a href="sales.html" class="block py-2 hover:bg-gray-700">
+                <a href="#" class="block py-2 hover:bg-gray-700">
                   <span class="sidebar-text ml-3" x-show="!isCollapsed">Sale</span>
                 </a>
               </li>
               <li>
-                <a href="orders.html" class="block py-2 hover:bg-gray-700">
+                <a href="#" class="block py-2 hover:bg-gray-700">
                   <span class="sidebar-text ml-3" x-show="!isCollapsed">Orders</span>
                 </a>
               </li>
@@ -1215,873 +1215,435 @@
             });
         </script>
 
-
-        <!-- Main Content -->
         <div class="flex-grow min-h-screen bg-gray-50">
-          <!-- Modern Navbar -->
-          <nav class="bg-white shadow-sm">
-              <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div class="flex justify-between items-center h-16">
-                      <div class="flex items-center">
-                          <div class="flex-shrink-0 flex items-center">
-                              <i class="bi bi-speedometer2 text-blue-600 text-xl mr-2"></i>
-                              <h2 class="text-lg font-semibold text-gray-900">Dashboard</h2>
-                          </div>
-                      </div>
-                      <div class="flex items-center space-x-4">
-                          <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                              <span class="sr-only">Notifications</span>
-                              <i class="far fa-bell text-xl"></i>
-                          </button>
-                          <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                              <span class="sr-only">Settings</span>
-                              <i class="fas fa-cog text-xl"></i>
-                          </button>
-                          <div class="relative">
-                              <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                  <span class="sr-only">Language</span>
-                                  <i class="fas fa-globe text-xl"></i>
-                              </button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </nav>
-      
-          <!-- Main Content -->
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <!-- Stats Cards -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                  <!-- Students Card -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex justify-between items-center hover:shadow-md transition-shadow">
-                      <div>
-                          <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Students</p>
-                          <h3 class="text-3xl font-bold text-gray-900 mt-1">44</h3>
-                          <p class="text-xs text-gray-500 mt-1">+5 from last month</p>
-                      </div>
-                      <div class="bg-red-100 p-3 rounded-full">
-                          <img src="image1.png" alt="Students" width="40" class="rounded-full">
-                      </div>
-                  </div>
-      
-                  <!-- Parents Card -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex justify-between items-center hover:shadow-md transition-shadow">
-                      <div>
-                          <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Parents</p>
-                          <h3 class="text-3xl font-bold text-gray-900 mt-1">10</h3>
-                          <p class="text-xs text-gray-500 mt-1">+2 from last month</p>
-                      </div>
-                      <div class="bg-green-100 p-3 rounded-full">
-                          <img src="image2.png" alt="Parents" width="40" class="rounded-full">
-                      </div>
-                  </div>
-      
-                  <!-- Employees Card -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex justify-between items-center hover:shadow-md transition-shadow">
-                      <div>
-                          <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Employees</p>
-                          <h3 class="text-3xl font-bold text-gray-900 mt-1">12</h3>
-                          <p class="text-xs text-gray-500 mt-1">No change</p>
-                      </div>
-                      <div class="bg-blue-100 p-3 rounded-full">
-                          <img src="image3.png" alt="Employees" width="40" class="rounded-full">
-                      </div>
-                  </div>
-      
-                  <!-- Subjects Card -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex justify-between items-center hover:shadow-md transition-shadow">
-                      <div>
-                          <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Subjects</p>
-                          <h3 class="text-3xl font-bold text-gray-900 mt-1">35</h3>
-                          <p class="text-xs text-gray-500 mt-1">+3 new this term</p>
-                      </div>
-                      <div class="bg-indigo-100 p-3 rounded-full">
-                          <img src="image4.png" alt="Subjects" width="40" class="rounded-full">
-                      </div>
-                  </div>
-              </div>
-      
-              <!-- Charts Row -->
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                  <!-- Accounts Summary Chart -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                      <div class="text-center bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 rounded-lg mb-4">
-                          <h2 class="text-lg font-semibold">2025 Accounts Summary</h2>
-                          <p class="text-xs opacity-90">Click month income or expense column to view day-wise account summary</p>
-                      </div>
-                      <div class="chart-container h-64">
-                          <canvas id="accountsChart"></canvas>
-                      </div>
-                  </div>
-      
-                  <!-- Attendance Chart -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                      <h4 class="text-lg font-semibold mb-1">Students Today's Attendance</h4>
-                      <p class="text-sm text-gray-500 mb-4">Click the columns to view this month's student attendance.</p>
-                      <div class="chart-container h-64">
-                          <canvas id="attendanceChart"></canvas>
-                      </div>
-                  </div>
-              </div>
-      
-              <!-- Profile and Notice Row -->
-              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                  <!-- User Profile Card -->
-                  <div class="space-y-6">
-                      <div class="bg-gradient-to-br from-pink-600 to-pink-700 text-white rounded-xl shadow-md p-6 text-center">
-                          <img src="profile.png" alt="Admin" class="rounded-full mx-auto border-4 border-white w-20 h-20 object-cover">
-                          <h3 class="mt-3 text-lg font-semibold">Mr. Admin</h3>
-                          <p class="text-pink-100 text-sm">Administrator</p>
-                      </div>
-                      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                          <ul class="space-y-3">
-                              <li class="flex items-center justify-between">
-                                  <div class="flex items-center">
-                                      <i class="fas fa-user text-pink-600 mr-3"></i>
-                                      <span class="text-gray-600">Username</span>
-                                  </div>
-                                  <span class="font-medium">admin</span>
-                              </li>
-                              <li class="flex items-center justify-between">
-                                  <div class="flex items-center">
-                                      <i class="fas fa-envelope text-pink-600 mr-3"></i>
-                                      <span class="text-gray-600">Email</span>
-                                  </div>
-                                  <span class="font-medium">info@sukuu.com</span>
-                              </li>
-                              <li class="flex items-center justify-between">
-                                  <div class="flex items-center">
-                                      <i class="fas fa-phone text-pink-600 mr-3"></i>
-                                      <span class="text-gray-600">Phone</span>
-                                  </div>
-                                  <span class="font-medium">---</span>
-                              </li>
-                              <li class="flex items-center justify-between">
-                                  <div class="flex items-center">
-                                      <i class="fas fa-map-marker-alt text-pink-600 mr-3"></i>
-                                      <span class="text-gray-600">Address</span>
-                                  </div>
-                                  <span class="font-medium">---</span>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-      
-                  <!-- Notice Board -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
-                      <div class="p-6">
-                          <div class="flex justify-between items-center mb-4">
-                              <h4 class="text-lg font-semibold">Notice Board</h4>
-                              <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
-                                  <i class="fas fa-plus mr-1"></i> Add New
-                              </button>
-                          </div>
-                          <div class="space-y-3">
-                              <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
-                                  <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full h-5 flex items-center mr-3">1</span>
-                                  <div class="flex-1 min-w-0">
-                                      <p class="text-sm font-medium text-gray-900 truncate">Farewell Ceremony</p>
-                                      <p class="text-sm text-gray-500 truncate">The most of the words ado..</p>
-                                  </div>
-                                  <button class="text-gray-400 hover:text-gray-600 ml-2">
-                                      <i class="fas fa-edit"></i>
-                                  </button>
-                              </div>
-                              <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
-                                  <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full h-5 flex items-center mr-3">2</span>
-                                  <div class="flex-1 min-w-0">
-                                      <p class="text-sm font-medium text-gray-900 truncate">Second Semester Exams</p>
-                                      <p class="text-sm text-gray-500 truncate">Dedicated athlete, an ama..</p>
-                                  </div>
-                                  <button class="text-gray-400 hover:text-gray-600 ml-2">
-                                      <i class="fas fa-edit"></i>
-                                  </button>
-                              </div>
-                              <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
-                                  <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full h-5 flex items-center mr-3">3</span>
-                                  <div class="flex-1 min-w-0">
-                                      <p class="text-sm font-medium text-gray-900 truncate">First Semester Results</p>
-                                      <p class="text-sm text-gray-500 truncate">If you are a dedicated at..</p>
-                                  </div>
-                                  <button class="text-gray-400 hover:text-gray-600 ml-2">
-                                      <i class="fas fa-edit"></i>
-                                  </button>
-                              </div>
-                              <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition">
-                                  <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full h-5 flex items-center mr-3">4</span>
-                                  <div class="flex-1 min-w-0">
-                                      <p class="text-sm font-medium text-gray-900 truncate">Annual Sports Day</p>
-                                      <p class="text-sm text-gray-500 truncate">You surely are familiar w..</p>
-                                  </div>
-                                  <button class="text-gray-400 hover:text-gray-600 ml-2">
-                                      <i class="fas fa-edit"></i>
-                                  </button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-      
-              <!-- Calendar and Stats Row -->
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <!-- Calendar -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                      <div id="calendar" class="fc"></div>
-                  </div>
-      
-                  <!-- Site Stats -->
-                  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                      <div class="flex justify-between items-center mb-4">
-                          <h4 class="text-lg font-semibold">Site Statistics</h4>
-                          <div class="flex space-x-2">
-                              <button class="text-gray-400 hover:text-gray-600">
-                                  <i class="fas fa-ellipsis-v"></i>
-                              </button>
-                          </div>
-                      </div>
-                      <div class="chart-container h-64">
-                          <canvas id="siteStatsChart"></canvas>
-                      </div>
-                      <div class="mt-4 grid grid-cols-3 gap-4 text-center">
-                          <div>
-                              <p class="text-sm text-gray-500">Visitors</p>
-                              <p class="font-semibold">1,234</p>
-                          </div>
-                          <div>
-                              <p class="text-sm text-gray-500">Active Users</p>
-                              <p class="font-semibold">567</p>
-                          </div>
-                          <div>
-                              <p class="text-sm text-gray-500">New Signups</p>
-                              <p class="font-semibold">23</p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      
-      <!-- Chart.js -->
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      
-      <!-- Initialize Charts -->
-      <script>
-          // Accounts Chart
-          const accountsCtx = document.getElementById('accountsChart').getContext('2d');
-          new Chart(accountsCtx, {
-              type: 'line',
-              data: {
-                  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                  datasets: [
-                      {
-                          label: 'Income',
-                          data: [100000, 50000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                          borderColor: '#3b82f6',
-                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                          fill: true,
-                          tension: 0.3,
-                          pointBackgroundColor: '#1d4ed8',
-                          pointRadius: 4,
-                          pointHoverRadius: 6
-                      },
-                      {
-                          label: 'Expense',
-                          data: [90000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                          borderColor: '#8b5cf6',
-                          backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                          fill: true,
-                          tension: 0.3,
-                          pointBackgroundColor: '#6d28d9',
-                          pointRadius: 4,
-                          pointHoverRadius: 6
-                      }
-                  ]
-              },
-              options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                      legend: {
-                          position: 'top',
-                          labels: {
-                              usePointStyle: true,
-                              padding: 20
-                          }
-                      },
-                      tooltip: {
-                          callbacks: {
-                              label: function (tooltipItem) {
-                                  return tooltipItem.dataset.label + ": " + tooltipItem.raw.toLocaleString();
-                              }
-                          }
-                      }
-                  },
-                  scales: {
-                      y: {
-                          beginAtZero: true,
-                          ticks: {
-                              callback: function (value) {
-                                  return value.toLocaleString();
-                              }
-                          },
-                          grid: {
-                              drawBorder: false
-                          }
-                      },
-                      x: {
-                          grid: {
-                              display: false
-                          }
-                      }
-                  }
-              }
-          });
-      
-          // Attendance Chart
-          const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
-          new Chart(attendanceCtx, {
-              type: 'bar',
-              data: {
-                  labels: ['One', 'Two', 'Three', 'Four', 'Five', 'Graduate'],
-                  datasets: [
-                      { 
-                          label: 'Present', 
-                          data: [5, 10, 7, 8, 9, 6], 
-                          backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                          borderRadius: 4
-                      },
-                      { 
-                          label: 'Absent', 
-                          data: [2, 4, 3, 5, 1, 2], 
-                          backgroundColor: 'rgba(239, 68, 68, 0.7)',
-                          borderRadius: 4
-                      }
-                  ]
-              },
-              options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                      legend: {
-                          position: 'top',
-                          labels: {
-                              usePointStyle: true,
-                              padding: 20
-                          }
-                      }
-                  },
-                  scales: {
-                      y: {
-                          beginAtZero: true,
-                          grid: {
-                              drawBorder: false
-                          }
-                      },
-                      x: {
-                          grid: {
-                              display: false
-                          }
-                      }
-                  }
-              }
-          });
-      
-          // Site Stats Chart
-          const siteStatsCtx = document.getElementById('siteStatsChart').getContext('2d');
-          new Chart(siteStatsCtx, {
-              type: 'line',
-              data: {
-                  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                  datasets: [{
-                      label: 'Visitors',
-                      data: [120, 190, 170, 220, 300, 280, 350, 400, 370, 420, 390, 450],
-                      borderColor: '#ec4899',
-                      backgroundColor: 'rgba(236, 72, 153, 0.1)',
-                      fill: true,
-                      tension: 0.3,
-                      pointBackgroundColor: '#be185d',
-                      pointRadius: 4,
-                      pointHoverRadius: 6
-                  }]
-              },
-              options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                      legend: {
-                          display: false
-                      }
-                  },
-                  scales: {
-                      y: {
-                          beginAtZero: true,
-                          grid: {
-                              drawBorder: false
-                          }
-                      },
-                      x: {
-                          grid: {
-                              display: false
-                          }
-                      }
-                  }
-              }
-          });
-      </script>
-      
-    <!-- Calendar Section -->
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 lg:p-6">
-  <div id="calendar" class="fc"></div>
-</div>
-
-<!-- FullCalendar CSS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css" rel="stylesheet">
-
-<!-- FullCalendar JS -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.5/main.min.js"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const calendarEl = document.getElementById('calendar');
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          headerToolbar: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay listMonth'
-          },
-          views: {
-              timeGridWeek: {
-                  titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
-                  dayHeaderFormat: { weekday: 'short', day: 'numeric' }
-              }
-          },
-          events: [
-              { 
-                  title: '📚 Final Exams', 
-                  start: '2025-02-21', 
-                  end: '2025-02-25',
-                  color: '#ef4444',
-                  extendedProps: {
-                      description: 'End of semester examinations for all classes'
-                  }
-              },
-              { 
-                  title: '🎉 Annual Day', 
-                  start: '2025-02-24T10:00:00', 
-                  end: '2025-02-24T18:00:00',
-                  color: '#10b981',
-                  extendedProps: {
-                      description: 'School cultural festival and prize distribution'
-                  }
-              },
-              { 
-                  title: '💻 Coding Workshop', 
-                  start: '2025-02-27T14:00:00', 
-                  end: '2025-02-27T17:00:00',
-                  color: '#3b82f6',
-                  extendedProps: {
-                      description: 'Introduction to Python programming for grades 8-10'
-                  }
-              }
-          ],
-          eventClick: function(info) {
-              const event = info.event;
-              const modal = `
-                  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                      <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
-                          <div class="p-6">
-                              <div class="flex justify-between items-start">
-                                  <div>
-                                      <h3 class="text-xl font-semibold">${event.title}</h3>
-                                      <p class="text-sm text-gray-500 mt-1">
-                                          ${event.start ? event.start.toLocaleString() : ''}
-                                          ${event.end ? ' - ' + event.end.toLocaleString() : ''}
-                                      </p>
-                                  </div>
-                                  <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
-                                      <i class="fas fa-times"></i>
-                                  </button>
-                              </div>
-                              ${event.extendedProps.description ? `
-                              <div class="mt-4">
-                                  <p class="text-gray-700">${event.extendedProps.description}</p>
-                              </div>
-                              ` : ''}
-                              <div class="mt-6 flex justify-between">
-                                  <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                                      Close
-                                  </button>
-                                  <button onclick="if(confirm('Delete this event?')) { ${'info.event.remove(); this.closest(".fixed").remove();'} }" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                                      Delete Event
-                                  </button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              `;
-              document.body.insertAdjacentHTML('beforeend', modal);
-          },
-          dateClick: function(info) {
-              const modal = `
-                  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                      <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
-                          <div class="p-6">
-                              <div class="flex justify-between items-center mb-4">
-                                  <h3 class="text-xl font-semibold">Add New Event</h3>
-                                  <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
-                                      <i class="fas fa-times"></i>
-                                  </button>
-                              </div>
-                              <div class="space-y-4">
-                                  <div>
-                                      <label class="block text-sm font-medium text-gray-700 mb-1">Event Title</label>
-                                      <input type="text" id="eventTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                  </div>
-                                  <div>
-                                      <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                                      <input type="date" id="eventDate" value="${info.dateStr}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                  </div>
-                                  <div class="grid grid-cols-2 gap-4">
-                                      <div>
-                                          <label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
-                                          <input type="time" id="eventStartTime" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                      </div>
-                                      <div>
-                                          <label class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
-                                          <input type="time" id="eventEndTime" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                      </div>
-                                  </div>
-                                  <div>
-                                      <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                      <textarea id="eventDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
-                                  </div>
-                                  <div>
-                                      <label class="block text-sm font-medium text-gray-700 mb-1">Event Color</label>
-                                      <div class="flex space-x-2">
-                                          <button class="w-6 h-6 rounded-full bg-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-300" onclick="document.getElementById('eventColor').value='#ef4444'; return false;"></button>
-                                          <button class="w-6 h-6 rounded-full bg-green-500 focus:ring-2 focus:ring-offset-2 focus:ring-green-300" onclick="document.getElementById('eventColor').value='#10b981'; return false;"></button>
-                                          <button class="w-6 h-6 rounded-full bg-blue-500 focus:ring-2 focus:ring-offset-2 focus:ring-blue-300" onclick="document.getElementById('eventColor').value='#3b82f6'; return false;"></button>
-                                          <button class="w-6 h-6 rounded-full bg-yellow-500 focus:ring-2 focus:ring-offset-2 focus:ring-yellow-300" onclick="document.getElementById('eventColor').value='#f59e0b'; return false;"></button>
-                                          <button class="w-6 h-6 rounded-full bg-purple-500 focus:ring-2 focus:ring-offset-2 focus:ring-purple-300" onclick="document.getElementById('eventColor').value='#8b5cf6'; return false;"></button>
-                                      </div>
-                                      <input type="hidden" id="eventColor" value="#3b82f6">
-                                  </div>
-                              </div>
-                              <div class="mt-6 flex justify-end space-x-3">
-                                  <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                                      Cancel
-                                  </button>
-                                  <button onclick="addNewEvent('${info.dateStr}')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                                      Add Event
-                                  </button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              `;
-              document.body.insertAdjacentHTML('beforeend', modal);
-          },
-          editable: true,
-          selectable: true,
-          selectMirror: true,
-          dayMaxEvents: true,
-          height: 'auto',
-          eventDisplay: 'block',
-          eventTimeFormat: {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-          },
-          eventContent: function(arg) {
-              return {
-                  html: `<div class="fc-event-main-frame">
-                      <div class="fc-event-title-container">
-                          <div class="fc-event-title fc-sticky">${arg.event.title}</div>
-                      </div>
-                  </div>`
-              };
-          }
-      });
-
-      calendar.render();
-
-      // Handle window resize for better responsiveness
-      window.addEventListener('resize', function() {
-          calendar.updateSize();
-      });
-
-      // Function to add new event
-      window.addNewEvent = function(defaultDate) {
-          const title = document.getElementById('eventTitle').value;
-          const date = document.getElementById('eventDate').value;
-          const startTime = document.getElementById('eventStartTime').value;
-          const endTime = document.getElementById('eventEndTime').value;
-          const description = document.getElementById('eventDescription').value;
-          const color = document.getElementById('eventColor').value;
-
-          if (!title) {
-              alert('Please enter an event title');
-              return;
-          }
-
-          let start = date;
-          let end = date;
-          
-          if (startTime) start += 'T' + startTime;
-          if (endTime) end += 'T' + endTime;
-
-          calendar.addEvent({
-              title: title,
-              start: start,
-              end: endTime ? end : undefined,
-              color: color,
-              extendedProps: {
-                  description: description
-              }
-          });
-
-          document.querySelector('.fixed').remove();
-      };
-  });
-</script>
-
-<style>
-  /* Custom FullCalendar styling */
-  .fc {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  }
-
-  .fc .fc-toolbar {
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1rem;
-  }
-
-  @media (min-width: 768px) {
-      .fc .fc-toolbar {
-          flex-direction: row;
-      }
-  }
-
-  .fc .fc-toolbar-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #111827;
-      margin: 0 0.5rem;
-  }
-
-  .fc .fc-button {
-      background-color: #fff;
-      border: 1px solid #e5e7eb;
-      color: #374151;
-      font-size: 0.875rem;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      transition: all 0.2s;
-      box-shadow: none;
-      text-transform: capitalize;
-      height: auto;
-  }
-
-  .fc .fc-button:hover {
-      background-color: #f9fafb;
-      border-color: #d1d5db;
-  }
-
-  .fc .fc-button-primary:not(:disabled).fc-button-active,
-  .fc .fc-button-primary:not(:disabled):active {
-      background-color: #3b82f6;
-      border-color: #3b82f6;
-      color: white;
-  }
-
-  .fc .fc-button-primary:focus {
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-  }
-
-  .fc .fc-daygrid-day-number {
-      color: #374151;
-      padding: 4px;
-      font-weight: 500;
-  }
-
-  .fc .fc-daygrid-day.fc-day-today {
-      background-color: #eff6ff;
-  }
-
-  .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
-      color: #1d4ed8;
-      font-weight: 600;
-  }
-
-  .fc .fc-col-header-cell {
-      padding: 0.5rem 0;
-      background-color: #f9fafb;
-  }
-
-  .fc .fc-col-header-cell-cushion {
-      color: #4b5563;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 0.25rem;
-  }
-
-  .fc .fc-event {
-      border-radius: 0.375rem;
-      border: none;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.875rem;
-      cursor: pointer;
-  }
-
-  .fc .fc-event:hover {
-      opacity: 0.9;
-  }
-
-  .fc .fc-event .fc-event-main {
-      padding: 0.125rem;
-  }
-
-  .fc .fc-event .fc-event-title {
-      font-weight: 500;
-      white-space: normal;
-  }
-
-  .fc .fc-daygrid-event {
-      margin-bottom: 0.25rem;
-  }
-
-  .fc .fc-timegrid-event {
-      border-radius: 0.375rem;
-  }
-
-  .fc .fc-popover {
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      border: none;
-  }
-
-  .fc .fc-popover-header {
-      background-color: #f9fafb;
-      border-top-left-radius: 0.5rem;
-      border-top-right-radius: 0.5rem;
-      padding: 0.75rem;
-  }
-
-  .fc .fc-popover-close {
-      opacity: 0.7;
-  }
-
-  .fc .fc-popover-close:hover {
-      opacity: 1;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-      .fc .fc-toolbar {
-          flex-wrap: wrap;
-      }
-      
-      .fc .fc-toolbar-chunk {
-          margin-bottom: 0.5rem;
-      }
-      
-      .fc .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
-          order: -1;
-          width: 100%;
-          text-align: center;
-          margin-bottom: 1rem;
-      }
-      
-      .fc .fc-view-harness {
-          min-height: 400px;
-      }
-  }
-
-  @media (max-width: 576px) {
-      .fc .fc-toolbar-title {
-          font-size: 1rem;
-      }
-      
-      .fc .fc-button {
-          padding: 0.375rem 0.75rem;
-          font-size: 0.75rem;
-      }
-      
-      .fc .fc-col-header-cell-cushion {
-          font-size: 0.75rem;
-      }
-      
-      .fc .fc-daygrid-day-number {
-          font-size: 0.75rem;
-      }
-  }
-</style>
-      
-      <!-- Menu Toggle Script -->
-      <script>
-          document.getElementById("menuToggle")?.addEventListener("click", function(event) {
-              event.preventDefault();
-              let submenu = document.getElementById("submenu");
-              let arrow = document.getElementById("arrow");
-      
-              if (submenu && arrow) {
-                  submenu.classList.toggle("hidden");
-                  arrow.classList.toggle("rotate-90");
-              }
-          });
-      </script>
-      
-      <style>
-          .rotate-90 {
-              transform: rotate(90deg);
-              transition: transform 0.2s ease;
-          }
-          
-          /* Custom FullCalendar styling */
-          .fc {
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          }
-          
-          .fc .fc-toolbar-title {
-              font-size: 1.1rem;
-              font-weight: 600;
-          }
-          
-          .fc .fc-button {
-              background-color: #fff;
-              border-color: #e5e7eb;
-              color: #374151;
-              font-size: 0.875rem;
-              padding: 0.4rem 0.8rem;
-          }
-          
-          .fc .fc-button:hover {
-              background-color: #f9fafb;
-          }
-          
-          .fc .fc-button-primary:not(:disabled).fc-button-active {
-              background-color: #3b82f6;
-              border-color: #3b82f6;
-          }
-          
-          .fc .fc-daygrid-day-number {
-              color: #374151;
-              padding: 4px;
-          }
-          
-          .fc .fc-daygrid-day.fc-day-today {
-              background-color: #eff6ff;
-          }
-          
-          /* Chart container responsive height */
-          .chart-container {
-              position: relative;
-              width: 100%;
-          }
-      </style>
-</body>
-
+            <!-- Modern Navbar -->
+            <nav class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 flex items-center">
+                                <i class="fas fa-book text-indigo-600 text-xl mr-3"></i>
+                                <h2 class="text-lg font-semibold text-gray-900">Subject Management</h2>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Notifications</span>
+                                <i class="far fa-bell text-xl"></i>
+                            </button>
+                            <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Settings</span>
+                                <i class="fas fa-cog text-xl"></i>
+                            </button>
+                            <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span class="sr-only">Language</span>
+                                <i class="fas fa-globe text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        
+            <!-- Main Content -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Subject Management Form -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 sm:p-8">
+                        <div class="text-center mb-8">
+                            <h1 class="text-2xl font-bold text-gray-800">Subject Information</h1>
+                            <p class="text-gray-500 mt-2">
+                                <span class="text-indigo-500 font-medium">*</span> indicates required fields
+                            </p>
+                        </div>
+        
+                        <form id="subjectForm" class="space-y-6">
+                            <input type="hidden" id="subjectId">
+        
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="subjectName" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Subject Name <span class="text-indigo-500">*</span>
+                                    </label>
+                                    <input type="text" id="subjectName" placeholder="e.g., Mathematics" 
+                                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                           required>
+                                </div>
+        
+                                <div>
+                                    <label for="subjectCode" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Subject Code <span class="text-indigo-500">*</span>
+                                    </label>
+                                    <input type="text" id="subjectCode" placeholder="e.g., MATH101" 
+                                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                           required>
+                                </div>
+        
+                                <div>
+                                    <label for="teacher" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Subject Teacher <span class="text-indigo-500">*</span>
+                                    </label>
+                                    <select id="teacher" 
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                            required>
+                                        <option value="">Select Subject Teacher</option>
+                                        <!-- Teachers will be loaded dynamically -->
+                                    </select>
+                                </div>
+        
+                                <div>
+                                    <label for="creditHours" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Credit Hours <span class="text-indigo-500">*</span>
+                                    </label>
+                                    <input type="number" id="creditHours" min="1" max="10"
+                                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                           required>
+                                </div>
+                            </div>
+        
+                            <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
+                                <button type="reset" 
+                                        class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                                    Reset
+                                </button>
+                                <button type="submit" id="saveSubjectButton"
+                                        class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                                    Save Subject
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        
+                <!-- Subject List Section -->
+                <div class="mt-12">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Subject List</h2>
+                        <button onclick="refreshSubjectList()" 
+                                class="flex items-center text-indigo-600 hover:text-indigo-800">
+                            <i class="fas fa-sync-alt mr-2"></i> Refresh
+                        </button>
+                    </div>
+        
+                    <div id="subjectContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Subjects will be loaded dynamically -->
+                        <div class="text-center py-8">
+                            <i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>
+                            <p class="mt-2 text-gray-500">Loading subjects...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // Function to load teachers from the employee collection (with localStorage caching)
+            async function loadTeachers() {
+                const teacherDropdown = document.getElementById("teacher");
+                teacherDropdown.innerHTML = '<option value="">Select Subject Teacher</option>';
+                teacherDropdown.disabled = true;
+                
+                const cachedTeachers = localStorage.getItem("teachers");
+                const cacheTimestamp = localStorage.getItem("teachers_timestamp");
+                const now = new Date().getTime();
+                const cacheExpiry = 30 * 60 * 1000; // 30 minutes cache
+        
+                if (cachedTeachers && cacheTimestamp && (now - cacheTimestamp < cacheExpiry)) {
+                    console.log("✅ Loading teachers from localStorage cache");
+                    populateTeacherDropdown(JSON.parse(cachedTeachers));
+                    return;
+                }
+        
+                try {
+                    console.log("🔄 Fetching teachers from API...");
+                    const response = await fetch("http://localhost:5000/api/employees/teachers");
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+                    const teachers = await response.json();
+                    localStorage.setItem("teachers", JSON.stringify(teachers));
+                    localStorage.setItem("teachers_timestamp", now.toString());
+                    populateTeacherDropdown(teachers);
+                    console.log("✅ Teachers loaded successfully and cached");
+                } catch (error) {
+                    console.error("❌ Error loading teachers:", error);
+                    teacherDropdown.innerHTML = '<option value="">Error loading teachers</option>';
+                } finally {
+                    teacherDropdown.disabled = false;
+                }
+            }
+        
+            // Populate teacher dropdown with enhanced UI
+            function populateTeacherDropdown(teachers) {
+                const teacherDropdown = document.getElementById("teacher");
+                teacherDropdown.innerHTML = '<option value="">Select Subject Teacher</option>';
+        
+                if (!teachers || teachers.length === 0) {
+                    teacherDropdown.innerHTML += '<option value="" disabled>No teachers available</option>';
+                    return;
+                }
+        
+                teachers.forEach(teacher => {
+                    const option = document.createElement("option");
+                    option.value = teacher._id;
+                    option.textContent = `${teacher.name} (${teacher.email || 'No email'})`;
+                    teacherDropdown.appendChild(option);
+                });
+            }
+        
+            // Function to load subject list with modern cards
+            async function loadSubjects() {
+                const subjectContainer = document.getElementById("subjectContainer");
+                subjectContainer.innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>
+                        <p class="mt-2 text-gray-500">Loading subjects...</p>
+                    </div>
+                `;
+        
+                try {
+                    const response = await fetch("http://localhost:5000/api/subjects");
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+                    const subjects = await response.json();
+                    
+                    if (subjects.length === 0) {
+                        subjectContainer.innerHTML = `
+                            <div class="col-span-full text-center py-12">
+                                <i class="fas fa-book-open text-4xl text-gray-300 mb-4"></i>
+                                <h3 class="text-lg font-medium text-gray-500">No subjects found</h3>
+                                <p class="text-gray-400 mt-1">Create your first subject using the form above</p>
+                            </div>
+                        `;
+                        return;
+                    }
+        
+                    subjectContainer.innerHTML = '';
+                    subjects.forEach(subject => {
+                        const subjectCard = document.createElement("div");
+                        subjectCard.className = "bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition";
+                        
+                        subjectCard.innerHTML = `
+                            <div class="p-6">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-800">${subject.subjectName}</h3>
+                                        <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                            ${subject.subjectCode || "N/A"}
+                                        </span>
+                                    </div>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                        ${subject.creditHours || "0"} credits
+                                    </span>
+                                </div>
+                                
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-user-tie text-gray-400"></i>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm text-gray-500">Subject Teacher</p>
+                                            <p class="text-sm font-medium text-gray-900">${subject.subjectTeacherName || "Not assigned"}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex space-x-3">
+                                    <button onclick="editSubject('${subject._id}')" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                                        <i class="fas fa-edit mr-1"></i> Edit
+                                    </button>
+                                    <button onclick="confirmDeleteSubject('${subject._id}', '${subject.subjectName}')" class="text-red-600 hover:text-red-900 text-sm font-medium">
+                                        <i class="fas fa-trash-alt mr-1"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        subjectContainer.appendChild(subjectCard);
+                    });
+                    
+                    console.log("✅ Subjects loaded successfully");
+                } catch (error) {
+                    console.error("❌ Error loading subjects:", error);
+                    subjectContainer.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-700">Error loading subjects</h3>
+                            <p class="text-gray-500 mt-1">Please try again later</p>
+                            <button onclick="loadSubjects()" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-sync-alt mr-2"></i> Retry
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        
+            // Handle form submission with modern UX
+            document.getElementById("subjectForm").addEventListener("submit", async function (event) {
+                event.preventDefault();
+                
+                const saveButton = document.getElementById("saveSubjectButton");
+                const originalButtonText = saveButton.innerHTML;
+                saveButton.disabled = true;
+                saveButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+                
+                const subjectData = {
+                    subjectName: document.getElementById("subjectName").value.trim(),
+                    subjectCode: document.getElementById("subjectCode").value.trim().toUpperCase(),
+                    subjectTeacher: document.getElementById("teacher").value.trim(),
+                    creditHours: parseInt(document.getElementById("creditHours").value, 10) || 0
+                };
+        
+                try {
+                    const subjectId = document.getElementById("subjectId").value;
+                    const url = subjectId ? `http://localhost:5000/api/subjects/${subjectId}` : "http://localhost:5000/api/subjects/add";
+                    const method = subjectId ? "PUT" : "POST";
+                    
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(subjectData)
+                    });
+        
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || "Failed to save subject");
+                    }
+        
+                    const result = await response.json();
+                    
+                    // Show success feedback
+                    showToast("success", `Subject ${subjectId ? "updated" : "created"} successfully!`);
+                    
+                    // Reset form and refresh list
+                    document.getElementById("subjectForm").reset();
+                    document.getElementById("subjectId").value = "";
+                    loadSubjects();
+                } catch (error) {
+                    console.error("❌ Error:", error);
+                    showToast("error", error.message || "Error saving subject");
+                } finally {
+                    saveButton.disabled = false;
+                    saveButton.innerHTML = originalButtonText;
+                }
+            });
+        
+            // Edit subject function
+            async function editSubject(subjectId) {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/subjects/${subjectId}`);
+                    if (!response.ok) throw new Error("Failed to fetch subject details");
+                    
+                    const subjectData = await response.json();
+                    
+                    // Fill the form
+                    document.getElementById("subjectId").value = subjectData._id;
+                    document.getElementById("subjectName").value = subjectData.subjectName;
+                    document.getElementById("subjectCode").value = subjectData.subjectCode;
+                    document.getElementById("teacher").value = subjectData.subjectTeacher;
+                    document.getElementById("creditHours").value = subjectData.creditHours;
+                    
+                    // Scroll to form
+                    document.getElementById("subjectForm").scrollIntoView({ behavior: "smooth" });
+                    
+                    // Change button text
+                    document.getElementById("saveSubjectButton").innerHTML = "Update Subject";
+                    
+                    showToast("info", "Editing subject: " + subjectData.subjectName);
+                } catch (error) {
+                    console.error("Error editing subject:", error);
+                    showToast("error", "Failed to load subject details");
+                }
+            }
+        
+            // Confirm and delete subject
+            async function confirmDeleteSubject(subjectId, subjectName) {
+                if (!confirm(`Are you sure you want to delete "${subjectName}"?\nThis action cannot be undone.`)) {
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`http://localhost:5000/api/subjects/${subjectId}`, {
+                        method: "DELETE"
+                    });
+                    
+                    if (!response.ok) throw new Error("Failed to delete subject");
+                    
+                    showToast("success", `Subject "${subjectName}" deleted successfully`);
+                    loadSubjects();
+                } catch (error) {
+                    console.error("Error deleting subject:", error);
+                    showToast("error", "Failed to delete subject");
+                }
+            }
+        
+            // Refresh subject list
+            function refreshSubjectList() {
+                // Clear cache to force fresh data
+                localStorage.removeItem("teachers");
+                localStorage.removeItem("teachers_timestamp");
+                
+                loadTeachers();
+                loadSubjects();
+                showToast("info", "Refreshing data...");
+            }
+        
+            // Toast notification function
+            function showToast(type, message) {
+                const toast = document.createElement("div");
+                toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-md text-white font-medium flex items-center ${
+                    type === "success" ? "bg-green-500" : 
+                    type === "error" ? "bg-red-500" : 
+                    "bg-indigo-500"
+                }`;
+                
+                toast.innerHTML = `
+                    <i class="fas ${
+                        type === "success" ? "fa-check-circle" : 
+                        type === "error" ? "fa-exclamation-circle" : 
+                        "fa-info-circle"
+                    } mr-3"></i>
+                    ${message}
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add("opacity-0", "transition-opacity", "duration-300");
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+        
+            // Load data on page load
+            document.addEventListener("DOMContentLoaded", () => {
+                loadTeachers();
+                loadSubjects();
+            });
+        </script>
+        
+        <style>
+            /* Smooth transitions */
+            .transition {
+                transition: all 0.2s ease-in-out;
+            }
+            
+            /* Focus styles */
+            .focus\:ring-indigo-500:focus {
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+            }
+            
+            /* Card hover effect */
+            .hover\:shadow-lg:hover {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            
+            /* Responsive adjustments */
+            @media (max-width: 640px) {
+                .grid-cols-2 {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </body>
 </html>

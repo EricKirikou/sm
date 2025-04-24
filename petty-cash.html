@@ -783,105 +783,458 @@
 
         <!-- Main Content -->
         <div class="flex-grow">
-            <!-- Navbar -->
+            <!-- Modern Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><i class="bi bi-wallet2 text-gray-600 mr-2"></i> Petty Cash </span>
-                    <div>
-                        <span class="me-3">🔔</span>
-                        <span class="me-3">⚙️</span>
-                        <span>🌍</span>
+                    <span class="navbar-brand d-flex align-items-center">
+                        <i class="bi bi-cash-coin text-primary me-2 fs-5"></i>
+                        <span class="fw-semibold">Petty Cash Manager</span>
+                    </span>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-link text-dark me-2 position-relative p-1" id="notificationBtn">
+                            <i class="bi bi-bell-fill fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                2
+                            </span>
+                        </button>
+                        <button class="btn btn-link text-dark me-2 p-1" id="settingsBtn">
+                            <i class="bi bi-gear-fill fs-5"></i>
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-dark dropdown-toggle p-1" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                                <i class="bi bi-globe fs-5"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">French</a></li>
+                                <li><a class="dropdown-item" href="#">Spanish</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
-            <div class="max-w-4xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
-                <h2 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center">
-                </h2>
-                <div class="flex space-x-4 mb-6">
-                    <button onclick="toggleForm('reimbursementForm')" class="bg-green-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-700">
-                        <i class="bi bi-plus-lg"></i> Add Reimbursement
-                    </button>
-                    <button onclick="toggleForm('expenditureForm')" class="bg-orange-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-orange-700">
-                        <i class="bi bi-plus-lg"></i> Add Petty Cash
-                    </button>
-                </div>
-                
-                <div id="reimbursementForm" class="hidden bg-gray-50 p-4 rounded-lg shadow-md mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Add Reimbursement</h3>
-                    <input type="date" placeholder="Payment Period" class="w-full p-2 border rounded-md mb-3">
-                    <input type="number" placeholder="Amount (GH₵)" class="w-full p-2 border rounded-md mb-3">
-                    <textarea placeholder="Narrative" class="w-full p-2 border rounded-md"></textarea>
-                    <div class="flex space-x-4 mt-4">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md">Save</button>
-                        <button onclick="toggleForm('reimbursementForm')" class="bg-gray-600 text-white px-4 py-2 rounded-md">Cancel</button>
+        
+            <!-- Main Content -->
+            <div class="container py-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <i class="bi bi-wallet2 me-2"></i>
+                            Petty Cash Management
+                        </h5>
                     </div>
-                </div>
-            
-                <div id="expenditureForm" class="hidden bg-gray-50 p-4 rounded-lg shadow-md mb-6">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Add Petty Cash</h3>
-                    <input type="date" placeholder="Payment Period" class="w-full p-2 border rounded-md mb-3">
-                    <input type="text" placeholder="Description" class="w-full p-2 border rounded-md mb-3">
-                    <input type="number" placeholder="Amount (GH₵)" class="w-full p-2 border rounded-md mb-3">
-                    <textarea placeholder="Narrative" class="w-full p-2 border rounded-md"></textarea>
-                    <div class="flex space-x-4 mt-4">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-md">Save</button>
-                        <button onclick="toggleForm('expenditureForm')" class="bg-gray-600 text-white px-4 py-2 rounded-md">Cancel</button>
+                    <div class="card-body">
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-wrap gap-3 mb-4">
+                            <button onclick="toggleForm('reimbursementForm')" class="btn btn-success d-flex align-items-center">
+                                <i class="bi bi-plus-lg me-2"></i> Add Reimbursement
+                            </button>
+                            <button onclick="toggleForm('expenditureForm')" class="btn btn-warning text-white d-flex align-items-center">
+                                <i class="bi bi-plus-lg me-2"></i> Add Petty Cash
+                            </button>
+                            <button class="btn btn-outline-secondary ms-auto d-flex align-items-center">
+                                <i class="bi bi-printer me-2"></i> Print Report
+                            </button>
+                        </div>
+        
+                        <!-- Reimbursement Form -->
+                        <div id="reimbursementForm" class="card mb-4 d-none">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary mb-4">
+                                    <i class="bi bi-arrow-repeat me-2"></i> New Reimbursement
+                                </h5>
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Date</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Amount (GH₵)</label>
+                                            <input type="number" class="form-control" placeholder="0.00">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Narrative</label>
+                                            <textarea class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Attachment (Optional)</label>
+                                            <input type="file" class="form-control">
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                                            <button type="button" class="btn btn-primary px-4">
+                                                <i class="bi bi-check-circle me-2"></i> Submit
+                                            </button>
+                                            <button type="button" onclick="toggleForm('reimbursementForm')" class="btn btn-outline-secondary px-4">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+        
+                        <!-- Petty Cash Form -->
+                        <div id="expenditureForm" class="card mb-4 d-none">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning mb-4">
+                                    <i class="bi bi-cash-coin me-2"></i> New Petty Cash
+                                </h5>
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Payment Date</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Description</label>
+                                            <input type="text" class="form-control" placeholder="Brief description">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Amount (GH₵)</label>
+                                            <input type="number" class="form-control" placeholder="0.00">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Category</label>
+                                            <select class="form-select">
+                                                <option>Office Supplies</option>
+                                                <option>Transportation</option>
+                                                <option>Utilities</option>
+                                                <option>Entertainment</option>
+                                                <option>Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Narrative</label>
+                                            <textarea class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                                            <button type="button" class="btn btn-primary px-4">
+                                                <i class="bi bi-check-circle me-2"></i> Submit
+                                            </button>
+                                            <button type="button" onclick="toggleForm('expenditureForm')" class="btn btn-outline-secondary px-4">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+        
+                        <!-- Summary Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm bg-success bg-opacity-10">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-muted mb-2">Current Balance</h6>
+                                                <h3 class="mb-0">GH₵ 5,420.00</h3>
+                                            </div>
+                                            <div class="avatar bg-success text-white">
+                                                <i class="bi bi-wallet2 fs-4"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm bg-primary bg-opacity-10">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-muted mb-2">This Month</h6>
+                                                <h3 class="mb-0">GH₵ 1,230.00</h3>
+                                            </div>
+                                            <div class="avatar bg-primary text-white">
+                                                <i class="bi bi-calendar-month fs-4"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm bg-warning bg-opacity-10">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-muted mb-2">Pending</h6>
+                                                <h3 class="mb-0">GH₵ 450.00</h3>
+                                            </div>
+                                            <div class="avatar bg-warning text-white">
+                                                <i class="bi bi-hourglass-split fs-4"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Transactions Table -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0 d-flex align-items-center">
+                                    <i class="bi bi-list-check me-2"></i>
+                                    Recent Transactions
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Transaction ID</th>
+                                                <th>Description</th>
+                                                <th class="text-end">Amount (GH₵)</th>
+                                                <th>Status</th>
+                                                <th class="text-end">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>18/09/2024</td>
+                                                <td>RB00000053</td>
+                                                <td>Cancelled: 321</td>
+                                                <td class="text-end text-danger">-123.00</td>
+                                                <td><span class="badge bg-success">Posted</span></td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>18/09/2024</td>
+                                                <td>RB00000054</td>
+                                                <td>Contra to RB00000053</td>
+                                                <td class="text-end text-success">+123.00</td>
+                                                <td><span class="badge bg-success">Posted</span></td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>15/09/2024</td>
+                                                <td>PC00000892</td>
+                                                <td>Office supplies purchase</td>
+                                                <td class="text-end text-danger">-245.50</td>
+                                                <td><span class="badge bg-success">Posted</span></td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/09/2024</td>
+                                                <td>PC00000891</td>
+                                                <td>Client meeting refreshments</td>
+                                                <td class="text-end text-danger">-180.00</td>
+                                                <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <nav aria-label="Transaction pagination">
+                                    <ul class="pagination justify-content-end mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            
-                <div class="bg-gray-50 p-4 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Petty Cash Transactions</h3>
-                    <table class="min-w-full bg-white border rounded-lg">
-                        <thead>
-                            <tr>
-                                <th class="py-2 px-4 border">Date</th>
-                                <th class="py-2 px-4 border">Transaction ID</th>
-                                <th class="py-2 px-4 border">Value (GH₵)</th>
-                                <th class="py-2 px-4 border">Description</th>
-                                <th class="py-2 px-4 border">Posted</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="py-2 px-4 border">18/09/2024</td>
-                                <td class="py-2 px-4 border">RB00000053</td>
-                                <td class="py-2 px-4 border">-123.00</td>
-                                <td class="py-2 px-4 border">Cancelled: 321</td>
-                                <td class="py-2 px-4 border">Yes</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border">18/09/2024</td>
-                                <td class="py-2 px-4 border">RB00000054</td>
-                                <td class="py-2 px-4 border">123.00</td>
-                                <td class="py-2 px-4 border">Contra to RB00000053</td>
-                                <td class="py-2 px-4 border">Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
-            
+        
+            <!-- Required Scripts -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         
             <script>
+                // Toggle forms
                 function toggleForm(formId) {
-                    let form = document.getElementById(formId);
-                    form.classList.toggle("hidden");
+                    const form = document.getElementById(formId);
+                    form.classList.toggle('d-none');
+                    
+                    // Close other form if opening this one
+                    if (!form.classList.contains('d-none')) {
+                        const otherFormId = formId === 'reimbursementForm' ? 'expenditureForm' : 'reimbursementForm';
+                        document.getElementById(otherFormId).classList.add('d-none');
+                    }
                 }
-            </script>
-            <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
+        
+                // Notification button
+                document.getElementById('notificationBtn').addEventListener('click', function() {
+                    Swal.fire({
+                        title: 'Notifications',
+                        html: `
+                            <div class="text-start">
+                                <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-light rounded">
+                                    <div>
+                                        <div class="fw-semibold">New reimbursement approved</div>
+                                        <small class="text-muted">GH₵ 450.00</small>
+                                    </div>
+                                    <small class="text-muted">2 mins ago</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded">
+                                    <div>
+                                        <div class="fw-semibold">Petty cash low balance</div>
+                                        <small class="text-muted">Current: GH₵ 1,230.00</small>
+                                    </div>
+                                    <small class="text-muted">1 hour ago</small>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Mark as read',
+                        confirmButtonColor: '#0d6efd'
+                    }).then(() => {
+                        this.querySelector('.badge').textContent = '0';
+                    });
+                });
+        
+                // Settings button
+                document.getElementById('settingsBtn').addEventListener('click', function() {
+                    Swal.fire({
+                        title: 'System Settings',
+                        html: `
+                            <div class="text-start">
+                                <div class="mb-3">
+                                    <label class="form-label">Default Currency</label>
+                                    <select class="form-select">
+                                        <option>Ghana Cedi (GH₵)</option>
+                                        <option>US Dollar ($)</option>
+                                        <option>Euro (€)</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Approval Workflow</label>
+                                    <select class="form-select">
+                                        <option>Manager Approval</option>
+                                        <option>Finance Approval</option>
+                                        <option>Direct Posting</option>
+                                    </select>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="receiptRequired" checked>
+                                    <label class="form-check-label" for="receiptRequired">Require Receipt Attachment</label>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Save Settings',
+                        confirmButtonColor: '#0d6efd',
+                        showCancelButton: true
+                    });
+                });
+        
+                // View transaction details
+                document.querySelectorAll('.btn-outline-primary').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const row = this.closest('tr');
+                        const transId = row.cells[1].textContent;
+                        const amount = row.cells[3].textContent;
+                        const status = row.cells[4].textContent;
+                        
+                        Swal.fire({
+                            title: `Transaction ${transId}`,
+                            html: `
+                                <div class="text-start">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Date:</span>
+                                        <span class="fw-semibold">${row.cells[0].textContent}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Amount:</span>
+                                        <span class="fw-semibold">${amount}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Status:</span>
+                                        <span class="fw-semibold">${status}</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="text-muted">Description:</span>
+                                        <p class="mt-1">${row.cells[2].textContent}</p>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="text-muted">Attachments:</span>
+                                        <div class="mt-1">
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-paperclip me-1"></i> View Receipt
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `,
+                            confirmButtonText: 'Close',
+                            confirmButtonColor: '#0d6efd'
+                        });
+                    });
                 });
             </script>
-
+        
             <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
+                .avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .card {
+                    border-radius: 10px;
+                    overflow: hidden;
+                }
+                
+                .table th {
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-size: 0.75rem;
+                    letter-spacing: 0.5px;
+                    color: #6c757d;
+                }
+                
+                .badge {
+                    font-weight: 500;
+                    padding: 0.35em 0.65em;
+                }
+                
+                .form-control, .form-select {
+                    border-radius: 8px;
+                    padding: 0.5rem 1rem;
+                }
+                
+                .btn {
+                    border-radius: 8px;
+                    padding: 0.5rem 1rem;
+                    font-weight: 500;
+                }
+                
+                .page-link {
+                    border-radius: 6px !important;
+                    margin: 0 3px;
                 }
             </style>
         </div>

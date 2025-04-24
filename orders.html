@@ -15,18 +15,150 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="loginauth.js"></script>
 
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background-color: #10B981;
+        }
+
+        .toast.error {
+            background-color: #EF4444;
+        }
+
+        .toast.warning {
+            background-color: #F59E0B;
+        }
+
+        .toast.info {
+            background-color: #3B82F6;
+        }
+
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirmation-dialog.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .confirmation-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .confirmation-dialog.show .confirmation-content {
+            transform: translateY(0);
+        }
+
+        .highlight-row {
+            animation: highlight 2s ease-out;
+        }
+
+        @keyframes highlight {
+            0% {
+                background-color: rgba(16, 185, 129, 0.3);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+    </style>
     <style>
         body {
             font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: #222;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-container {
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-box {
+            float: right;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body class="bg-gray-100">
     <div class="d-flex">
-       <!-- Sidebar -->
-     <!-- Sidebar Toggle Button -->
+        <!-- Sidebar -->
+        <!-- Sidebar Toggle Button -->
         <button id="sidebarToggle"
             class="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -36,44 +168,37 @@
         </button>
 
         <nav id="sidebar"
-        class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40"
-        x-data="{ 
-            isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
-        }"
-        x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }"
-    >
+            class="bg-gray-900 text-white min-h-screen p-4 fixed md:relative transition-all duration-300 z-40" x-data="{ 
+          isCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+      }" x-bind:class="{ 'w-16': isCollapsed, 'w-64': !isCollapsed }">
 
-        <!-- Sidebar Header with Logo & Toggle -->
-        <div class="flex justify-between items-center mb-4">
-            <h4 class="text-1xl font-bold flex items-center w-full">
-                <img src="favicon.png" 
-                     class="transition-all duration-300 sidebar-logo"
-                     :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" 
-                     alt="Logo">
-            </h4>
-            <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
-                class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
-                    :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-        </div>
+            <!-- Sidebar Header with Logo & Toggle -->
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-1xl font-bold flex items-center w-full">
+                    <img src="favicon.png" class="transition-all duration-300 sidebar-logo"
+                        :class="isCollapsed ? 'w-10 h-10 mx-auto rounded-full' : 'w-24 h-16 rounded-md'" alt="Logo">
+                </h4>
+                <button @click="isCollapsed = !isCollapsed; localStorage.setItem('sidebarCollapsed', isCollapsed)"
+                    class="p-1 text-gray-400 hover:text-white hidden md:block transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
+                        :class="isCollapsed ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
 
-    <!-- Admin Profile -->
-<div class="text-center mb-6 flex items-center transition-all duration-300"
-:class="isCollapsed ? 'justify-center' : 'justify-start'">
-<img id="sidebarProfileImage" 
-    src="default-profile.png" 
-    class="rounded-full border-2 border-gray-700 transition-all duration-300"
-    :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" 
-    alt="Admin">
+            <!-- Admin Profile -->
+            <div class="text-center mb-6 flex items-center transition-all duration-300"
+                :class="isCollapsed ? 'justify-center' : 'justify-start'">
+                <img id="sidebarProfileImage" src="default-profile.png"
+                    class="rounded-full border-2 border-gray-700 transition-all duration-300"
+                    :class="isCollapsed ? 'w-12 h-12 mx-auto' : 'w-14 h-14 ml-2'" alt="Admin">
 
-<div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
-    <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
-    <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
-</div>
-</div>
+                <div class="ml-4 transition-all duration-300" x-show="!isCollapsed" x-transition>
+                    <p id="sidebarUsername" class="text-lg font-semibold">Loading...</p>
+                    <p id="sidebarRole" class="text-gray-400 text-sm">Loading...</p>
+                </div>
+            </div>
 
 
 
@@ -679,453 +804,179 @@
 
             </ul>
         </nav>
-
-        <style>
-            /* Collapsed state */
-            .sidebar-collapsed {
-                width: 4.5rem !important;
-            }
-        
-            .sidebar-collapsed .sidebar-text,
-            .sidebar-collapsed .sidebar-arrow,
-            .sidebar-collapsed .sidebar-logo-text {
-                display: none !important;
-            }
-        
-            .sidebar-collapsed .sidebar-icon {
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                font-size: 1.25rem !important;
-            }
-        
-            .sidebar-collapsed [x-data]>button {
-                justify-content: center !important;
-                padding: 0.75rem 0.5rem !important;
-            }
-        
-            .sidebar-collapsed .sidebar-subicon {
-                margin-left: 0 !important;
-            }
-        
-            /* Active state */
-            .active-menu-item {
-                background-color: #3B82F6;
-            }
-        
-            /* Responsive */
-            @media (max-width: 768px) {
-                #sidebar {
-                    transform: translateX(-100%);
-                    transition: transform 0.3s ease-in-out;
-                }
-        
-                #sidebar.sidebar-open {
-                    transform: translateX(0);
-                }
-            }
-        </style>
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const sidebar = document.getElementById('sidebar');
-                const sidebarToggle = document.getElementById('sidebarToggle');
-                const collapseToggle = document.getElementById('collapseToggle'); // Button to toggle collapse state
-        
-                // Initialize sidebar state from localStorage
-                if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                    sidebar.classList.add('sidebar-collapsed');
-                }
-        
-                // Toggle sidebar collapse
-                if (collapseToggle) {
-                    collapseToggle.addEventListener('click', function () {
-                        sidebar.classList.toggle('sidebar-collapsed');
-                        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('sidebar-collapsed'));
-                    });
-                }
-        
-                // Mobile sidebar toggle
-                if (sidebarToggle) {
-                    sidebarToggle.addEventListener('click', function () {
-                        sidebar.classList.toggle('sidebar-open');
-                    });
-                }
-        
-                // Close sidebar when clicking outside on mobile
-                document.addEventListener('click', function (event) {
-                    if (window.innerWidth <= 768 &&
-                        !sidebar.contains(event.target) &&
-                        !sidebarToggle.contains(event.target) &&
-                        sidebar.classList.contains('sidebar-open')) {
-                        sidebar.classList.remove('sidebar-open');
-                    }
-                });
-            });
-        </script>
-        
-        <script>
-            // Ensure sidebar updates after page loads
-            updateSidebar();
-        </script>
-    <div class="fixed bottom-5 right-5 sm:right-10 md:right-12 lg:right-16 z-50 flex items-center gap-3">
-        <button id="chat-sukuu-btn" 
-            class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg transition hover:bg-blue-500">
-            <i class="bi bi-chat-dots text-2xl"></i>
-            <span class="text-sm font-semibold">Chat with Sukuu AI Chatbot</span>
-        </button>
+        <div class="flex-grow">
+            <!-- Orders Section -->
+<div class="px-6 pb-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+        <h3 class="font-semibold text-gray-800 mb-2 sm:mb-0">Recent Orders</h3>
+        <div class="flex gap-2">
+            <button onclick="refreshOrders()"
+                class="flex items-center gap-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm hover:bg-gray-50">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+            <button onclick="exportOrders()"
+                class="flex items-center gap-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm hover:bg-gray-50">
+                <i class="bi bi-download"></i> Export
+            </button>
+        </div>
     </div>
-    
-    <script>
-        document.getElementById("chat-sukuu-btn").addEventListener("click", function() {
-            window.location.href = "ai-chatbot.html";
-        });
-    </script>
 
-        <!-- Main Content -->
-    
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Student Admission Form</title>
-            <script src="https://cdn.tailwindcss.com"></script>
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        </head>
-        <body class="bg-gray-50">
-            <div class="max-w-4xl mx-auto bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-xl border border-gray-100 my-8">
-                <!-- Header Section -->
-                <div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Student Admission</h1>
-                    <p class="text-gray-500">Complete the form to enroll in our institution</p>
-                    <div class="mt-4 w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 50%"></div>
-                    </div>
-                </div>
-        
-                <!-- Admission Form -->
-                <form id="admissionForm" class="space-y-6">
-                    <!-- Student Information Card -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-blue-100 p-2 rounded-full mr-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-semibold text-gray-800">Student Information</h2>
-                        </div>
-        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" required>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Middle Name</label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500">*</span></label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" required>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Date of Admission <span class="text-red-500">*</span></label>
-                                <input type="date" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" required>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Class <span class="text-red-500">*</span></label>
-                                <select class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                                    <option>Class 6B</option>
-                                    <option>Class 7A</option>
-                                    <option>Class 8C</option>
-                                </select>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Mobile Number</label>
-                                <div class="flex">
-                                    <div class="relative w-1/3">
-                                        <select id="countryCode" class="block w-full px-3 py-2.5 rounded-l-lg border border-gray-300 bg-gray-50 text-gray-700 text-sm focus:ring-blue-200 focus:border-blue-500 appearance-none">
-                                            <option value="+1">🇺🇸 +1</option>
-                                            <option value="+44">🇬🇧 +44</option>
-                                            <option value="+91">🇮🇳 +91</option>
-                                            <option value="+86">🇨🇳 +86</option>
-                                            <option value="+81">🇯🇵 +81</option>
-                                            <option value="+49">🇩🇪 +49</option>
-                                            <option value="+33">🇫🇷 +33</option>
-                                            <option value="+7">🇷🇺 +7</option>
-                                            <option value="+971">🇦🇪 +971</option>
-                                            <option value="+966">🇸🇦 +966</option>
-                                            <option value="+20">🇪🇬 +20</option>
-                                            <option value="+234">🇳🇬 +234</option>
-                                            <option value="+27">🇿🇦 +27</option>
-                                            <option value="+254">🇰🇪 +254</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                        </div>
-                                    </div>
-                                    <input type="tel" class="flex-1 block w-full px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <!-- Family Information Card -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-purple-100 p-2 rounded-full mr-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-semibold text-gray-800">Family Information</h2>
-                        </div>
-        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Father's Name <span class="text-red-500">*</span></label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" required>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Father's Contact <span class="text-red-500">*</span></label>
-                                <div class="flex">
-                                    <div class="relative w-1/3">
-                                        <select class="block w-full px-3 py-2.5 rounded-l-lg border border-gray-300 bg-gray-50 text-gray-700 text-sm focus:ring-blue-200 focus:border-blue-500 appearance-none">
-                                            <option value="+1">🇺🇸 +1</option>
-                                            <option value="+44">🇬🇧 +44</option>
-                                            <option value="+91">🇮🇳 +91</option>
-                                            <option value="+86">🇨🇳 +86</option>
-                                            <option value="+81">🇯🇵 +81</option>
-                                            <option value="+49">🇩🇪 +49</option>
-                                            <option value="+33">🇫🇷 +33</option>
-                                            <option value="+7">🇷🇺 +7</option>
-                                            <option value="+971">🇦🇪 +971</option>
-                                            <option value="+966">🇸🇦 +966</option>
-                                            <option value="+20">🇪🇬 +20</option>
-                                            <option value="+234">🇳🇬 +234</option>
-                                            <option value="+27">🇿🇦 +27</option>
-                                            <option value="+254">🇰🇪 +254</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                        </div>
-                                    </div>
-                                    <input type="tel" class="flex-1 block w-full px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" required>
-                                </div>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Mother's Name <span class="text-red-500">*</span></label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" required>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Mother's Contact</label>
-                                <div class="flex">
-                                    <div class="relative w-1/3">
-                                        <select class="block w-full px-3 py-2.5 rounded-l-lg border border-gray-300 bg-gray-50 text-gray-700 text-sm focus:ring-blue-200 focus:border-blue-500 appearance-none">
-                                            <option value="+1">🇺🇸 +1</option>
-                                            <option value="+44">🇬🇧 +44</option>
-                                            <option value="+91">🇮🇳 +91</option>
-                                            <option value="+86">🇨🇳 +86</option>
-                                            <option value="+81">🇯🇵 +81</option>
-                                            <option value="+49">🇩🇪 +49</option>
-                                            <option value="+33">🇫🇷 +33</option>
-                                            <option value="+7">🇷🇺 +7</option>
-                                            <option value="+971">🇦🇪 +971</option>
-                                            <option value="+966">🇸🇦 +966</option>
-                                            <option value="+20">🇪🇬 +20</option>
-                                            <option value="+234">🇳🇬 +234</option>
-                                            <option value="+27">🇿🇦 +27</option>
-                                            <option value="+254">🇰🇪 +254</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                        </div>
-                                    </div>
-                                    <input type="tel" class="flex-1 block w-full px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                                </div>
-                            </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total (₵)</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="ordersTable" class="bg-white divide-y divide-gray-200">
+                <!-- Orders will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Guardian's Name <span class="text-red-500"></span></label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all" placeholder="if required">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Guardian's Contact</label>
-                                <div class="flex">
-                                    <div class="relative w-1/3">
-                                        <select class="block w-full px-3 py-2.5 rounded-l-lg border border-gray-300 bg-gray-50 text-gray-700 text-sm focus:ring-blue-200 focus:border-blue-500 appearance-none">
-                                            <option value="+1">🇺🇸 +1</option>
-                                            <option value="+44">🇬🇧 +44</option>
-                                            <option value="+91">🇮🇳 +91</option>
-                                            <option value="+86">🇨🇳 +86</option>
-                                            <option value="+81">🇯🇵 +81</option>
-                                            <option value="+49">🇩🇪 +49</option>
-                                            <option value="+33">🇫🇷 +33</option>
-                                            <option value="+7">🇷🇺 +7</option>
-                                            <option value="+971">🇦🇪 +971</option>
-                                            <option value="+966">🇸🇦 +966</option>
-                                            <option value="+20">🇪🇬 +20</option>
-                                            <option value="+234">🇳🇬 +234</option>
-                                            <option value="+27">🇿🇦 +27</option>
-                                            <option value="+254">🇰🇪 +254</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                        </div>
-                                    </div>
-                                    <input type="tel" class="flex-1 block w-full px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <!-- Additional Information Card -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-green-100 p-2 rounded-full mr-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-semibold text-gray-800">Additional Information</h2>
-                        </div>
-        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                                <input type="date" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Gender</label>
-                                <div class="flex space-x-4 pt-2">
-                                    <label class="inline-flex items-center">
-                                        <input type="radio" name="gender" class="h-4 w-4 text-blue-600 focus:ring-blue-500" checked>
-                                        <span class="ml-2 text-gray-700">Male</span>
-                                    </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="radio" name="gender" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
-                                        <span class="ml-2 text-gray-700">Female</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Birth Certificate ID / NIC</label>
-                                <input type="text" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-sm font-medium text-gray-700">Medical Conditions</label>
-                                <select id="medicalCondition" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all">
-                                    <option>No known conditions</option>
-                                    <option>Allergies</option>
-                                    <option>Asthma</option>
-                                    <option>Diabetes</option>
-                                    <option>Epilepsy</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                        </div>
-        
-                        <div id="healthDetails" class="mt-4 hidden">
-                            <label class="block text-sm font-medium text-gray-700">Please specify health condition</label>
-                            <textarea rows="2" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"></textarea>
-                        </div>
-                    </div>
-        
-                    <!-- Form Actions -->
-                    <div class="flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0">
-                        <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center">
-                            <i class="fas fa-save mr-2"></i> Save as Draft
+<script>
+    // Sample orders data
+    const orders = [
+        {
+            id: 'ORD-1001',
+            customer: 'Kwame Asante',
+            date: new Date(),
+            items: 3,
+            total: 542.75,
+            status: 'processing'
+        },
+        {
+            id: 'ORD-1002',
+            customer: 'Ama Mensah',
+            date: new Date(Date.now() - 86400000),
+            items: 2,
+            total: 320.50,
+            status: 'shipped'
+        },
+        {
+            id: 'ORD-1003',
+            customer: 'Yaw Boateng',
+            date: new Date(Date.now() - 2 * 86400000),
+            items: 5,
+            total: 875.25,
+            status: 'completed'
+        },
+        {
+            id: 'ORD-1004',
+            customer: 'Esi Coleman',
+            date: new Date(Date.now() - 3 * 86400000),
+            items: 1,
+            total: 189.99,
+            status: 'completed'
+        }
+    ];
+
+    // Render orders table
+    function renderOrders() {
+        const ordersTable = document.getElementById('ordersTable');
+        ordersTable.innerHTML = '';
+
+        orders.forEach(order => {
+            let statusBadgeClass = '';
+            let statusText = '';
+
+            if (order.status === 'completed') {
+                statusBadgeClass = 'bg-green-100 text-green-800';
+                statusText = 'Completed';
+            } else if (order.status === 'processing') {
+                statusBadgeClass = 'bg-yellow-100 text-yellow-800';
+                statusText = 'Processing';
+            } else if (order.status === 'shipped') {
+                statusBadgeClass = 'bg-blue-100 text-blue-800';
+                statusText = 'Shipped';
+            }
+
+            ordersTable.innerHTML += `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.customer}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(order.date)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.items}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₵${order.total.toFixed(2)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusBadgeClass}">${statusText}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
+                        <button onclick="viewOrder('${order.id}')" class="text-blue-600 hover:text-blue-900">
+                            <i class="bi bi-eye"></i>
                         </button>
-                        <div class="space-x-3">
-                            <button type="reset" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center">
-                                <i class="fas fa-redo mr-2"></i> Reset Form
-                            </button>
-                            <button type="submit" class="px-6 py-3 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg flex items-center">
-                                <i class="fas fa-paper-plane mr-2"></i> Submit Application
-                            </button>
-                        </div>
-                    </div>
-                </form>
-        
-                <!-- Status Indicator -->
-                <div id="formStatus" class="mt-6 hidden">
-                    <div class="p-4 rounded-lg bg-blue-50 border border-blue-100 flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-3 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                        </svg>
-                        <div>
-                            <h3 class="font-medium text-blue-800">Application Submitted</h3>
-                            <p class="text-sm text-blue-600 mt-1">Your admission form has been successfully submitted. We'll contact you shortly.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-            <script>
-                // Toggle health details visibility
-                document.getElementById('medicalCondition').addEventListener('change', function(e) {
-                    const healthDetails = document.getElementById('healthDetails');
-                    healthDetails.classList.toggle('hidden', e.target.value !== 'Other');
-                });
-        
-                // Form submission handler
-                document.getElementById('admissionForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    document.getElementById('formStatus').classList.remove('hidden');
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                    
-                    // Simulate form processing
-                    setTimeout(() => {
-                        document.getElementById('formStatus').innerHTML = `
-                            <div class="p-4 rounded-lg bg-green-50 border border-green-100 flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-3 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                                <div>
-                                    <h3 class="font-medium text-green-800">Application Processed Successfully</h3>
-                                    <p class="text-sm text-green-600 mt-1">Thank you! Your application ID is #${Math.floor(100000 + Math.random() * 900000)}. An email confirmation has been sent.</p>
-                                </div>
-                            </div>
-                        `;
-                    }, 1500);
-                });
-        
-                // Menu toggle functionality
-                document.getElementById("menuToggle")?.addEventListener("click", function(event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-                    
-                    if (submenu && arrow) {
-                        submenu.classList.toggle("hidden");
-                        arrow.classList.toggle("rotate-90");
-                    }
-                });
-            </script>
-        
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
-                    transition: transform 0.2s ease;
-                }
-                
-                select {
-                    background-image: none;
-                }
-                
-                .hover\:shadow-md:hover {
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                }
-                
-                input[type="date"]::-webkit-calendar-picker-indicator {
-                    filter: invert(0.5);
-                    cursor: pointer;
-                }
-            </style>
-        </body>
-        </html>
+                        <button onclick="editOrder('${order.id}')" class="text-yellow-600 hover:text-yellow-900">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
 
+        if (orders.length === 0) {
+            ordersTable.innerHTML = `
+                <tr>
+                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">No orders found</td>
+                </tr>
+            `;
+        }
+    }
+
+    // Helper functions
+    function formatDate(date) {
+        return new Date(date).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+
+    function refreshOrders() {
+        // In a real app, you would fetch fresh data from the server
+        showToast('Orders refreshed', 'success');
+        renderOrders();
+    }
+
+    function exportOrders() {
+        showToast('Exporting orders data...', 'info');
+        // Export functionality would go here
+    }
+
+    function viewOrder(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (order) {
+            showToast(`Viewing order ${orderId}`, 'info');
+            // In a real app, you would open an order details view
+        }
+    }
+
+    function editOrder(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (order) {
+            showToast(`Editing order ${orderId}`, 'info');
+            // In a real app, you would open an edit form
+        }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        renderOrders();
+    });
+
+    // Simple toast notification function
+    function showToast(message, type = 'info') {
+        console.log(`${type}: ${message}`);
+        // You would implement your toast notification system here
+    }
+</script>
+        </div>
 </body>
 
 </html>

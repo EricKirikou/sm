@@ -797,11 +797,11 @@ alt="Admin">
                 
             </nav>
             <div class="container mt-5">
-                <h2 class="text-center mb-4">Search Student</h2>
+                <h2 class="text-center mb-4">Generate Admission Letter</h2>
                 <div class="row">
                     <div class="col-md-6 offset-md-3">
-                        <input type="text" id="studentID" class="form-control" placeholder="Enter Student ID">
-                        <button class="btn btn-primary mt-3 w-100" onclick="fetchStudent()">Generate Letter</button>
+                        <input type="text" id="studentNameInput" class="form-control" placeholder="Enter Student Name">
+                        <button class="btn btn-primary mt-3 w-100" onclick="generateLetter()">Generate Letter</button>
                     </div>
                 </div>
             
@@ -810,28 +810,43 @@ alt="Admin">
                     <hr>
                     <p>Date: <span id="admissionDate"></span></p>
                     <p>Dear <strong id="studentName"></strong>,</p>
-                    <p>We are pleased to inform you that you have been admitted into the <strong id="studentProgram"></strong> program at our institution.</p>
+                    <p>We are pleased to inform you that you have been admitted to our institution.</p>
                     <p>Congratulations and welcome!</p>
                     <button class="btn btn-success mt-3" onclick="window.print()">Print</button>
                 </div>
-            <script>
-                document.getElementById("menuToggle").addEventListener("click", function (event) {
-                    event.preventDefault();
-                    let submenu = document.getElementById("submenu");
-                    let arrow = document.getElementById("arrow");
-
-                    submenu.classList.toggle("hidden"); // Toggle submenu
-                    arrow.classList.toggle("rotate-90"); // Rotate arrow
-                });
-            </script>
-
-            <style>
-                .rotate-90 {
-                    transform: rotate(90deg);
-                }
-            </style>
-        </div>
-        
+            
+                <script>
+                    function generateLetter() {
+                        const name = document.getElementById("studentNameInput").value.trim();
+                        const today = new Date().toLocaleDateString();
+            
+                        if (!name) {
+                            alert("Please enter the student’s name.");
+                            return;
+                        }
+            
+                        document.getElementById("studentName").textContent = name;
+                        document.getElementById("admissionDate").textContent = today;
+                        document.getElementById("admissionLetter").style.display = "block";
+                    }
+            
+                    document.getElementById("menuToggle")?.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        let submenu = document.getElementById("submenu");
+                        let arrow = document.getElementById("arrow");
+            
+                        submenu.classList.toggle("hidden");
+                        arrow.classList.toggle("rotate-90");
+                    });
+                </script>
+            
+                <style>
+                    .rotate-90 {
+                        transform: rotate(90deg);
+                    }
+                </style>
+            </div>
+            
     </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

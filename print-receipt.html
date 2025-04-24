@@ -4,56 +4,209 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payslip - SM-Edu</title>
-    <script src="loginauth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             width: 210mm;
             height: 297mm;
-            padding: 20mm;
+            padding: 15mm;
             margin: auto;
             background: #fff;
+            color: #111827;
+            line-height: 1.5;
         }
+        
         .container {
             max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #000;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        h2, h3 {
+        
+        .header {
             text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-200);
         }
-        .details, .table-container {
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .address {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 10px 0;
+            color: #111827;
+        }
+        
+        h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .details-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin: 20px 0;
         }
-        .details td, .table-container td, .table-container th {
-            border: 1px solid #000;
-            padding: 8px;
+        
+        .details-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .details-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .salary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .salary-table th, 
+        .salary-table td {
+            padding: 12px 15px;
             text-align: left;
         }
-        .table-container th {
-            background: #f2f2f2;
+        
+        .salary-table th {
+            background-color: var(--gray-100);
+            font-weight: 500;
+            color: #374151;
         }
-        .signature {
-            margin-top: 30px;
+        
+        .salary-table td {
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .salary-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .total-row {
+            font-weight: 600;
+            background-color: var(--gray-100);
+        }
+        
+        .amount {
+            font-weight: 500;
+        }
+        
+        .amount-in-words {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .signature-section {
             display: flex;
             justify-content: space-between;
+            margin: 40px 0 20px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--gray-200);
         }
-        .print-btn {
-            display: block;
-            margin: 20px auto;
+        
+        .signature {
+            text-align: center;
+            width: 45%;
+        }
+        
+        .signature-line {
+            margin-top: 40px;
+            border-top: 1px solid #000;
+            width: 80%;
+            display: inline-block;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
             padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+            border-radius: 6px;
+            font-weight: 500;
             cursor: pointer;
-            border-radius: 5px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
         }
-        .print-btn:hover {
-            background-color: #0056b3;
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+        }
+        
+        @media print {
+            .action-buttons {
+                display: none;
+            }
+            
+            body {
+                padding: 0;
+            }
         }
     </style>
     <script>
@@ -61,10 +214,18 @@
             const payslipData = JSON.parse(localStorage.getItem("currentPayslip"));
             if (payslipData) {
                 document.getElementById("employeeName").textContent = payslipData.employee;
+                document.getElementById("designation").textContent = payslipData.designation || "Marketing Executive";
                 document.getElementById("baseSalary").textContent = "GHS " + payslipData.baseSalary;
                 document.getElementById("overtimePay").textContent = "GHS " + payslipData.overtimePay;
                 document.getElementById("deductions").textContent = "GHS " + payslipData.deductions;
                 document.getElementById("totalSalary").textContent = "GHS " + payslipData.totalSalary;
+                
+                // Calculate total earnings
+                const totalEarnings = parseFloat(payslipData.baseSalary) + parseFloat(payslipData.overtimePay);
+                document.getElementById("totalEarnings").textContent = "GHS " + totalEarnings.toFixed(2);
+                
+                // Amount in words
+                document.getElementById("amountInWords").textContent = numberToWords(payslipData.totalSalary) + " Ghana Cedis Only";
             }
         }
 
@@ -78,60 +239,129 @@
             window.location.href = "payslip.html";
         }
         
+        // Simple number to words converter (for demo purposes)
+        function numberToWords(num) {
+            const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+            const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+            
+            num = parseFloat(num);
+            if (num === 0) return "Zero";
+            
+            let words = "";
+            
+            if (num >= 1000) {
+                words += units[Math.floor(num / 1000)] + " Thousand ";
+                num %= 1000;
+            }
+            
+            if (num >= 100) {
+                words += units[Math.floor(num / 100)] + " Hundred ";
+                num %= 100;
+            }
+            
+            if (num > 0) {
+                if (words !== "") words += "and ";
+                
+                if (num < 10) {
+                    words += units[num];
+                } else if (num >= 10 && num < 20) {
+                    words += teens[num - 10];
+                } else {
+                    words += tens[Math.floor(num / 10)];
+                    if (num % 10 > 0) {
+                        words += " " + units[num % 10];
+                    }
+                }
+            }
+            
+            return words;
+        }
+        
         window.onload = updateReceipt;
     </script>
 </head>
 <body>
     <div class="container">
-        <h2>Payslip</h2>
-        <h3>SM-Edu</h3>
-        <p style="text-align: center;">21023 Pearson Point Road, Gate Avenue</p>
-        
-        <table class="details">
-            <tr>
-                <td><strong>Employee Name:</strong> <span id="employeeName">N/A</span></td>
-                <td><strong>Designation:</strong> Marketing Executive</td>
-            </tr>
-        </table>
-        
-        <table class="table-container">
-            <tr>
-                <th>Earnings</th>
-                <th>Amount</th>
-                <th>Deductions</th>
-                <th>Amount</th>
-            </tr>
-            <tr>
-                <td>Basic Pay</td>
-                <td id="baseSalary">GHS 0</td>
-                <td>Provident Fund</td>
-                <td id="deductions">GHS 0</td>
-            </tr>
-            <tr>
-                <td>Overtime Pay</td>
-                <td id="overtimePay">GHS 0</td>
-                <td>Total Deductions</td>
-                <td>GHS 0</td>
-            </tr>
-            <tr>
-                <th>Total Earnings</th>
-                <th>GHS 0</th>
-                <th>Net Pay</th>
-                <th id="totalSalary">GHS 0</th>
-            </tr>
-        </table>
-        
-        <p><strong>Amount in Words:</strong> <span id="amountInWords">N/A</span></p>
-        
-        <div class="signature">
-            <p><strong>Employer Signature:</strong> ____________</p>
-            <p><strong>Employee Signature:</strong> ____________</p>
+        <div class="header">
+            <div class="logo">Sukuu</div>
+            <h2>PAYSLIP</h2>
+            <div class="address">Afanko Junction, Atonsu Ghana</div>
         </div>
         
-        <p style="text-align: center; font-size: 12px;">This is a system-generated payslip</p>
+        <table class="details-table">
+            <tr>
+                <td><strong>Employee Name:</strong> <span id="employeeName">N/A</span></td>
+                <td><strong>Designation:</strong> <span id="designation">Marketing Executive</span></td>
+            </tr>
+            <tr>
+                <td><strong>Pay Period:</strong> June 2023</td>
+                <td><strong>Payment Date:</strong> 30 Jun 2023</td>
+            </tr>
+        </table>
         
-        <button class="print-btn" onclick="window.print()">Print Receipt</button>
-        <button class="print-btn" onclick="saveToPayslipPage()">Save & View All Payslips</button>
+        <table class="salary-table">
+            <thead>
+                <tr>
+                    <th>Earnings</th>
+                    <th>Amount</th>
+                    <th>Deductions</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Basic Pay</td>
+                    <td class="amount" id="baseSalary">GHS 0.00</td>
+                    <td>Provident Fund</td>
+                    <td class="amount" id="deductions">GHS 0.00</td>
+                </tr>
+                <tr>
+                    <td>Overtime Pay</td>
+                    <td class="amount" id="overtimePay">GHS 0.00</td>
+                    <td>Tax</td>
+                    <td class="amount">GHS 0.00</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Total Earnings</strong></td>
+                    <td class="amount" id="totalEarnings">GHS 0.00</td>
+                    <td><strong>Total Deductions</strong></td>
+                    <td class="amount" id="deductions">GHS 0.00</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3"><strong>Net Pay</strong></td>
+                    <td class="amount" id="totalSalary">GHS 0.00</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="amount-in-words">
+            <strong>Amount in Words:</strong> <span id="amountInWords">N/A</span>
+        </div>
+        
+        <div class="signature-section">
+            <div class="signature">
+                <div>_________________________</div>
+                <div>Employer Signature</div>
+            </div>
+            <div class="signature">
+                <div>_________________________</div>
+                <div>Employee Signature</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            This is a system-generated payslip. No signature is required for electronic copies.
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Payslip
+            </button>
+            <button class="btn btn-outline" onclick="saveToPayslipPage()">
+                <i class="fas fa-save"></i> Save & View All
+            </button>
+        </div>
     </div>
 </body>
 </html>

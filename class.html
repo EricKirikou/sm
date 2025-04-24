@@ -525,183 +525,436 @@
         </nav>
 
              <!-- Main Content -->
-             <div class="flex-grow">
-                <!-- Navbar -->
-                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
-                    <div class="container-fluid">
-                        <span class="navbar-brand"><i class="bi bi-house"></i> Class</span>
-                        <div>
-                            <span class="me-3">🔔</span>
-                            <span class="me-3">⚙️</span>
-                            <span>🌍</span>
+             <div class="flex-grow min-h-screen bg-gray-50">
+                <!-- Modern Navbar -->
+                <nav class="bg-white shadow-sm">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between items-center h-16">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 flex items-center">
+                                    <i class="fas fa-chalkboard-teacher text-indigo-600 text-xl mr-3"></i>
+                                    <h2 class="text-lg font-semibold text-gray-900">Class Management</h2>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <span class="sr-only">Notifications</span>
+                                    <i class="far fa-bell text-xl"></i>
+                                </button>
+                                <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <span class="sr-only">Settings</span>
+                                    <i class="fas fa-cog text-xl"></i>
+                                </button>
+                                <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <span class="sr-only">Language</span>
+                                    <i class="fas fa-globe text-xl"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </nav>
-                <!-- Class Management Form -->
-                <div class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-md mt-12">
-                    <form id="classForm">
-                        <h1 class="text-center text-2xl font-bold">Class Management</h1>
-                        <p class="text-center text-gray-500"><span class="text-purple-500">Required*</span></p>
-                
-                        <div class="mt-6">
-                            <h3 class="font-bold">Class Information</h3>
-                            <div class="grid grid-cols-2 gap-4 mt-4">
-                                <input type="hidden" id="classId"> <!-- Hidden for editing -->
-                
-                                <input type="text" id="className" placeholder="Class Name (e.g., Grade 6)" class="border p-2 rounded w-full" required>
-                
-                                <input type="text" id="section" placeholder="Section (e.g., A, B, C)" class="border p-2 rounded w-full" required>
-                
-                                <select id="teacher" class="border p-2 rounded w-full" required>
-                                    <option value="">Select Class Teacher</option>
-                                </select>
-                
-                                <input type="number" id="capacity" placeholder="Maximum Capacity" class="border p-2 rounded w-full" required>
+            
+                <!-- Main Content -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <!-- Class Management Form -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="p-6 sm:p-8">
+                            <div class="text-center mb-8">
+                                <h1 class="text-2xl font-bold text-gray-800">Class Information</h1>
+                                <p class="text-gray-500 mt-2">
+                                    <span class="text-indigo-500 font-medium">*</span> indicates required fields
+                                </p>
+                            </div>
+            
+                            <form id="classForm" class="space-y-6">
+                                <input type="hidden" id="classId">
+            
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="className" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Class Name <span class="text-indigo-500">*</span>
+                                        </label>
+                                        <input type="text" id="className" placeholder="e.g., Grade 6" 
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                               required>
+                                    </div>
+            
+                                    <div>
+                                        <label for="section" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Section <span class="text-indigo-500">*</span>
+                                        </label>
+                                        <input type="text" id="section" placeholder="e.g., A, B, C" 
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                               required>
+                                    </div>
+            
+                                    <div>
+                                        <label for="teacher" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Class Teacher <span class="text-indigo-500">*</span>
+                                        </label>
+                                        <select id="teacher" 
+                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                                required>
+                                            <option value="">Select Class Teacher</option>
+                                            <!-- Teachers will be loaded dynamically -->
+                                        </select>
+                                    </div>
+            
+                                    <div>
+                                        <label for="capacity" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Maximum Capacity <span class="text-indigo-500">*</span>
+                                        </label>
+                                        <input type="number" id="capacity" min="1" 
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                               required>
+                                    </div>
+                                </div>
+            
+                                <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
+                                    <button type="reset" 
+                                            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                                        Reset
+                                    </button>
+                                    <button type="submit" id="saveClassButton"
+                                            class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                                        Save Class
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            
+                    <!-- Class List Section -->
+                    <div class="mt-12">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-800">Class List</h2>
+                            <button onclick="refreshClassList()" 
+                                    class="flex items-center text-indigo-600 hover:text-indigo-800">
+                                <i class="fas fa-sync-alt mr-2"></i> Refresh
+                            </button>
+                        </div>
+            
+                        <div id="classContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Classes will be loaded dynamically -->
+                            <div class="text-center py-8">
+                                <i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>
+                                <p class="mt-2 text-gray-500">Loading classes...</p>
                             </div>
                         </div>
-                
-                        <div class="flex justify-between mt-6">
-                            <button type="reset" class="bg-yellow-400 px-6 py-2 rounded-lg">Reset</button>
-                            <button id="saveClassButton" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg">Save</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                
-                <script>
-                    // Function to load teachers from the employee collection (with localStorage caching)
-                    async function loadTeachers() {
-                        const cachedTeachers = localStorage.getItem("teachers");
-                
-                        if (cachedTeachers) {
-                            console.log("✅ Loading teachers from localStorage");
-                            populateTeacherDropdown(JSON.parse(cachedTeachers));
-                            return;
-                        }
-                
-                        try {
-                            console.log("🔄 Fetching teachers from API...");
-                            const response = await fetch("http://localhost:5000/api/employees/teachers"); // Fetch only teachers
-                            if (!response.ok) throw new Error("Failed to fetch teachers");
-                
-                            const teachers = await response.json();
-                            localStorage.setItem("teachers", JSON.stringify(teachers)); // Cache in localStorage
-                            populateTeacherDropdown(teachers);
-                            console.log("✅ Teachers loaded successfully and cached");
-                        } catch (error) {
-                            console.error("❌ Error loading teachers:", error);
-                        }
-                    }
-                
-                    // Populate teacher dropdown
-                    function populateTeacherDropdown(teachers) {
-                        const teacherDropdown = document.getElementById("teacher");
-                        teacherDropdown.innerHTML = '<option value="">Select Class Teacher</option>'; // Reset dropdown
-                
-                        teachers.forEach(teacher => {
-                            const option = document.createElement("option");
-                            option.value = teacher._id; // Use MongoDB ObjectId as value
-                            option.textContent = teacher.name; // Display only teacher's name
-                            teacherDropdown.appendChild(option);
-                        });
-                    }
-                
-                    // Function to load class list
-                    async function loadClasses() {
-                        try {
-                            const response = await fetch("http://localhost:5000/api/classes");
-                            if (!response.ok) throw new Error(`Failed to fetch classes: ${response.statusText}`);
-                
-                            const classes = await response.json();
-                            const classContainer = document.getElementById("classContainer");
-                
-                            classContainer.innerHTML = ""; // Clear old content
-                
-                            if (classes.length === 0) {
-                                classContainer.innerHTML = `<p class="text-center text-gray-500">No classes found.</p>`;
-                                return;
-                            }
-                
-                            classes.forEach(cls => {
-                                const classDiv = document.createElement("div");
-                                classDiv.className = "border p-4 rounded-lg shadow-md bg-gray-100";
-                
-                                classDiv.innerHTML = `
-                                    <h3 class="text-xl font-semibold">${cls.className} - Section ${cls.section || "N/A"}</h3>
-                                    <p><strong>Teacher:</strong> ${cls.classTeacher || "Not Assigned"}</p>
-                                    <p><strong>Capacity:</strong> ${cls.capacity || "Unknown"}</p>
-                                `;
-                
-                                classContainer.appendChild(classDiv);
-                            });
-                            console.log("✅ Classes loaded successfully");
-                        } catch (error) {
-                            console.error("❌ Error loading classes:", error);
-                            document.getElementById("classContainer").innerHTML = `<p class="text-center text-red-500">Error loading classes.</p>`;
-                        }
-                    }
-                
-                    // Add class submission event
-                    document.getElementById("classForm").addEventListener("submit", async function (event) {
-                        event.preventDefault();
-                
-                        const classData = {
-                            className: document.getElementById("className").value.trim(),
-                            section: document.getElementById("section").value.trim(),
-                            classTeacher: document.getElementById("teacher").value.trim(),
-                            capacity: parseInt(document.getElementById("capacity").value, 10) || 0
-                        };
-                
-                        if (!classData.classTeacher) {
-                            alert("Please select a class teacher.");
-                            return;
-                        }
-                
-                        try {
-                            const response = await fetch("http://localhost:5000/api/classes/add", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify(classData)
-                            });
-                
-                            if (!response.ok) throw new Error(`Failed to save class: ${response.statusText}`);
-                
-                            const result = await response.json();
-                            alert(result.message || "Class saved successfully!");
-                            document.getElementById("classForm").reset();
-                            loadClasses(); // Refresh class list after saving
-                        } catch (error) {
-                            console.error("❌ Error:", error);
-                            alert("Error saving class! Check console for details.");
-                        }
-                    });
-                
-                    // Load employees & classes on page load
-                    document.addEventListener("DOMContentLoaded", () => {
-                        loadTeachers(); // Load teachers from API or localStorage
-                        loadClasses();
-                    });
-                </script>               
-                
-                
-                <script>
-                    document.getElementById("menuToggle").addEventListener("click", function (event) {
-                        event.preventDefault();
-                        let submenu = document.getElementById("submenu");
-                        let arrow = document.getElementById("arrow");
-
-                        submenu.classList.toggle("hidden"); // Toggle submenu
-                        arrow.classList.toggle("rotate-90"); // Rotate arrow
-                    });
-                </script>
-
-                <style>
-                    .rotate-90 {
-                        transform: rotate(90deg);
-                    }
-                </style>
             </div>
+            
+            <script>
+                // Function to load teachers from the employee collection (with localStorage caching)
+                async function loadTeachers() {
+                    const teacherDropdown = document.getElementById("teacher");
+                    teacherDropdown.innerHTML = '<option value="">Select Class Teacher</option>';
+                    teacherDropdown.disabled = true;
+                    
+                    const cachedTeachers = localStorage.getItem("teachers");
+                    const cacheTimestamp = localStorage.getItem("teachers_timestamp");
+                    const now = new Date().getTime();
+                    const cacheExpiry = 30 * 60 * 1000; // 30 minutes cache
+            
+                    if (cachedTeachers && cacheTimestamp && (now - cacheTimestamp < cacheExpiry)) {
+                        console.log("✅ Loading teachers from localStorage cache");
+                        populateTeacherDropdown(JSON.parse(cachedTeachers));
+                        return;
+                    }
+            
+                    try {
+                        console.log("🔄 Fetching teachers from API...");
+                        const response = await fetch("http://localhost:5000/api/employees/teachers");
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+                        const teachers = await response.json();
+                        localStorage.setItem("teachers", JSON.stringify(teachers));
+                        localStorage.setItem("teachers_timestamp", now.toString());
+                        populateTeacherDropdown(teachers);
+                        console.log("✅ Teachers loaded successfully and cached");
+                    } catch (error) {
+                        console.error("❌ Error loading teachers:", error);
+                        teacherDropdown.innerHTML = '<option value="">Error loading teachers</option>';
+                    } finally {
+                        teacherDropdown.disabled = false;
+                    }
+                }
+            
+                // Populate teacher dropdown with enhanced UI
+                function populateTeacherDropdown(teachers) {
+                    const teacherDropdown = document.getElementById("teacher");
+                    teacherDropdown.innerHTML = '<option value="">Select Class Teacher</option>';
+            
+                    if (!teachers || teachers.length === 0) {
+                        teacherDropdown.innerHTML += '<option value="" disabled>No teachers available</option>';
+                        return;
+                    }
+            
+                    teachers.forEach(teacher => {
+                        const option = document.createElement("option");
+                        option.value = teacher._id;
+                        option.textContent = `${teacher.name} (${teacher.email || 'No email'})`;
+                        teacherDropdown.appendChild(option);
+                    });
+                }
+            
+                // Function to load class list with modern cards
+                async function loadClasses() {
+                    const classContainer = document.getElementById("classContainer");
+                    classContainer.innerHTML = `
+                        <div class="col-span-full text-center py-8">
+                            <i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>
+                            <p class="mt-2 text-gray-500">Loading classes...</p>
+                        </div>
+                    `;
+            
+                    try {
+                        const response = await fetch("http://localhost:5000/api/classes");
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+                        const classes = await response.json();
+                        
+                        if (classes.length === 0) {
+                            classContainer.innerHTML = `
+                                <div class="col-span-full text-center py-12">
+                                    <i class="fas fa-chalkboard text-4xl text-gray-300 mb-4"></i>
+                                    <h3 class="text-lg font-medium text-gray-500">No classes found</h3>
+                                    <p class="text-gray-400 mt-1">Create your first class using the form above</p>
+                                </div>
+                            `;
+                            return;
+                        }
+            
+                        classContainer.innerHTML = '';
+                        classes.forEach(cls => {
+                            const classCard = document.createElement("div");
+                            classCard.className = "bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition";
+                            
+                            classCard.innerHTML = `
+                                <div class="p-6">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="text-xl font-bold text-gray-800">${cls.className}</h3>
+                                            <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                                Section ${cls.section || "N/A"}
+                                            </span>
+                                        </div>
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            ${cls.capacity || "0"} seats
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-4 border-t border-gray-100">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-user-tie text-gray-400"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm text-gray-500">Class Teacher</p>
+                                                <p class="text-sm font-medium text-gray-900">${cls.classTeacherName || "Not assigned"}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 flex space-x-3">
+                                        <button onclick="editClass('${cls._id}')" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                                            <i class="fas fa-edit mr-1"></i> Edit
+                                        </button>
+                                        <button onclick="confirmDeleteClass('${cls._id}', '${cls.className}')" class="text-red-600 hover:text-red-900 text-sm font-medium">
+                                            <i class="fas fa-trash-alt mr-1"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            classContainer.appendChild(classCard);
+                        });
+                        
+                        console.log("✅ Classes loaded successfully");
+                    } catch (error) {
+                        console.error("❌ Error loading classes:", error);
+                        classContainer.innerHTML = `
+                            <div class="col-span-full text-center py-12">
+                                <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-4"></i>
+                                <h3 class="text-lg font-medium text-gray-700">Error loading classes</h3>
+                                <p class="text-gray-500 mt-1">Please try again later</p>
+                                <button onclick="loadClasses()" class="mt-4 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-sync-alt mr-2"></i> Retry
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            
+                // Handle form submission with modern UX
+                document.getElementById("classForm").addEventListener("submit", async function (event) {
+                    event.preventDefault();
+                    
+                    const saveButton = document.getElementById("saveClassButton");
+                    const originalButtonText = saveButton.innerHTML;
+                    saveButton.disabled = true;
+                    saveButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+                    
+                    const classData = {
+                        className: document.getElementById("className").value.trim(),
+                        section: document.getElementById("section").value.trim().toUpperCase(),
+                        classTeacher: document.getElementById("teacher").value.trim(),
+                        capacity: parseInt(document.getElementById("capacity").value, 10) || 0
+                    };
+            
+                    try {
+                        const classId = document.getElementById("classId").value;
+                        const url = classId ? `http://localhost:5000/api/classes/${classId}` : "http://localhost:5000/api/classes/add";
+                        const method = classId ? "PUT" : "POST";
+                        
+                        const response = await fetch(url, {
+                            method: method,
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(classData)
+                        });
+            
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || "Failed to save class");
+                        }
+            
+                        const result = await response.json();
+                        
+                        // Show success feedback
+                        showToast("success", `Class ${classId ? "updated" : "created"} successfully!`);
+                        
+                        // Reset form and refresh list
+                        document.getElementById("classForm").reset();
+                        document.getElementById("classId").value = "";
+                        loadClasses();
+                    } catch (error) {
+                        console.error("❌ Error:", error);
+                        showToast("error", error.message || "Error saving class");
+                    } finally {
+                        saveButton.disabled = false;
+                        saveButton.innerHTML = originalButtonText;
+                    }
+                });
+            
+                // Edit class function
+                async function editClass(classId) {
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/classes/${classId}`);
+                        if (!response.ok) throw new Error("Failed to fetch class details");
+                        
+                        const classData = await response.json();
+                        
+                        // Fill the form
+                        document.getElementById("classId").value = classData._id;
+                        document.getElementById("className").value = classData.className;
+                        document.getElementById("section").value = classData.section;
+                        document.getElementById("teacher").value = classData.classTeacher;
+                        document.getElementById("capacity").value = classData.capacity;
+                        
+                        // Scroll to form
+                        document.getElementById("classForm").scrollIntoView({ behavior: "smooth" });
+                        
+                        // Change button text
+                        document.getElementById("saveClassButton").innerHTML = "Update Class";
+                        
+                        showToast("info", "Editing class: " + classData.className);
+                    } catch (error) {
+                        console.error("Error editing class:", error);
+                        showToast("error", "Failed to load class details");
+                    }
+                }
+            
+                // Confirm and delete class
+                async function confirmDeleteClass(classId, className) {
+                    if (!confirm(`Are you sure you want to delete "${className}"?\nThis action cannot be undone.`)) {
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/classes/${classId}`, {
+                            method: "DELETE"
+                        });
+                        
+                        if (!response.ok) throw new Error("Failed to delete class");
+                        
+                        showToast("success", `Class "${className}" deleted successfully`);
+                        loadClasses();
+                    } catch (error) {
+                        console.error("Error deleting class:", error);
+                        showToast("error", "Failed to delete class");
+                    }
+                }
+            
+                // Refresh class list
+                function refreshClassList() {
+                    // Clear cache to force fresh data
+                    localStorage.removeItem("teachers");
+                    localStorage.removeItem("teachers_timestamp");
+                    
+                    loadTeachers();
+                    loadClasses();
+                    showToast("info", "Refreshing data...");
+                }
+            
+                // Toast notification function
+                function showToast(type, message) {
+                    const toast = document.createElement("div");
+                    toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-md text-white font-medium flex items-center ${
+                        type === "success" ? "bg-green-500" : 
+                        type === "error" ? "bg-red-500" : 
+                        "bg-indigo-500"
+                    }`;
+                    
+                    toast.innerHTML = `
+                        <i class="fas ${
+                            type === "success" ? "fa-check-circle" : 
+                            type === "error" ? "fa-exclamation-circle" : 
+                            "fa-info-circle"
+                        } mr-3"></i>
+                        ${message}
+                    `;
+                    
+                    document.body.appendChild(toast);
+                    
+                    setTimeout(() => {
+                        toast.classList.add("opacity-0", "transition-opacity", "duration-300");
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }
+            
+                // Load data on page load
+                document.addEventListener("DOMContentLoaded", () => {
+                    loadTeachers();
+                    loadClasses();
+                });
+            </script>
+            
+            <style>
+                /* Smooth transitions */
+                .transition {
+                    transition: all 0.2s ease-in-out;
+                }
+                
+                /* Focus styles */
+                .focus\:ring-indigo-500:focus {
+                    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+                }
+                
+                /* Card hover effect */
+                .hover\:shadow-lg:hover {
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                }
+                
+                /* Responsive adjustments */
+                @media (max-width: 640px) {
+                    .grid-cols-2 {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
 </body>
 
 </html>
