@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         try {
-            const response = await fetch("https://sukuu-backend.onrender.com/v1/api/auth/signup", {
+            const response = await fetch("http://localhost:5000/v1/api/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
